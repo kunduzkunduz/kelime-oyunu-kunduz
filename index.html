@@ -114,6 +114,20 @@
     #istatistik-alani.hidden {
       display: none;
     }
+
+    #admin-panel {
+      display: none;
+      background-color: #ffffff;
+      padding: 15px;
+      border: 2px solid #3182ce;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin-top: 20px;
+    }
+
+    #admin-panel.active {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -132,28 +146,43 @@
     </div>
   </div>
 
+  <div id="admin-panel" class="hidden">
+    <h2>Yönetici Paneli</h2>
+    <textarea id="kelime-girisi" rows="7" style="width: 100%; margin-bottom: 10px;" placeholder="Haftalık kelimeleri her satıra bir tane yazın..."></textarea>
+    <button id="kelime-kaydet">Kelimeleri Kaydet</button>
+  </div>
+
   <script>
     const defaultKelimeler = ["kurs", "ders", "egitim", "notlar", "konu", "sinav", "kunduz"];
-    let haftalikKelimeler = JSON.parse(localStorage.getItem("haftalikKelimeler")) || [];
+    let haftalikKelimeler = defaultKelimeler;
 
-    if (haftalikKelimeler.length !== 7) {
-      haftalikKelimeler = defaultKelimeler;
-      localStorage.setItem("haftalikKelimeler", JSON.stringify(haftalikKelimeler));
+    // Admin panelini etkinleştir
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("admin")) {
+      document.getElementById("admin-panel").classList.remove("hidden");
     }
 
+    // Haftalık kelimeleri kaydet
+    document.getElementById("kelime-kaydet").addEventListener("click", () => {
+      const kelimeGirisi = document.getElementById("kelime-girisi").value.trim();
+      const yeniKelimeler = kelimeGirisi.split("\n").map(k => k.trim()).filter(k => k);
+      if (yeniKelimeler.length === 7) {
+        haftalikKelimeler = yeniKelimeler;
+        alert("Kelimeler başarıyla kaydedildi!");
+        document.getElementById("tahmin-girdisi").disabled = false;
+        document.getElementById("gonder-tusu").disabled = false;
+      } else {
+        alert("Lütfen 7 adet kelime girin!");
+      }
+    });
+
+    // Oyun kelimesini belirle
     const tarih = new Date();
     const gunIndex = tarih.getDay();
     const gizliKelime = haftalikKelimeler[gunIndex];
 
-    let mevcutSatir = 0;
-    let oyunSayisi = 0;
-    let kazanmaSayisi = 0;
-    const tablo = document.getElementById("oyun-tablosu");
-    const istatistikAlani = document.getElementById("istatistik-alani");
-    const kazanmaOraniSpan = document.getElementById("kazanma-orani");
-    const oyunSayisiSpan = document.getElementById("oyun-sayisi");
-
     // Tabloyu dinamik olarak oluştur
+    const tablo = document.getElementById("oyun-tablosu");
     for (let i = 0; i < 6; i++) {
       const satir = document.createElement("div");
       satir.classList.add("satir");
@@ -166,11 +195,38 @@
       tablo.appendChild(satir);
     }
 
+    // Oyun mantığı
+    let mevcutSatir = 0;
+    let oyunSayisi = 0;
+    let kazanmaSayisi = 0;
+
+    document.getElementById("gonder-tusu").addEventListener("click", () => {
+      const girdisi = document.getElementById("tahmin-girdisi");
+      const tahmin = girdisi.value.toLowerCase();
+
+      if (tahmin.length === gizliKelime.length) {
+        tabloyuGuncelle(tahmin);
+        girdisi.value = "";
+
+        if (tahmin === gizliKelime) {
+          setTimeout(() => {
+            alert("Tebrikler! Kelimeyi doğru bildiniz!");
+          }, 100);
+        } else if (mevcutSatir >= 6) {
+          setTimeout(() => {
+            alert(`Oyun Bitti! Doğru kelime: ${gizliKelime}`);
+          }, 100);
+        }
+      } else {
+        alert(`Kelime uzunluğu ${gizliKelime.length} harf olmalı.`);
+      }
+    });
+
     function tabloyuGuncelle(tahmin) {
       const satirlar = tablo.children;
       const mevcutSatirKutular = satirlar[mevcutSatir].children;
       for (let i = 0; i < gizliKelime.length; i++) {
-        const kutu = mevcutSatirKutular[i];
+               const kutu = mevcutSatirKutular[i];
         const harf = tahmin[i];
 
         if (harf === gizliKelime[i]) {
@@ -191,38 +247,11 @@
       oyunSayisi++;
       if (kazandi) kazanmaSayisi++;
       const kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
-      kazanmaOraniSpan.textContent = `%${kazanmaOrani}`;
-      oyunSayisiSpan.textContent = oyunSayisi;
-      istatistikAlani.classList.remove("hidden");
+      document.getElementById("kazanma-orani").textContent = `%${kazanmaOrani}`;
+      document.getElementById("oyun-sayisi").textContent = oyunSayisi;
+      document.getElementById("istatistik-alani").classList.remove("hidden");
     }
-
-    document.getElementById("gonder-tusu").addEventListener("click", () => {
-      const girdisi = document.getElementById("tahmin-girdisi");
-      const tahmin = girdisi.value.toLowerCase();
-
-      if (tahmin.length === gizliKelime.length) {
-        tabloyuGuncelle(tahmin);
-        girdisi.value = "";
-
-        if (tahmin === gizliKelime) {
-          setTimeout(() => {
-            alert("Tebrikler! Kelimeyi doğru bildiniz!");
-            guncelleIstatistikler(true);
-          }, 100);
-        } else if (mevcutSatir >= 6) {
-          setTimeout(() => {
-            alert(`Oyun Bitti! Doğru kelime: ${gizliKelime}`);
-            guncelleIstatistikler(false);
-          }, 100);
-        }
-      } else {
-        alert(`Kelime uzunluğu ${gizliKelime.length} harf olmalı.`);
-      }
-    });
-
-    // Başlangıçta tahmin alanını ve butonu aktif et
-    document.getElementById("tahmin-girdisi").disabled = false;
-    document.getElementById("gonder-tusu").disabled = false;
   </script>
 </body>
 </html>
+
