@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kelime Oyunu 300x500</title>
+  <title>Kunduz Kelime Oyunu</title>
   <style>
     body {
       margin: 0;
@@ -89,6 +89,7 @@
       <input type="text" id="tahmin-girdisi" maxlength="5" placeholder="Tahmin...">
       <button id="gonder-tusu">Gönder</button>
     </div>
+    <div id="sonuc" style="text-align: center; margin-top: 10px; font-weight: bold;"></div>
   </div>
 
   <script>
@@ -96,6 +97,7 @@
     const gizliKelime = "armut";
     let mevcutSatir = 0;
     const tablo = document.getElementById("oyun-tablosu");
+    const sonuc = document.getElementById("sonuc");
 
     // Oyun alanını oluştur
     for (let i = 0; i < 30; i++) {
@@ -136,9 +138,9 @@
 
         // Oyun bitti mi kontrol et
         if (tahmin === gizliKelime) {
-          setTimeout(() => alert("Tebrikler! Kelimeyi doğru bildiniz!"), 100);
+          sonuc.textContent = "Tebrikler! Kelimeyi doğru bildiniz!";
         } else if (mevcutSatir >= 6) {
-          setTimeout(() => alert(`Oyun Bitti! Doğru kelime: ${gizliKelime}`), 100);
+          sonuc.textContent = `Oyun Bitti! Doğru kelime: ${gizliKelime}`;
         }
       } else {
         alert("Lütfen 5 harfli bir kelime girin.");
