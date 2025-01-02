@@ -19,7 +19,7 @@
 
     #oyun-alani {
       width: 300px;
-      height: 550px;
+      height: 600px;
       background-color: #ffffff;
       border: 2px solid #3182ce;
       border-radius: 10px;
@@ -46,16 +46,16 @@
 
     #oyun-tablosu {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
       gap: 8px;
       flex-grow: 1;
     }
 
     .harf-kutusu {
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       text-align: center;
-      line-height: 50px;
+      line-height: 40px;
       font-size: 18px;
       font-weight: bold;
       border: 1px solid #a0aec0;
@@ -131,7 +131,7 @@
     <p>Günlük kelimeyi tahmin etmeye çalışın. 6 hakkınız var!</p>
     <div id="oyun-tablosu"></div>
     <div id="giris-alani">
-      <input type="text" id="tahmin-girdisi" maxlength="5" placeholder="Tahmin...">
+      <input type="text" id="tahmin-girdisi" placeholder="Tahmin...">
       <button id="gonder-tusu">Gönder</button>
     </div>
     <div id="istatistik-alani" class="hidden">
@@ -143,35 +143,39 @@
 
   <div id="admin-panel">
     <h2>Yönetici Paneli</h2>
-    <label for="kelime-ekle">Yeni Kelime:</label>
-    <input type="text" id="kelime-ekle" maxlength="5" placeholder="Kelime Ekle">
-    <button id="kelime-ekle-btn">Ekle</button>
-    <p>Haftalık Kelimeler:</p>
+    <label for="kelime-ekle">Haftalık Kelimeler:</label>
+    <textarea id="kelime-ekle" rows="7" placeholder="Her satıra bir kelime yazın"></textarea>
+    <button id="kelime-ekle-btn">Kaydet</button>
+    <p>Kaydedilen Kelimeler:</p>
     <ul id="kelime-listesi"></ul>
   </div>
 
   <script>
-    const gizliKelime = "armut";
+    let haftalikKelimeler = JSON.parse(localStorage.getItem("haftalikKelimeler")) || [];
+    const tarih = new Date();
+    const gunIndex = tarih.getDay();
+    const gizliKelime = haftalikKelimeler[gunIndex] || "armut";
+
     let mevcutSatir = 0;
+    let oyunSayisi = 0;
+    let kazanmaSayisi = 0;
     const tablo = document.getElementById("oyun-tablosu");
     const adminPanel = document.getElementById("admin-panel");
     const istatistikAlani = document.getElementById("istatistik-alani");
     const kazanmaOraniSpan = document.getElementById("kazanma-orani");
     const oyunSayisiSpan = document.getElementById("oyun-sayisi");
-    let oyunSayisi = 0;
-    let kazanmaSayisi = 0;
-
     const kelimeListesi = document.getElementById("kelime-listesi");
     const kelimeEkleBtn = document.getElementById("kelime-ekle-btn");
     const kelimeEkleInput = document.getElementById("kelime-ekle");
 
     // Yönetici panelini URL parametresiyle aç
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('admin')) {
+    if (urlParams.has("admin")) {
       adminPanel.classList.add("active");
+      kelimeListesi.innerHTML = haftalikKelimeler.map(k => `<li>${k}</li>`).join("");
     }
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < gizliKelime.length * 6; i++) {
       const kutu = document.createElement("div");
       kutu.classList.add("harf-kutusu");
       tablo.appendChild(kutu);
@@ -179,8 +183,8 @@
 
     function tabloyuGuncelle(tahmin) {
       const kutular = tablo.children;
-      for (let i = 0; i < 5; i++) {
-        const kutu = kutular[mevcutSatir * 5 + i];
+      for (let i = 0; i < gizliKelime.length; i++) {
+        const kutu = kutular[mevcutSatir * gizliKelime.length + i];
         const harf = tahmin[i];
 
         if (harf === gizliKelime[i]) {
@@ -210,7 +214,7 @@
       const girdisi = document.getElementById("tahmin-girdisi");
       const tahmin = girdisi.value.toLowerCase();
 
-      if (tahmin.length === 5) {
+      if (tahmin.length >= 4 && tahmin.length <= 8) {
         tabloyuGuncelle(tahmin);
         girdisi.value = "";
 
@@ -226,19 +230,20 @@
           }, 100);
         }
       } else {
-        alert("Lütfen 5 harfli bir kelime girin.");
+        alert("Kelime uzunluğu 4 ile 8 arasında olmalı.");
       }
     });
 
     kelimeEkleBtn.addEventListener("click", () => {
-      const yeniKelime = kelimeEkleInput.value.toLowerCase();
-      if (yeniKelime.length === 5) {
-        const li = document.createElement("li");
-        li.textContent = yeniKelime;
-        kelimeListesi.appendChild(li);
+      const yeniKelimeler = kelimeEkleInput.value.trim().split("\n").map(k => k.trim().toLowerCase());
+      if (yeniKelimeler.every(k => k.length >= 4 && k.length <= 8)) {
+        haftalikKelimeler = yeniKelimeler;
+        localStorage.setItem("haftalikKelimeler", JSON.stringify(haftalikKelimeler));
+        kelimeListesi.innerHTML = yeniKelimeler.map(k => `<li>${k}</li>`).join("");
         kelimeEkleInput.value = "";
+        alert("Haftalık kelimeler başarıyla kaydedildi.");
       } else {
-        alert("Kelime 5 harfli olmalı.");
+        alert("Tüm kelimeler 4 ile 8 harf arasında olmalı.");
       }
     });
   </script>
