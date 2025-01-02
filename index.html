@@ -86,26 +86,6 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
-            margin-top: 20px;
-            font-size: 1rem;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .button:hover {
-            background-color: #0056b3;
-        }
-
-        .hidden {
-            display: none;
-        }
-
         .input-container {
             margin-top: 20px;
             display: flex;
@@ -140,6 +120,10 @@
         .input-container button:hover {
             background-color: #218838;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -158,8 +142,7 @@
         <button id="submit-guess">Tahmini Gönder</button>
     </div>
 
-    <button class="button" id="show-stats">İstatistikleri Gör</button>
-    <div class="stats-panel" id="stats-panel">
+    <div class="stats-panel hidden" id="stats-panel">
         <h2>İstatistikler</h2>
         <p>Kazanma Oranı: <span id="win-rate">%0</span></p>
         <p>Oyun Geçmişi: <span id="game-history">0</span></p>
@@ -184,7 +167,6 @@
         const board = document.getElementById('game-board');
         const statsPanel = document.getElementById('stats-panel');
         const adminPanel = document.getElementById('admin-panel');
-        const showStatsButton = document.getElementById('show-stats');
         const wordInput = document.getElementById('word-input');
         const wordListSpan = document.getElementById('word-list');
         const addWordButton = document.getElementById('add-word');
@@ -277,10 +259,6 @@
             } else {
                 alert('Kelime 5 harfli olmalı ve tekrar etmemeli!');
             }
-        });
-
-        showStatsButton.addEventListener('click', () => {
-            statsPanel.classList.toggle('hidden');
         });
 
         submitGuessButton.addEventListener('click', handleGuessInput);
