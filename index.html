@@ -1,151 +1,246 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kunduz Kelime Oyunu</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #edf2f7;
-      font-family: Arial, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kunduz Kelime Oyunu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+        }
 
-    #oyun-alani {
-      width: 300px;
-      height: 500px;
-      background-color: #ffffff;
-      border: 2px solid #3182ce;
-      border-radius: 10px;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
+        h1 {
+            margin-bottom: 10px;
+        }
 
-    #oyun-tablosu {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      flex-grow: 1;
-    }
+        .instructions {
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
 
-    .harf-kutusu {
-      width: 50px;
-      height: 50px;
-      text-align: center;
-      line-height: 50px;
-      font-size: 18px;
-      font-weight: bold;
-      border: 1px solid #a0aec0;
-      border-radius: 5px;
-      background-color: #e2e8f0;
-      text-transform: uppercase;
-    }
+        .game-board {
+            display: grid;
+            grid-template-rows: repeat(6, 1fr);
+            gap: 10px;
+        }
 
-    .yesil { background-color: #48bb78; color: white; }
-    .sari { background-color: #ecc94b; color: white; }
-    .gri { background-color: #a0aec0; color: white; }
+        .row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
 
-    #giris-alani {
-      display: flex;
-      gap: 10px;
-    }
+        .tile {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #ddd;
+            text-align: center;
+            line-height: 50px;
+            font-size: 20px;
+            text-transform: uppercase;
+            background-color: #fff;
+            user-select: none;
+        }
 
-    input[type="text"] {
-      flex-grow: 1;
-      padding: 8px;
-      font-size: 16px;
-      border: 1px solid #cbd5e0;
-      border-radius: 5px;
-    }
+        .tile.correct {
+            background-color: #6aaa64;
+            color: #fff;
+        }
 
-    button {
-      padding: 8px 15px;
-      font-size: 16px;
-      font-weight: bold;
-      color: white;
-      background-color: #3182ce;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+        .tile.present {
+            background-color: #c9b458;
+            color: #fff;
+        }
 
-    button:hover {
-      background-color: #2b6cb0;
-    }
-  </style>
+        .tile.absent {
+            background-color: #787c7e;
+            color: #fff;
+        }
+
+        .stats-panel, .admin-panel {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <div id="oyun-alani">
-    <div id="oyun-tablosu"></div>
-    <div id="giris-alani">
-      <input type="text" id="tahmin-girdisi" maxlength="5" placeholder="Tahmin...">
-      <button id="gonder-tusu">Gönder</button>
+    <h1>Kunduz Kelime Oyunu</h1>
+    <div class="instructions">
+        <p>Her gün yeni bir 5 harfli kelimeyi tahmin etmeye çalışın. 6 tahmin hakkınız var!</p>
+        <p>Doğru harfler yeşil, yanlış yerlerdeki doğru harfler sarı, yanlış harfler gri olacak.</p>
     </div>
-    <div id="sonuc" style="text-align: center; margin-top: 10px; font-weight: bold;"></div>
-  </div>
 
-  <script>
-    // Gizli kelime
-    const gizliKelime = "armut";
-    let mevcutSatir = 0;
-    const tablo = document.getElementById("oyun-tablosu");
-    const sonuc = document.getElementById("sonuc");
+    <div class="game-board" id="game-board">
+        <!-- Game rows will be dynamically generated -->
+    </div>
 
-    // Oyun alanını oluştur
-    for (let i = 0; i < 30; i++) {
-      const kutu = document.createElement("div");
-      kutu.classList.add("harf-kutusu");
-      tablo.appendChild(kutu);
-    }
+    <button class="button" id="show-stats">İstatistikleri Gör</button>
+    <div class="stats-panel" id="stats-panel">
+        <h2>İstatistikler</h2>
+        <p>Kazanma Oranı: <span id="win-rate">%0</span></p>
+        <p>Oyun Geçmişi: <span id="game-history">0</span></p>
+    </div>
 
-    // Kutuları güncelle
-    function tabloyuGuncelle(tahmin) {
-      const kutular = tablo.children;
-      for (let i = 0; i < 5; i++) {
-        const kutu = kutular[mevcutSatir * 5 + i];
-        const harf = tahmin[i];
+    <button class="button" id="show-admin">Yönetici Paneli</button>
+    <div class="admin-panel" id="admin-panel">
+        <h2>Yönetici Paneli</h2>
+        <p>Günlük Kelimenin Başarı Oranı: <span id="success-rate">%0</span></p>
+        <p>Genel Performans: <span id="general-performance">0</span></p>
+        <h3>Haftalık Kelimeler</h3>
+        <input type="text" id="word-input" placeholder="Kelime ekle">
+        <button class="button" id="add-word">Kelime Ekle</button>
+        <p>Mevcut Kelimeler: <span id="word-list"></span></p>
+    </div>
 
-        if (harf === gizliKelime[i]) {
-          kutu.textContent = harf;
-          kutu.classList.add("yesil");
-        } else if (gizliKelime.includes(harf)) {
-          kutu.textContent = harf;
-          kutu.classList.add("sari");
-        } else {
-          kutu.textContent = harf;
-          kutu.classList.add("gri");
+    <script>
+        const defaultWords = ["kavun", "araba", "kavak", "lamba", "kalem", "uçurt", "deniz"];
+        const words = JSON.parse(localStorage.getItem('weeklyWords')) || defaultWords;
+        const today = new Date().toISOString().slice(0, 10);
+        const dayIndex = new Date().getDay();
+        const dailyWord = words[dayIndex % words.length];
+        const board = document.getElementById('game-board');
+        const statsPanel = document.getElementById('stats-panel');
+        const adminPanel = document.getElementById('admin-panel');
+        const showStatsButton = document.getElementById('show-stats');
+        const showAdminButton = document.getElementById('show-admin');
+        const wordInput = document.getElementById('word-input');
+        const wordListSpan = document.getElementById('word-list');
+        const addWordButton = document.getElementById('add-word');
+
+        let guesses = [];
+        let currentRow = 0;
+
+        function initializeBoard() {
+            for (let i = 0; i < 6; i++) {
+                const row = document.createElement('div');
+                row.className = 'row';
+                for (let j = 0; j < 5; j++) {
+                    const tile = document.createElement('div');
+                    tile.className = 'tile';
+                    row.appendChild(tile);
+                }
+                board.appendChild(row);
+            }
         }
-      }
-      mevcutSatir++;
-    }
 
-    // Tahmini gönder
-    document.getElementById("gonder-tusu").addEventListener("click", () => {
-      const girdisi = document.getElementById("tahmin-girdisi");
-      const tahmin = girdisi.value.toLowerCase();
-
-      if (tahmin.length === 5) {
-        tabloyuGuncelle(tahmin);
-        girdisi.value = "";
-
-        // Oyun bitti mi kontrol et
-        if (tahmin === gizliKelime) {
-          sonuc.textContent = "Tebrikler! Kelimeyi doğru bildiniz!";
-        } else if (mevcutSatir >= 6) {
-          sonuc.textContent = `Oyun Bitti! Doğru kelime: ${gizliKelime}`;
+        function handleKeyPress(e) {
+            const key = e.key.toLowerCase();
+            if (key.length === 1 && key >= 'a' && key <= 'z' && guesses.length < 5) {
+                const currentRowTiles = document.querySelectorAll('.row')[currentRow].children;
+                currentRowTiles[guesses.length].textContent = key;
+                guesses.push(key);
+            } else if (key === 'backspace' && guesses.length > 0) {
+                const currentRowTiles = document.querySelectorAll('.row')[currentRow].children;
+                guesses.pop();
+                currentRowTiles[guesses.length].textContent = '';
+            } else if (key === 'enter' && guesses.length === 5) {
+                checkGuess();
+            }
         }
-      } else {
-        alert("Lütfen 5 harfli bir kelime girin.");
-      }
-    });
-  </script>
+
+        function checkGuess() {
+            const currentRowTiles = document.querySelectorAll('.row')[currentRow].children;
+            guesses.forEach((letter, index) => {
+                if (dailyWord[index] === letter) {
+                    currentRowTiles[index].classList.add('correct');
+                } else if (dailyWord.includes(letter)) {
+                    currentRowTiles[index].classList.add('present');
+                } else {
+                    currentRowTiles[index].classList.add('absent');
+                }
+            });
+
+            if (guesses.join('') === dailyWord) {
+                alert('Tebrikler! Doğru tahmin.');
+                updateStats(true);
+                return;
+            }
+
+            currentRow++;
+            guesses = [];
+            if (currentRow >= 6) {
+                alert(`Oyun bitti! Doğru kelime: ${dailyWord}`);
+                updateStats(false);
+            }
+        }
+
+        function updateStats(won) {
+            const stats = JSON.parse(localStorage.getItem('stats')) || { games: 0, wins: 0 };
+            stats.games++;
+            if (won) stats.wins++;
+            localStorage.setItem('stats', JSON.stringify(stats));
+            document.getElementById('win-rate').textContent = `%${Math.round((stats.wins / stats.games) * 100)}`;
+            document.getElementById('game-history').textContent = stats.games;
+        }
+
+        function loadStats() {
+            const stats = JSON.parse(localStorage.getItem('stats')) || { games: 0, wins: 0 };
+            document.getElementById('win-rate').textContent = `%${Math.round((stats.wins / stats.games) * 100)}`;
+            document.getElementById('game-history').textContent = stats.games;
+        }
+
+        function loadAdminPanel() {
+            wordListSpan.textContent = words.join(', ');
+        }
+
+        addWordButton.addEventListener('click', () => {
+            const newWord = wordInput.value.toLowerCase();
+            if (newWord.length === 5 && !words.includes(newWord)) {
+                words.push(newWord);
+                localStorage.setItem('weeklyWords', JSON.stringify(words));
+                loadAdminPanel();
+                wordInput.value = '';
+            } else {
+                alert('Kelime 5 harfli olmalı ve tekrar etmemeli!');
+            }
+        });
+
+        showStatsButton.addEventListener('click', () => {
+            statsPanel.classList.toggle('hidden');
+        });
+
+        showAdminButton.addEventListener('click', () => {
+            adminPanel.classList.toggle('hidden');
+        });
+
+        window.addEventListener('load', () => {
+            initializeBoard();
+            loadStats();
+            loadAdminPanel();
+        });
+
+        window.addEventListener('keydown', handleKeyPress);
+    </script>
 </body>
 </html>
