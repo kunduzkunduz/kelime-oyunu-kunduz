@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kunduz Kelime Oyunu</title>
+    <link href="https://fonts.googleapis.com/css2?family=DIN+Round:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f3f4f6;
+            font-family: 'DIN Round', Arial, sans-serif;
+            background-color: #fafafa;
             color: #333;
             margin: 0;
             display: flex;
@@ -19,12 +20,15 @@
 
         h1 {
             margin-bottom: 10px;
+            font-size: 2rem;
+            color: #444;
         }
 
         .instructions {
             margin-bottom: 20px;
-            font-size: 14px;
+            font-size: 1rem;
             text-align: center;
+            color: #666;
         }
 
         .game-board {
@@ -36,44 +40,50 @@
         .row {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 5px;
+            gap: 8px;
         }
 
         .tile {
-            width: 50px;
-            height: 50px;
-            border: 1px solid #ddd;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #ddd;
             text-align: center;
-            line-height: 50px;
-            font-size: 20px;
+            line-height: 60px;
+            font-size: 1.5rem;
             text-transform: uppercase;
             background-color: #fff;
-            user-select: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
         }
 
         .tile.correct {
             background-color: #6aaa64;
             color: #fff;
+            border-color: #6aaa64;
         }
 
         .tile.present {
             background-color: #c9b458;
             color: #fff;
+            border-color: #c9b458;
         }
 
         .tile.absent {
-            background-color: #787c7e;
+            background-color: #d3d6da;
             color: #fff;
+            border-color: #d3d6da;
         }
 
         .stats-panel, .admin-panel {
             display: none;
             margin-top: 20px;
-            padding: 10px;
+            padding: 20px;
             border: 1px solid #ddd;
             background-color: #fff;
-            width: 80%;
-            max-width: 400px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .button {
@@ -83,6 +93,9 @@
             color: #fff;
             cursor: pointer;
             margin-top: 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
 
         .button:hover {
@@ -91,6 +104,41 @@
 
         .hidden {
             display: none;
+        }
+
+        .input-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-container input {
+            padding: 10px;
+            font-size: 1rem;
+            width: 200px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-container input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .input-container button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .input-container button:hover {
+            background-color: #218838;
         }
     </style>
 </head>
@@ -105,6 +153,11 @@
         <!-- Game rows will be dynamically generated -->
     </div>
 
+    <div class="input-container">
+        <input type="text" id="guess-input" maxlength="5" placeholder="Tahmininizi yazın">
+        <button id="submit-guess">Tahmini Gönder</button>
+    </div>
+
     <button class="button" id="show-stats">İstatistikleri Gör</button>
     <div class="stats-panel" id="stats-panel">
         <h2>İstatistikler</h2>
@@ -112,8 +165,7 @@
         <p>Oyun Geçmişi: <span id="game-history">0</span></p>
     </div>
 
-    <button class="button" id="show-admin">Yönetici Paneli</button>
-    <div class="admin-panel" id="admin-panel">
+    <div class="admin-panel hidden" id="admin-panel">
         <h2>Yönetici Paneli</h2>
         <p>Günlük Kelimenin Başarı Oranı: <span id="success-rate">%0</span></p>
         <p>Genel Performans: <span id="general-performance">0</span></p>
@@ -133,10 +185,11 @@
         const statsPanel = document.getElementById('stats-panel');
         const adminPanel = document.getElementById('admin-panel');
         const showStatsButton = document.getElementById('show-stats');
-        const showAdminButton = document.getElementById('show-admin');
         const wordInput = document.getElementById('word-input');
         const wordListSpan = document.getElementById('word-list');
         const addWordButton = document.getElementById('add-word');
+        const guessInput = document.getElementById('guess-input');
+        const submitGuessButton = document.getElementById('submit-guess');
 
         let guesses = [];
         let currentRow = 0;
@@ -154,19 +207,15 @@
             }
         }
 
-        function handleKeyPress(e) {
-            const key = e.key.toLowerCase();
-            if (key.length === 1 && key >= 'a' && key <= 'z' && guesses.length < 5) {
-                const currentRowTiles = document.querySelectorAll('.row')[currentRow].children;
-                currentRowTiles[guesses.length].textContent = key;
-                guesses.push(key);
-            } else if (key === 'backspace' && guesses.length > 0) {
-                const currentRowTiles = document.querySelectorAll('.row')[currentRow].children;
-                guesses.pop();
-                currentRowTiles[guesses.length].textContent = '';
-            } else if (key === 'enter' && guesses.length === 5) {
-                checkGuess();
+        function handleGuessInput() {
+            const guess = guessInput.value.toLowerCase();
+            if (guess.length !== 5) {
+                alert('Lütfen 5 harfli bir kelime girin.');
+                return;
             }
+            guesses = guess.split('');
+            checkGuess();
+            guessInput.value = '';
         }
 
         function checkGuess() {
@@ -211,7 +260,11 @@
         }
 
         function loadAdminPanel() {
-            wordListSpan.textContent = words.join(', ');
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('admin')) {
+                adminPanel.classList.remove('hidden');
+                wordListSpan.textContent = words.join(', ');
+            }
         }
 
         addWordButton.addEventListener('click', () => {
@@ -230,17 +283,13 @@
             statsPanel.classList.toggle('hidden');
         });
 
-        showAdminButton.addEventListener('click', () => {
-            adminPanel.classList.toggle('hidden');
-        });
+        submitGuessButton.addEventListener('click', handleGuessInput);
 
         window.addEventListener('load', () => {
             initializeBoard();
             loadStats();
             loadAdminPanel();
         });
-
-        window.addEventListener('keydown', handleKeyPress);
     </script>
 </body>
 </html>
