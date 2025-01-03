@@ -27,7 +27,7 @@
       width: 400px;
       max-width: 90%;
       background-color: #ffffff;
-      border: 3px solid #3182ce;
+      border: 3px solid #00A396;
       border-radius: 15px;
       display: flex;
       flex-direction: column;
@@ -38,15 +38,15 @@
     h1 {
       font-size: 2rem;
       text-align: center;
-      color: #3182ce;
+      color: #00A396;
       margin-bottom: 20px;
     }
 
     .aciklama {
       padding: 15px;
       margin-bottom: 20px;
-      background-color: #e3f2fd;
-      border-left: 5px solid #3182ce;
+      background-color: #F9FAFA;
+      border-left: 5px solid #01CCBC;
       border-radius: 8px;
       font-size: 1rem;
       color: #2d3748;
@@ -55,7 +55,18 @@
 
     .vurgula {
       font-weight: bold;
-      color: #007acc;
+    }
+
+    .yesil-vurgula {
+      color: #01CCBC;
+    }
+
+    .sari-vurgula {
+      color: #FABE00;
+    }
+
+    .gri-vurgula {
+      color: #828585;
     }
 
     ul {
@@ -89,9 +100,9 @@
       transition: all 0.3s ease;
     }
 
-    .yesil { background-color: #48bb78; color: white; }
-    .sari { background-color: #ecc94b; color: white; }
-    .gri { background-color: #a0aec0; color: white; }
+    .yesil { background-color: #01CCBC; color: white; }
+    .sari { background-color: #FABE00; color: white; }
+    .gri { background-color: #828585; color: white; }
 
     #giris-alani {
       margin-top: 15px;
@@ -113,18 +124,18 @@
       font-size: 18px;
       font-weight: bold;
       color: white;
-      background-color: #3182ce;
+      background-color: #00A396;
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 4px 8px rgba(49, 130, 206, 0.4);
+      box-shadow: 0 4px 8px rgba(0, 163, 150, 0.4);
       transition: all 0.3s ease;
       margin-bottom: 10px;
     }
 
     button:hover {
-      background-color: #2b6cb0;
-      box-shadow: 0 6px 12px rgba(43, 108, 176, 0.5);
+      background-color: #019183;
+      box-shadow: 0 6px 12px rgba(1, 145, 131, 0.5);
     }
 
     #istatistik-alani {
@@ -201,9 +212,9 @@
     <div class="aciklama">
       Günlük kelimeyi <span class="vurgula">6 denemede</span> doğru tahmin etmeye çalışın. Harf kutularının renklerine dikkat edin:
       <ul>
-        <li><span class="vurgula">Yeşil:</span> Harf doğru ve doğru konumda!</li>
-        <li><span class="vurgula">Sarı:</span> Harf doğru ama yanlış konumda!</li>
-        <li><span class="vurgula">Gri:</span> Harf yanlış!</li>
+        <li><span class="vurgula yesil-vurgula">Yeşil:</span> Harf doğru ve doğru konumda!</li>
+        <li><span class="vurgula sari-vurgula">Sarı:</span> Harf doğru ama yanlış konumda!</li>
+        <li><span class="vurgula gri-vurgula">Gri:</span> Harf yanlış!</li>
       </ul>
       En az denemede doğru kelimeyi bularak puanınızı artırın! 🎯
     </div>
