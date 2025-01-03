@@ -19,14 +19,14 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      padding: 0 10px; /* Mobilde alanı dolduracak şekilde padding eklendi */
+      min-height: 100vh;
+      padding: 0 10px;
     }
 
     #oyun-alani {
-      padding: 25px 20px;
+      padding: 20px;
       width: 100%;
-      max-width: 400px;
+      max-width: 480px; /* Maksimum genişlik arttırıldı */
       background-color: #ffffff;
       border: 3px solid #00A396;
       border-radius: 15px;
@@ -42,12 +42,12 @@
     }
 
     .logo-alani img {
-      max-width: 100px;
+      max-width: 120px; /* Logo genişliği artırıldı */
       margin-bottom: 10px;
     }
 
     h1 {
-      font-size: 1.5rem; /* Başlık için font büyüklüğü ayarlandı */
+      font-size: 1.8rem; /* Başlık fontu biraz büyütüldü */
       text-align: center;
       color: #00A396;
       margin-bottom: 20px;
@@ -117,11 +117,11 @@
     }
 
     .harf-kutusu {
-      width: 60px;
-      height: 60px;
+      width: 65px; /* Kutuların genişliği arttırıldı */
+      height: 65px; /* Kutuların yüksekliği arttırıldı */
       text-align: center;
-      line-height: 60px;
-      font-size: 20px;
+      line-height: 65px;
+      font-size: 22px;
       font-weight: bold;
       border: 1px solid #a0aec0;
       border-radius: 8px;
@@ -142,7 +142,7 @@
     }
 
     input[type="text"] {
-      padding: 12px;
+      padding: 15px;
       font-size: 18px;
       border: 1px solid #cbd5e0;
       border-radius: 8px;
@@ -236,17 +236,17 @@
 
     @media (max-width: 600px) {
       h1 {
-        font-size: 1.2rem; /* Mobilde başlık boyutu küçültüldü */
+        font-size: 1.6rem; /* Başlık mobilde biraz küçültüldü */
       }
 
       #oyun-alani {
-        padding: 15px;
+        padding: 20px;
         width: 100%;
-        max-width: 350px; /* Mobilde daha küçük max-width */
+        max-width: 380px; /* Mobilde daha dar bir alan */
       }
 
       .btn-container {
-        flex-direction: column; /* Butonlar mobilde dikey olacak */
+        flex-direction: column; /* Butonlar dikey olarak hizalanacak */
       }
 
       .btn {
@@ -255,11 +255,11 @@
       }
 
       input[type="text"] {
-        font-size: 16px; /* Mobilde input fontu küçültüldü */
+        font-size: 16px; /* Giriş kutusu fontu küçültüldü */
       }
 
       button {
-        font-size: 16px; /* Mobilde buton fontu küçültüldü */
+        font-size: 16px; /* Buton fontu küçültüldü */
       }
     }
   </style>
