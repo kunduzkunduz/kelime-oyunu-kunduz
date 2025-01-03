@@ -52,7 +52,7 @@
 
     .satir {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+      grid-template-columns: repeat(5, 1fr);
       gap: 8px;
       justify-content: center;
     }
@@ -85,6 +85,7 @@
       font-size: 16px;
       border: 1px solid #cbd5e0;
       border-radius: 5px;
+      text-transform: uppercase;
     }
 
     button {
@@ -136,8 +137,8 @@
     <p>Günlük kelimeyi tahmin etmeye çalışın. 6 hakkınız var!</p>
     <div id="oyun-tablosu"></div>
     <div id="giris-alani">
-      <input type="text" id="tahmin-girdisi" placeholder="Tahmin..." disabled>
-      <button id="gonder-tusu" disabled>Gönder</button>
+      <input type="text" id="tahmin-girdisi" placeholder="Tahmin..." maxlength="5">
+      <button id="gonder-tusu">Gönder</button>
     </div>
     <div id="istatistik-alani" class="hidden">
       <p><strong>İstatistikler:</strong></p>
@@ -153,105 +154,85 @@
   </div>
 
   <script>
-    const defaultKelimeler = ["kurs", "ders", "egitim", "notlar", "konu", "sinav", "kunduz"];
-    let haftalikKelimeler = defaultKelimeler;
+    document.addEventListener("DOMContentLoaded", () => {
+      const defaultKelimeler = ["kurs", "ders", "egitim", "notlar", "konu", "sinav", "kunduz"];
+      let haftalikKelimeler = defaultKelimeler;
 
-    // Admin panelini etkinleştir
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has("admin")) {
-      document.getElementById("admin-panel").classList.remove("hidden");
-    }
+      const gonderTusu = document.getElementById("gonder-tusu");
+      const tahminGirdisi = document.getElementById("tahmin-girdisi");
 
-    // Haftalık kelimeleri kaydet
-    document.getElementById("kelime-kaydet").addEventListener("click", () => {
-      const kelimeGirisi = document.getElementById("kelime-girisi").value.trim();
-      const yeniKelimeler = kelimeGirisi.split("\n").map(k => k.trim()).filter(k => k);
-      if (yeniKelimeler.length === 7) {
-        haftalikKelimeler = yeniKelimeler;
-        alert("Kelimeler başarıyla kaydedildi!");
-        document.getElementById("tahmin-girdisi").disabled = false;
-        document.getElementById("gonder-tusu").disabled = false;
-      } else {
-        alert("Lütfen 7 adet kelime girin!");
+      // Admin panelini etkinleştir
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("admin")) {
+        document.getElementById("admin-panel").classList.add("active");
       }
-    });
 
-    // Oyun kelimesini belirle
-    const tarih = new Date();
-    const gunIndex = tarih.getDay();
-    const gizliKelime = haftalikKelimeler[gunIndex];
-
-    // Tabloyu dinamik olarak oluştur
-    const tablo = document.getElementById("oyun-tablosu");
-    for (let i = 0; i < 6; i++) {
-      const satir = document.createElement("div");
-      satir.classList.add("satir");
-      satir.style.gridTemplateColumns = `repeat(${gizliKelime.length}, 1fr)`;
-      for (let j = 0; j < gizliKelime.length; j++) {
-        const kutu = document.createElement("div");
-        kutu.classList.add("harf-kutusu");
-        satir.appendChild(kutu);
-      }
-      tablo.appendChild(satir);
-    }
-
-    // Oyun mantığı
-    let mevcutSatir = 0;
-    let oyunSayisi = 0;
-    let kazanmaSayisi = 0;
-
-    document.getElementById("gonder-tusu").addEventListener("click", () => {
-      const girdisi = document.getElementById("tahmin-girdisi");
-      const tahmin = girdisi.value.toLowerCase();
-
-      if (tahmin.length === gizliKelime.length) {
-        tabloyuGuncelle(tahmin);
-        girdisi.value = "";
-
-        if (tahmin === gizliKelime) {
-          setTimeout(() => {
-            alert("Tebrikler! Kelimeyi doğru bildiniz!");
-          }, 100);
-        } else if (mevcutSatir >= 6) {
-          setTimeout(() => {
-            alert(`Oyun Bitti! Doğru kelime: ${gizliKelime}`);
-          }, 100);
-        }
-      } else {
-        alert(`Kelime uzunluğu ${gizliKelime.length} harf olmalı.`);
-      }
-    });
-
-    function tabloyuGuncelle(tahmin) {
-      const satirlar = tablo.children;
-      const mevcutSatirKutular = satirlar[mevcutSatir].children;
-      for (let i = 0; i < gizliKelime.length; i++) {
-               const kutu = mevcutSatirKutular[i];
-        const harf = tahmin[i];
-
-        if (harf === gizliKelime[i]) {
-          kutu.textContent = harf;
-          kutu.classList.add("yesil");
-        } else if (gizliKelime.includes(harf)) {
-          kutu.textContent = harf;
-          kutu.classList.add("sari");
+      // Kelimeleri kaydetme
+      document.getElementById("kelime-kaydet").addEventListener("click", () => {
+        const kelimeGirisi = document.getElementById("kelime-girisi").value.trim();
+        const yeniKelimeler = kelimeGirisi.split("\n").map(k => k.trim()).filter(k => k);
+        if (yeniKelimeler.length === 7) {
+          haftalikKelimeler = yeniKelimeler;
+          alert("Kelimeler başarıyla kaydedildi!");
         } else {
-          kutu.textContent = harf;
-          kutu.classList.add("gri");
+          alert("Lütfen 7 adet kelime girin!");
         }
-      }
-      mevcutSatir++;
-    }
+      });
 
-    function guncelleIstatistikler(kazandi) {
-      oyunSayisi++;
-      if (kazandi) kazanmaSayisi++;
-      const kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
-      document.getElementById("kazanma-orani").textContent = `%${kazanmaOrani}`;
-      document.getElementById("oyun-sayisi").textContent = oyunSayisi;
-      document.getElementById("istatistik-alani").classList.remove("hidden");
-    }
+      // Oyun kelimesini belirle
+      const tarih = new Date();
+      const gunIndex = tarih.getDay() % haftalikKelimeler.length;
+      const gizliKelime = haftalikKelimeler[gunIndex];
+      const tablo = document.getElementById("oyun-tablosu");
+
+      // Tabloyu oluştur
+      for (let i = 0; i < 6; i++) {
+        const satir = document.createElement("div");
+        satir.classList.add("satir");
+        for (let j = 0; j < gizliKelime.length; j++) {
+          const kutu = document.createElement("div");
+          kutu.classList.add("harf-kutusu");
+          satir.appendChild(kutu);
+        }
+        tablo.appendChild(satir);
+      }
+
+      let mevcutSatir = 0;
+      gonderTusu.addEventListener("click", () => {
+        const tahmin = tahminGirdisi.value.trim().toLowerCase();
+        if (tahmin.length !== gizliKelime.length) {
+          alert(`Kelime uzunluğu ${gizliKelime.length} harf olmalı.`);
+          return;
+        }
+
+        const satirlar = tablo.children;
+        const mevcutSatirKutular = satirlar[mevcutSatir].children;
+
+        for (let i = 0; i < gizliKelime.length; i++) {
+          const kutu = mevcutSatirKutular[i];
+          const harf = tahmin[i].toUpperCase();
+
+          if (harf === gizliKelime[i].toUpperCase()) {
+            kutu.textContent = harf;
+            kutu.classList.add("yesil");
+          } else if (gizliKelime.includes(harf.toLowerCase())) {
+            kutu.textContent = harf;
+            kutu.classList.add("sari");
+          } else {
+            kutu.textContent = harf;
+            kutu.classList.add("gri");
+          }
+        }
+
+        mevcutSatir++;
+        tahminGirdisi.value = "";
+        if (tahmin === gizliKelime) {
+          setTimeout(() => alert("Tebrikler, doğru bildiniz!"), 100);
+        } else if (mevcutSatir >= 6) {
+          setTimeout(() => alert(`Oyun bitti! Doğru kelime: ${gizliKelime.toUpperCase()}`), 100);
+        }
+      });
+    });
   </script>
 </body>
 </html>
-
