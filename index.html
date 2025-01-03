@@ -19,17 +19,16 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      height: 100%;
+      height: 100vh; /* Ekran boyutuna tam uyum */
+      padding: 0;
       overflow: hidden; /* Kaydırmayı engellemek için */
-      padding: 0 10px;
     }
 
     #oyun-alani {
       padding: 20px;
       width: 100%;
-      height: 100%;
-      max-width: 480px; /* Maksimum genişlik arttırıldı */
+      max-width: 100%; /* Tam genişlik */
+      height: 90%; /* Ekranın büyük kısmını kapsayacak şekilde ayarlandı */
       background-color: #ffffff;
       border: 3px solid #00A396;
       border-radius: 15px;
@@ -37,7 +36,7 @@
       flex-direction: column;
       justify-content: space-between;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-      overflow: hidden; /* Kaydırmayı engellemek için */
+      overflow: auto; /* İçeriğin taşmasını engellemek için */
     }
 
     .logo-alani {
@@ -67,6 +66,7 @@
       color: #2d3748;
       line-height: 1.5;
       flex-grow: 1; /* İçeriğin boyutlandırılmasını sağlar */
+      overflow: auto;
     }
 
     .mesaj-kutusu {
@@ -247,7 +247,8 @@
       #oyun-alani {
         padding: 20px;
         width: 100%;
-        max-width: 380px;
+        max-width: 100%;
+        height: 90%; /* Ekranı tam kaplayacak şekilde */
       }
 
       .btn-container {
