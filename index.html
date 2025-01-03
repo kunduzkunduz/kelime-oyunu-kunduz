@@ -36,7 +36,7 @@
       flex-direction: column;
       justify-content: flex-start;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-      overflow: auto; /* İçeriğin taşmasını engellemek için */
+      overflow: hidden; /* Kaydırma engellendi */
     }
 
     .logo-alani {
@@ -65,8 +65,7 @@
       font-size: 1rem;
       color: #2d3748;
       line-height: 1.5;
-      flex-grow: 0; /* Açıklama kısmının sabit bir yüksekliği olacak */
-      overflow: auto;
+      height: auto; /* Açıklama kısmının dinamik boyutlandırılmasını sağlar */
     }
 
     .mesaj-kutusu {
@@ -260,7 +259,7 @@
         font-size: 1rem;
         color: #2d3748;
         line-height: 1.5;
-        flex-grow: 0;
+        height: auto; /* Açıklama kısmı her zaman görünsün */
       }
 
       .btn-container {
