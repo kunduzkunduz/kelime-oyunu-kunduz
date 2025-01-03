@@ -20,12 +20,15 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      height: 100%;
+      overflow: hidden; /* Kaydırmayı engellemek için */
       padding: 0 10px;
     }
 
     #oyun-alani {
       padding: 20px;
       width: 100%;
+      height: 100%;
       max-width: 480px; /* Maksimum genişlik arttırıldı */
       background-color: #ffffff;
       border: 3px solid #00A396;
@@ -34,6 +37,7 @@
       flex-direction: column;
       justify-content: space-between;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      overflow: hidden; /* Kaydırmayı engellemek için */
     }
 
     .logo-alani {
@@ -42,12 +46,12 @@
     }
 
     .logo-alani img {
-      max-width: 120px; /* Logo genişliği artırıldı */
+      max-width: 120px;
       margin-bottom: 10px;
     }
 
     h1 {
-      font-size: 1.8rem; /* Başlık fontu biraz büyütüldü */
+      font-size: 1.8rem;
       text-align: center;
       color: #00A396;
       margin-bottom: 20px;
@@ -62,6 +66,7 @@
       font-size: 1rem;
       color: #2d3748;
       line-height: 1.5;
+      flex-grow: 1; /* İçeriğin boyutlandırılmasını sağlar */
     }
 
     .mesaj-kutusu {
@@ -117,8 +122,8 @@
     }
 
     .harf-kutusu {
-      width: 65px; /* Kutuların genişliği arttırıldı */
-      height: 65px; /* Kutuların yüksekliği arttırıldı */
+      width: 65px;
+      height: 65px;
       text-align: center;
       line-height: 65px;
       font-size: 22px;
@@ -236,30 +241,30 @@
 
     @media (max-width: 600px) {
       h1 {
-        font-size: 1.6rem; /* Başlık mobilde biraz küçültüldü */
+        font-size: 1.6rem;
       }
 
       #oyun-alani {
         padding: 20px;
         width: 100%;
-        max-width: 380px; /* Mobilde daha dar bir alan */
+        max-width: 380px;
       }
 
       .btn-container {
-        flex-direction: column; /* Butonlar dikey olarak hizalanacak */
+        flex-direction: column;
       }
 
       .btn {
         width: 100%;
-        margin-bottom: 10px; /* Butonlar arasına boşluk eklendi */
+        margin-bottom: 10px;
       }
 
       input[type="text"] {
-        font-size: 16px; /* Giriş kutusu fontu küçültüldü */
+        font-size: 16px;
       }
 
       button {
-        font-size: 16px; /* Buton fontu küçültüldü */
+        font-size: 16px;
       }
     }
   </style>
