@@ -20,23 +20,19 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      padding: 0;
-      overflow: auto; /* Kaydırmayı engellemiyorum */
     }
 
     #oyun-alani {
-      padding: 20px;
-      width: 100%;
-      max-width: 900px; /* Sabit genişlik */
-      height: 600px; /* Sabit yükseklik */
+      padding: 25px 20px;
+      width: 400px;
+      max-width: 90%;
       background-color: #ffffff;
       border: 3px solid #00A396;
       border-radius: 15px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between; /* Yükseklik boyutuna göre öğeleri hizalama */
+      justify-content: space-between;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-      overflow: hidden; /* Kaydırma engellendi */
     }
 
     .logo-alani {
@@ -45,12 +41,12 @@
     }
 
     .logo-alani img {
-      max-width: 120px;
+      max-width: 100px;
       margin-bottom: 10px;
     }
 
     h1 {
-      font-size: 1.8rem;
+      font-size: 2rem;
       text-align: center;
       color: #00A396;
       margin-bottom: 20px;
@@ -65,8 +61,6 @@
       font-size: 1rem;
       color: #2d3748;
       line-height: 1.5;
-      overflow-y: auto; /* Açıklama kısmı kaydırılabilir olacak şekilde */
-      height: 200px; /* Sabit yükseklik */
     }
 
     .mesaj-kutusu {
@@ -122,11 +116,11 @@
     }
 
     .harf-kutusu {
-      width: 65px;
-      height: 65px;
+      width: 60px;
+      height: 60px;
       text-align: center;
-      line-height: 65px;
-      font-size: 22px;
+      line-height: 60px;
+      font-size: 20px;
       font-weight: bold;
       border: 1px solid #a0aec0;
       border-radius: 8px;
@@ -147,7 +141,7 @@
     }
 
     input[type="text"] {
-      padding: 15px;
+      padding: 12px;
       font-size: 18px;
       border: 1px solid #cbd5e0;
       border-radius: 8px;
@@ -237,49 +231,6 @@
 
     .btn-twitter {
       background-color: #1da1f2;
-    }
-
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 1.6rem;
-      }
-
-      #oyun-alani {
-        padding: 20px;
-        width: 100%;
-        max-width: 100%;
-        height: auto; /* Mobilde yüksekliği otomatik yapalım */
-        max-height: 90%; /* Ekran yüksekliğine göre maksimum sınır */
-      }
-
-      .aciklama {
-        padding: 15px;
-        margin-bottom: 20px;
-        background-color: #F9FAFA;
-        border-left: 5px solid #01CCBC;
-        border-radius: 8px;
-        font-size: 1rem;
-        color: #2d3748;
-        line-height: 1.5;
-        height: 180px; /* Mobilde açıklama kısmı sabit */
-      }
-
-      .btn-container {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
-        margin-bottom: 10px;
-      }
-
-      input[type="text"] {
-        font-size: 16px;
-      }
-
-      button {
-        font-size: 16px;
-      }
     }
   </style>
 </head>
@@ -403,14 +354,14 @@
           yenidenBaslatTusu.style.display = "block";
         } else if (mevcutSatir >= 6) {
           oyunBitti = true;
-          mesajGoster(`Oyun bitti! Doğru kelime: ${gizliKelime}`, false);
+          mesajGoster(Oyun bitti! Doğru kelime: ${gizliKelime}, false);
           yenidenBaslatTusu.style.display = "block";
         }
 
         oyunSayisi++;
         const kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
         oyunSayisiEl.textContent = oyunSayisi;
-        kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
+        kazanmaOraniEl.textContent = ${kazanmaOrani}%;
       }
 
       gonderTusu.addEventListener("click", tahminYap);
@@ -436,7 +387,7 @@
     function paylas(platform) {
       const kazanmaOrani = document.getElementById("kazanma-orani").textContent || "0%";
       const oyunSayisi = document.getElementById("oyun-sayisi").textContent || "0";
-      const metin = `Kelime Şöleni 📝! 🐾\nToplam oyun sayım: ${oyunSayisi}\nKazanma oranım: ${kazanmaOrani}\nSiz de deneyin!`;
+      const metin = Kelime Şöleni 📝! 🐾\nToplam oyun sayım: ${oyunSayisi}\nKazanma oranım: ${kazanmaOrani}\nSiz de deneyin!;
 
       let url = "";
 
@@ -445,13 +396,13 @@
           alert("Instagram paylaşımı için metni kopyalayın:\n\n" + metin);
           return;
         case "facebook":
-          url = `https://www.facebook.com/sharer/sharer.php?u=https://kelimesoleni.com&quote=${encodeURIComponent(metin)}`;
+          url = https://www.facebook.com/sharer/sharer.php?u=https://kelimesoleni.com&quote=${encodeURIComponent(metin)};
           break;
         case "whatsapp":
-          url = `https://api.whatsapp.com/send?text=${encodeURIComponent(metin)}`;
+          url = https://api.whatsapp.com/send?text=${encodeURIComponent(metin)};
           break;
         case "twitter":
-          url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(metin)}`;
+          url = https://twitter.com/intent/tweet?text=${encodeURIComponent(metin)};
           break;
         default:
           return;
