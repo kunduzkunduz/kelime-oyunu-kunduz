@@ -21,13 +21,14 @@
       align-items: center;
       height: 100vh;
       padding: 0;
+      overflow: auto; /* Kaydırmayı engellemiyorum */
     }
 
     #oyun-alani {
       padding: 20px;
       width: 100%;
       max-width: 100%;
-      height: 90%; /* Ekranın büyük kısmını kapsayacak şekilde ayarlandı */
+      height: 90%;
       background-color: #ffffff;
       border: 3px solid #00A396;
       border-radius: 15px;
@@ -35,7 +36,7 @@
       flex-direction: column;
       justify-content: flex-start;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-      overflow: hidden; /* Kaydırma engellendi */
+      overflow: visible; /* Kaydırma engellenmez, içerik taşabilir */
     }
 
     .logo-alani {
@@ -64,7 +65,8 @@
       font-size: 1rem;
       color: #2d3748;
       line-height: 1.5;
-      height: auto; /* Açıklama kısmının dinamik boyutlandırılmasını sağlar */
+      flex-grow: 1; /* Açıklama kısmı içeriğin büyümesine izin verir */
+      overflow: visible; /* Açıklama kısmı scroll olmasın */
     }
 
     .mesaj-kutusu {
