@@ -4,44 +4,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kunduz Kelime Oyunu</title>
-  <link href="https://fonts.googleapis.com/css2?family=DIN+Round:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" crossorigin="anonymous">
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #edf2f7;
+      font-family: "Roboto", sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #edf2f7;
-      font-family: 'DIN Round', Arial, sans-serif;
     }
 
     #oyun-alani {
-      padding: 20px 15px;
-      width: 350px;
+      padding: 25px 20px;
+      width: 400px;
       max-width: 90%;
       background-color: #ffffff;
-      border: 2px solid #3182ce;
-      border-radius: 10px;
+      border: 3px solid #3182ce;
+      border-radius: 15px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     }
 
     h1 {
-      font-size: 1.8rem;
+      font-size: 2rem;
       text-align: center;
-      margin-bottom: 10px;
-      color: #2d3748;
+      color: #3182ce;
+      margin-bottom: 20px;
     }
 
-    p {
-      font-size: 0.9rem;
-      text-align: center;
-      color: #4a5568;
+    .aciklama {
+      padding: 15px;
       margin-bottom: 20px;
+      background-color: #e3f2fd;
+      border-left: 5px solid #3182ce;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #2d3748;
+      line-height: 1.5;
+    }
+
+    .vurgula {
+      font-weight: bold;
+      color: #007acc;
+    }
+
+    ul {
+      padding-left: 20px;
     }
 
     #oyun-tablosu {
@@ -58,22 +76,17 @@
     }
 
     .harf-kutusu {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       text-align: center;
-      line-height: 50px;
-      font-size: 18px;
+      line-height: 60px;
+      font-size: 20px;
       font-weight: bold;
       border: 1px solid #a0aec0;
-      border-radius: 5px;
+      border-radius: 8px;
       background-color: #e2e8f0;
       text-transform: uppercase;
       transition: all 0.3s ease;
-    }
-
-    .harf-kutusu:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .yesil { background-color: #48bb78; color: white; }
@@ -81,34 +94,37 @@
     .gri { background-color: #a0aec0; color: white; }
 
     #giris-alani {
-      display: flex;
-      gap: 10px;
       margin-top: 15px;
-      padding-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     input[type="text"] {
-      flex-grow: 1;
-      padding: 8px;
-      font-size: 16px;
+      padding: 12px;
+      font-size: 18px;
       border: 1px solid #cbd5e0;
-      border-radius: 5px;
-      text-transform: uppercase;
+      border-radius: 8px;
+      margin-bottom: 10px;
     }
 
     button {
-      padding: 8px 15px;
-      font-size: 16px;
+      padding: 15px 20px;
+      font-size: 18px;
       font-weight: bold;
       color: white;
       background-color: #3182ce;
       border: none;
-      border-radius: 5px;
+      border-radius: 50px;
       cursor: pointer;
+      box-shadow: 0 4px 8px rgba(49, 130, 206, 0.4);
+      transition: all 0.3s ease;
+      margin-bottom: 10px;
     }
 
     button:hover {
       background-color: #2b6cb0;
+      box-shadow: 0 6px 12px rgba(43, 108, 176, 0.5);
     }
 
     #istatistik-alani {
@@ -117,170 +133,232 @@
       display: none;
     }
 
-    .sosyal-paylasim {
-      margin-top: 10px;
-    }
-
-    .sosyal-butonu {
-      margin: 5px;
-      padding: 8px 10px;
-      background-color: #3182ce;
-      color: white;
-      border-radius: 5px;
-      text-decoration: none;
-      font-size: 14px;
-      display: inline-block;
-    }
-
-    .sosyal-butonu:hover {
-      background-color: #2b6cb0;
-    }
-
-    #uyari-mesaji {
-      color: red;
-      font-size: 0.9rem;
-      text-align: center;
-      display: none;
-    }
-
     #yeniden-baslat-tusu {
       display: none;
-      padding: 10px 20px;
+      margin-top: 15px;
+      padding: 12px 20px;
       background-color: #f56565;
-      border: none;
-      border-radius: 5px;
       color: white;
-      font-size: 16px;
-      margin-top: 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 50px;
       cursor: pointer;
+      box-shadow: 0 4px 8px rgba(245, 101, 101, 0.4);
     }
 
     #yeniden-baslat-tusu:hover {
       background-color: #e53e3e;
     }
 
+    .btn-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      min-width: 120px;
+      max-width: 200px;
+      background-color: #fff;
+      padding: 1rem 2rem;
+      text-decoration: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+      justify-content: center;
+    }
+
+    .btn i {
+      font-size: 20px;
+      margin-right: 8px;
+    }
+
+    .btn-instagram {
+      background: linear-gradient(to right, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    }
+
+    .btn-facebook {
+      background-color: #1877f2;
+    }
+
+    .btn-whatsapp {
+      background-color: #25d366;
+    }
+
+    .btn-twitter {
+      background-color: #1da1f2;
+    }
   </style>
 </head>
 <body>
   <div id="oyun-alani">
     <h1>Kunduz Kelime Oyunu</h1>
-    <p>Günlük kelimeyi tahmin etmeye çalışın. 6 hakkınız var!</p>
-    <div id="uyari-mesaji"></div>
+    <div class="aciklama">
+      Günlük kelimeyi <span class="vurgula">6 denemede</span> doğru tahmin etmeye çalışın. Harf kutularının renklerine dikkat edin:
+      <ul>
+        <li><span class="vurgula">Yeşil:</span> Harf doğru ve doğru konumda!</li>
+        <li><span class="vurgula">Sarı:</span> Harf doğru ama yanlış konumda!</li>
+        <li><span class="vurgula">Gri:</span> Harf yanlış!</li>
+      </ul>
+      En az denemede doğru kelimeyi bularak puanınızı artırın! 🎯
+    </div>
+
     <div id="oyun-tablosu"></div>
     <div id="giris-alani">
       <input type="text" id="tahmin-girdisi" placeholder="Tahmin..." maxlength="5">
       <button id="gonder-tusu">Gönder</button>
     </div>
     <button id="yeniden-baslat-tusu">Yeniden Başlat</button>
+
     <div id="istatistik-alani">
-      <p><strong>İstatistikler:</strong></p>
+      <h3>İstatistikler</h3>
       <p>Kazanma Oranı: <span id="kazanma-orani">0%</span></p>
       <p>Toplam Oyun Sayısı: <span id="oyun-sayisi">0</span></p>
-      <div class="sosyal-paylasim">
-        <a href="#" id="twitter-paylas" class="sosyal-butonu">Twitter</a>
-        <a href="#" id="facebook-paylas" class="sosyal-butonu">Facebook</a>
-        <a href="#" id="instagram-paylas" class="sosyal-butonu">Instagram</a>
-        <a href="#" id="whatsapp-paylas" class="sosyal-butonu">WhatsApp</a>
-      </div>
+    </div>
+
+    <div class="btn-container">
+      <button class="btn btn-instagram" onclick="paylas('instagram')">
+        <i class="fab fa-instagram"></i>
+        <span>Instagram</span>
+      </button>
+      <button class="btn btn-facebook" onclick="paylas('facebook')">
+        <i class="fab fa-facebook-f"></i>
+        <span>Facebook</span>
+      </button>
+      <button class="btn btn-whatsapp" onclick="paylas('whatsapp')">
+        <i class="fab fa-whatsapp"></i>
+        <span>WhatsApp</span>
+      </button>
+      <button class="btn btn-twitter" onclick="paylas('twitter')">
+        <i class="fab fa-twitter"></i>
+        <span>Twitter</span>
+      </button>
     </div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const defaultKelimeler = ["kurs", "ders", "egitim", "notlar", "konu", "sınav", "kunduz"];
-      const haftalikKelimeler = defaultKelimeler;
-      const gizliKelime = haftalikKelimeler[new Date().getDay() % haftalikKelimeler.length];
+      let gizliKelime = defaultKelimeler[new Date().getDay() % defaultKelimeler.length];
       const gonderTusu = document.getElementById("gonder-tusu");
+      const yenidenBaslatTusu = document.getElementById("yeniden-baslat-tusu");
       const tahminGirdisi = document.getElementById("tahmin-girdisi");
       const istatistikAlani = document.getElementById("istatistik-alani");
-      const uyariMesaji = document.getElementById("uyari-mesaji");
-      const yenidenBaslatTusu = document.getElementById("yeniden-baslat-tusu");
-      const kazanmaOraniEl = document.getElementById("kazanma-orani");
       const oyunSayisiEl = document.getElementById("oyun-sayisi");
-
+      const kazanmaOraniEl = document.getElementById("kazanma-orani");
+      let mevcutSatir = 0;
       let oyunSayisi = 0;
       let kazanmaSayisi = 0;
-      let mevcutSatir = 0;
       let oyunBitti = false;
 
-      const tablo = document.getElementById("oyun-tablosu");
-      for (let i = 0; i < 6; i++) {
-        const satir = document.createElement("div");
-        satir.classList.add("satir");
-        for (let j = 0; j < gizliKelime.length; j++) {
-          const kutu = document.createElement("div");
-          kutu.classList.add("harf-kutusu");
-          satir.appendChild(kutu);
+      function tabloyuOlustur() {
+        const tablo = document.getElementById("oyun-tablosu");
+        tablo.innerHTML = "";
+        for (let i = 0; i < 6; i++) {
+          const satir = document.createElement("div");
+          satir.classList.add("satir");
+          for (let j = 0; j < gizliKelime.length; j++) {
+            const kutu = document.createElement("div");
+            kutu.classList.add("harf-kutusu");
+            satir.appendChild(kutu);
+          }
+          tablo.appendChild(satir);
         }
-        tablo.appendChild(satir);
       }
 
-      function gosterUyari(mesaj) {
-        uyariMesaji.textContent = mesaj;
-        uyariMesaji.style.display = "block";
-        setTimeout(() => {
-          uyariMesaji.style.display = "none";
-        }, 2000);
-      }
-
-      function oyunuBitir(kazandi) {
-        oyunBitti = true;
-        oyunSayisi++;
-        if (kazandi) kazanmaSayisi++;
-        const kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
-        oyunSayisiEl.textContent = oyunSayisi.toString();
-        kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
-        istatistikAlani.style.display = "block";
-        tahminGirdisi.disabled = true;
-        gonderTusu.disabled = true;
-        yenidenBaslatTusu.style.display = "block";
-      }
-
-      gonderTusu.addEventListener("click", () => {
+      function tahminYap() {
         if (oyunBitti) return;
 
-        let tahmin = tahminGirdisi.value.trim().toLowerCase();
-        if (tahmin.length !== gizliKelime.length) {
-          gosterUyari(`Kelime uzunluğu ${gizliKelime.length} harf olmalı.`);
-          return;
-        }
+        const tahmin = tahminGirdisi.value.trim().toLocaleLowerCase("tr-TR");
+        if (tahmin.length !== gizliKelime.length) return;
 
-        const satirlar = tablo.children;
-        const mevcutSatirKutular = satirlar[mevcutSatir].children;
-
+        const mevcutSatirKutular = document.querySelectorAll(".satir")[mevcutSatir].children;
         for (let i = 0; i < gizliKelime.length; i++) {
           const kutu = mevcutSatirKutular[i];
-          const harf = tahmin[i].toUpperCase();
-          kutu.textContent = harf;
-
-          if (tahmin[i] === gizliKelime[i]) {
-            kutu.classList.add("yesil");
-          } else if (gizliKelime.includes(tahmin[i])) {
-            kutu.classList.add("sari");
-          } else {
-            kutu.classList.add("gri");
-          }
+          kutu.textContent = tahmin[i];
+          kutu.className = "harf-kutusu";
+          kutu.classList.add(
+            tahmin[i] === gizliKelime[i]
+              ? "yesil"
+              : gizliKelime.includes(tahmin[i])
+              ? "sari"
+              : "gri"
+          );
         }
+
+        mevcutSatir++;
+        tahminGirdisi.value = "";
 
         if (tahmin === gizliKelime) {
-          oyunuBitir(true);
-        } else if (++mevcutSatir >= 6) {
-          oyunuBitir(false);
+          kazanmaSayisi++;
+          oyunBitti = true;
+          istatistikAlani.style.display = "block";
+          alert("Tebrikler! Doğru tahmin!");
+          yenidenBaslatTusu.style.display = "block";
+        } else if (mevcutSatir >= 6) {
+          oyunBitti = true;
+          istatistikAlani.style.display = "block";
+          alert(`Oyun bitti! Doğru kelime: ${gizliKelime}`);
+          yenidenBaslatTusu.style.display = "block";
         }
 
-        tahminGirdisi.value = "";
+        oyunSayisi++;
+        const kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
+        oyunSayisiEl.textContent = oyunSayisi;
+        kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
+      }
+
+      gonderTusu.addEventListener("click", tahminYap);
+
+      tahminGirdisi.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          tahminYap();
+        }
       });
 
       yenidenBaslatTusu.addEventListener("click", () => {
-        location.reload();
+        mevcutSatir = 0;
+        oyunBitti = false;
+        yenidenBaslatTusu.style.display = "none";
+        tabloyuOlustur();
+        tahminGirdisi.value = "";
+        gizliKelime = defaultKelimeler[new Date().getDay() % defaultKelimeler.length];
       });
 
-      tahminGirdisi.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && !oyunBitti) {
-          gonderTusu.click();
-        }
-      });
+      tabloyuOlustur();
     });
+
+    function paylas(platform) {
+      const kazanmaOrani = document.getElementById("kazanma-orani").textContent || "0%";
+      const oyunSayisi = document.getElementById("oyun-sayisi").textContent || "0";
+      const metin = `Kunduz Kelime Oyunu! 🐾\nToplam oyun sayım: ${oyunSayisi}\nKazanma oranım: ${kazanmaOrani}\nSiz de deneyin!`;
+
+      let url = "";
+
+      switch (platform) {
+        case "instagram":
+          alert("Instagram paylaşımı için metni kopyalayın:\n\n" + metin);
+          return;
+        case "facebook":
+          url = `https://www.facebook.com/sharer/sharer.php?u=https://kunduzkelimeoyunu.com&quote=${encodeURIComponent(metin)}`;
+          break;
+        case "whatsapp":
+          url = `https://api.whatsapp.com/send?text=${encodeURIComponent(metin)}`;
+          break;
+        case "twitter":
+          url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(metin)}`;
+          break;
+        default:
+          return;
+      }
+
+      window.open(url, "_blank");
+    }
   </script>
 </body>
 </html>
