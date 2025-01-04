@@ -109,26 +109,29 @@
       gap: 9px;
     }
 
-    .satir {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 8px;
-      justify-content: center;
-    }
+  .satir {
+  display: flex; /* grid yerine flex */
+  justify-content: center;
+  gap: 8px; /* Kutular arası boşluk */
+}
 
-    .harf-kutusu {
-      width: 60px;
-      height: 60px;
-      text-align: center;
-      line-height: 60px;
-      font-size: 20px;
-      font-weight: bold;
-      border: 1px solid #a0aec0;
-      border-radius: 8px;
-      background-color: #e2e8f0;
-      text-transform: uppercase;
-      transition: all 0.3s ease;
-    }
+.harf-kutusu {
+  flex: 1; /* Tüm kutular eşit alan kaplasın */
+  max-width: 60px; /* En fazla genişlik */
+  aspect-ratio: 1 / 1; /* Kare şeklinde tut */
+  display: flex; /* İçeriği ortalamak için flexbox */
+  justify-content: center; /* Yatay ortalama */
+  align-items: center; /* Dikey ortalama */
+  font-size: 20px; /* Harf boyutu */
+  font-weight: bold;
+  border: 1px solid #a0aec0;
+  border-radius: 8px;
+  background-color: #e2e8f0;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+
 
     .yesil { background-color: #01CCBC; color: white; }
     .sari { background-color: #FABE00; color: white; }
@@ -282,7 +285,7 @@
 
     <div id="oyun-tablosu"></div>
     <div id="giris-alani">
-      <input type="text" id="tahmin-girdisi" placeholder="Tahmin..." maxlength="6">
+      <input type="text" id="tahmin-girdisi" placeholder="Tahmin..." maxlength="gizliKelime.length">
       <button id="gonder-tusu">Gönder</button>
     </div>
 
@@ -339,20 +342,25 @@
         }, 3000);
       }
 
-      function tabloyuOlustur() {
-        const tablo = document.getElementById("oyun-tablosu");
-        tablo.innerHTML = "";
-        for (let i = 0; i < 6; i++) {
-          const satir = document.createElement("div");
-          satir.classList.add("satir");
-          for (let j = 0; j < gizliKelime.length; j++) {
-            const kutu = document.createElement("div");
-            kutu.classList.add("harf-kutusu");
-            satir.appendChild(kutu);
-          }
-          tablo.appendChild(satir);
-        }
-      }
+function tabloyuOlustur() {
+  const tablo = document.getElementById("oyun-tablosu");
+  tablo.innerHTML = "";
+  const harfSayisi = gizliKelime.length; // Harf sayısına göre oluşturulacak kutular
+
+  for (let i = 0; i < 6; i++) { // 6 satır
+    const satir = document.createElement("div");
+    satir.classList.add("satir");
+
+    for (let j = 0; j < harfSayisi; j++) { // Harf sayısı kadar kutu ekle
+      const kutu = document.createElement("div");
+      kutu.classList.add("harf-kutusu");
+      satir.appendChild(kutu);
+    }
+
+    tablo.appendChild(satir);
+  }
+}
+
 
       function tahminYap() {
         if (oyunBitti) return;
