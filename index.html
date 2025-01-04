@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
   <title>Kunduz Kelime Şöleni</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" crossorigin="anonymous">
@@ -19,8 +19,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      padding: 0 10px; /* Mobilde alanı dolduracak şekilde padding eklendi */
+      min-height: 100vh;
+      height: calc(100vh - 10px);
+      padding: 10px;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
 
     #oyun-alani {
@@ -34,6 +37,7 @@
       flex-direction: column;
       justify-content: space-between;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      margin-top: 20px;
     }
 
     .logo-alani {
@@ -42,12 +46,12 @@
     }
 
     .logo-alani img {
-      max-width: 100px;
-      margin-bottom: 10px;
+      max-width: 80px;
+      margin-bottom: 5px;
     }
 
     h1 {
-      font-size: 1.5rem; /* Başlık için font büyüklüğü ayarlandı */
+      font-size: 1.5rem;
       text-align: center;
       color: #00A396;
       margin-bottom: 20px;
@@ -109,33 +113,41 @@
       gap: 9px;
     }
 
-  .satir {
-  display: flex; /* grid yerine flex */
-  justify-content: center;
-  gap: 8px; /* Kutular arası boşluk */
-}
+    .satir {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
 
-.harf-kutusu {
-  flex: 1; /* Tüm kutular eşit alan kaplasın */
-  max-width: 60px; /* En fazla genişlik */
-  aspect-ratio: 1 / 1; /* Kare şeklinde tut */
-  display: flex; /* İçeriği ortalamak için flexbox */
-  justify-content: center; /* Yatay ortalama */
-  align-items: center; /* Dikey ortalama */
-  font-size: 20px; /* Harf boyutu */
-  font-weight: bold;
-  border: 1px solid #a0aec0;
-  border-radius: 8px;
-  background-color: #e2e8f0;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-}
+    .harf-kutusu {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      font-weight: bold;
+      border: 1px solid #a0aec0;
+      border-radius: 8px;
+      background-color: #e2e8f0;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
 
+    .yesil {
+      background-color: #01CCBC;
+      color: white;
+    }
 
+    .sari {
+      background-color: #FABE00;
+      color: white;
+    }
 
-    .yesil { background-color: #01CCBC; color: white; }
-    .sari { background-color: #FABE00; color: white; }
-    .gri { background-color: #828585; color: white; }
+    .gri {
+      background-color: #828585;
+      color: white;
+    }
 
     #giris-alani {
       margin-top: 15px;
@@ -146,15 +158,16 @@
 
     input[type="text"] {
       padding: 12px;
-      font-size: 18px;
+      font-size: 16px;
       border: 1px solid #cbd5e0;
       border-radius: 8px;
       margin-bottom: 10px;
+      width: 100%;
     }
 
     button {
-      padding: 15px 20px;
-      font-size: 18px;
+      padding: 12px 15px;
+      font-size: 16px;
       font-weight: bold;
       color: white;
       background-color: #00A396;
@@ -163,7 +176,6 @@
       cursor: pointer;
       box-shadow: 0 4px 8px rgba(0, 163, 150, 0.4);
       transition: all 0.3s ease;
-      margin-bottom: 10px;
     }
 
     button:hover {
@@ -203,16 +215,14 @@
 
     .btn {
       min-width: 120px;
-      max-width: 200px;
       background-color: #fff;
-      padding: 1rem 2rem;
+      padding: 1rem 1.5rem;
       text-decoration: none;
       color: white;
       display: flex;
       align-items: center;
       border-radius: 10px;
       box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
       justify-content: center;
     }
 
@@ -235,35 +245,6 @@
 
     .btn-twitter {
       background-color: #1da1f2;
-    }
-
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 1.2rem; /* Mobilde başlık boyutu küçültüldü */
-      }
-
-      #oyun-alani {
-        padding: 15px;
-        width: 100%;
-        max-width: 350px; /* Mobilde daha küçük max-width */
-      }
-
-      .btn-container {
-        flex-direction: column; /* Butonlar mobilde dikey olacak */
-      }
-
-      .btn {
-        width: 100%;
-        margin-bottom: 10px; /* Butonlar arasına boşluk eklendi */
-      }
-
-      input[type="text"] {
-        font-size: 16px; /* Mobilde input fontu küçültüldü */
-      }
-
-      button {
-        font-size: 16px; /* Mobilde buton fontu küçültüldü */
-      }
     }
   </style>
 </head>
@@ -298,6 +279,7 @@
       <p>Toplam Oyun Sayısı: <span id="oyun-sayisi">0</span></p>
     </div>
 
+    <!-- Paylaşım Butonları -->
     <div class="btn-container">
       <button class="btn btn-instagram" onclick="paylas('instagram')">
         <i class="fab fa-instagram"></i>
@@ -317,6 +299,8 @@
       </button>
     </div>
   </div>
+</body>
+
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
