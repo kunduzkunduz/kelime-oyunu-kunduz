@@ -349,8 +349,11 @@ function tabloyuOlustur() {
       function tahminYap() {
         if (oyunBitti) return;
 
-        const tahmin = tahminGirdisi.value.trim().toLocaleLowerCase("tr-TR");
-        if (tahmin.length !== gizliKelime.length) return;
+         const tahmin = tahminGirdisi.value.trim().toLocaleLowerCase("tr-TR");
+  if (tahmin.length !== gizliKelime.length) {
+    mesajGoster(`Lütfen ${gizliKelime.length} harf girin!`, false); // Uyarı mesajı
+    return;
+  }
 
         const mevcutSatirKutular = document.querySelectorAll(".satir")[mevcutSatir].children;
         for (let i = 0; i < gizliKelime.length; i++) {
