@@ -20,12 +20,13 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      padding: 0 10px; /* Mobilde alanı dolduracak şekilde padding eklendi */
     }
 
     #oyun-alani {
       padding: 25px 20px;
-      width: 400px;
-      max-width: 90%;
+      width: 100%;
+      max-width: 450px;
       background-color: #ffffff;
       border: 3px solid #00A396;
       border-radius: 15px;
@@ -46,7 +47,7 @@
     }
 
     h1 {
-      font-size: 2rem;
+      font-size: 1.5rem; /* Başlık için font büyüklüğü ayarlandı */
       text-align: center;
       color: #00A396;
       margin-bottom: 20px;
@@ -105,12 +106,12 @@
     #oyun-tablosu {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 9px;
     }
 
     .satir {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 8px;
       justify-content: center;
     }
@@ -232,6 +233,35 @@
     .btn-twitter {
       background-color: #1da1f2;
     }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.2rem; /* Mobilde başlık boyutu küçültüldü */
+      }
+
+      #oyun-alani {
+        padding: 15px;
+        width: 100%;
+        max-width: 350px; /* Mobilde daha küçük max-width */
+      }
+
+      .btn-container {
+        flex-direction: column; /* Butonlar mobilde dikey olacak */
+      }
+
+      .btn {
+        width: 100%;
+        margin-bottom: 10px; /* Butonlar arasına boşluk eklendi */
+      }
+
+      input[type="text"] {
+        font-size: 16px; /* Mobilde input fontu küçültüldü */
+      }
+
+      button {
+        font-size: 16px; /* Mobilde buton fontu küçültüldü */
+      }
+    }
   </style>
 </head>
 <body>
@@ -252,7 +282,7 @@
 
     <div id="oyun-tablosu"></div>
     <div id="giris-alani">
-      <input type="text" id="tahmin-girdisi" placeholder="Tahmin..." maxlength="5">
+      <input type="text" id="tahmin-girdisi" placeholder="Tahmin..." maxlength="6">
       <button id="gonder-tusu">Gönder</button>
     </div>
 
@@ -287,7 +317,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const defaultKelimeler = ["kurs", "ders", "egitim", "notlar", "konu", "sınav", "kunduz"];
+      const defaultKelimeler = ["kurs", "ders", "eğitim", "notlar", "konu", "sınav", "kunduz"];
       let gizliKelime = defaultKelimeler[new Date().getDay() % defaultKelimeler.length];
       const gonderTusu = document.getElementById("gonder-tusu");
       const yenidenBaslatTusu = document.getElementById("yeniden-baslat-tusu");
@@ -354,14 +384,14 @@
           yenidenBaslatTusu.style.display = "block";
         } else if (mevcutSatir >= 6) {
           oyunBitti = true;
-          mesajGoster(Oyun bitti! Doğru kelime: ${gizliKelime}, false);
+          mesajGoster(`Oyun bitti! Doğru kelime: ${gizliKelime}`, false);
           yenidenBaslatTusu.style.display = "block";
         }
 
         oyunSayisi++;
         const kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
         oyunSayisiEl.textContent = oyunSayisi;
-        kazanmaOraniEl.textContent = ${kazanmaOrani}%;
+        kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
       }
 
       gonderTusu.addEventListener("click", tahminYap);
@@ -387,7 +417,7 @@
     function paylas(platform) {
       const kazanmaOrani = document.getElementById("kazanma-orani").textContent || "0%";
       const oyunSayisi = document.getElementById("oyun-sayisi").textContent || "0";
-      const metin = Kelime Şöleni 📝! 🐾\nToplam oyun sayım: ${oyunSayisi}\nKazanma oranım: ${kazanmaOrani}\nSiz de deneyin!;
+      const metin = `Kelime Şöleni 📝! 🐾\nToplam oyun sayım: ${oyunSayisi}\nKazanma oranım: ${kazanmaOrani}\nSiz de deneyin!`;
 
       let url = "";
 
@@ -396,13 +426,13 @@
           alert("Instagram paylaşımı için metni kopyalayın:\n\n" + metin);
           return;
         case "facebook":
-          url = https://www.facebook.com/sharer/sharer.php?u=https://kelimesoleni.com&quote=${encodeURIComponent(metin)};
+          url = `https://www.facebook.com/sharer/sharer.php?u=https://kelimesoleni.com&quote=${encodeURIComponent(metin)}`;
           break;
         case "whatsapp":
-          url = https://api.whatsapp.com/send?text=${encodeURIComponent(metin)};
+          url = `https://api.whatsapp.com/send?text=${encodeURIComponent(metin)}`;
           break;
         case "twitter":
-          url = https://twitter.com/intent/tweet?text=${encodeURIComponent(metin)};
+          url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(metin)}`;
           break;
         default:
           return;
