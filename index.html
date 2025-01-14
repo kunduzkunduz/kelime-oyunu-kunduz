@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-  <title>Kunduz Kelime Şöleni</title>
+  <title>Kunduz Kelime Keşfi</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" crossorigin="anonymous">
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * {
       margin: 0;
@@ -243,17 +245,642 @@
       background-color: #25d366;
     }
 
-    .btn-twitter {
-      background-color: #1da1f2;
+    .btn-x {
+      background-color: #000000;
+    }
+
+    .istatistik-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .istatistik-kutu {
+      background-color: #f7fafc;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+
+    .istatistik-sayi {
+      display: block;
+      font-size: 24px;
+      font-weight: bold;
+      color: #00A396;
+      margin-bottom: 5px;
+    }
+
+    .istatistik-baslik {
+      font-size: 14px;
+      color: #4a5568;
+    }
+
+    .btn-kunduz {
+      background-color: #00A396;
+      color: white;
+    }
+
+    .btn-kunduz:hover {
+      background-color: #019183;
+    }
+
+    /* Admin Panel Stilleri */
+    .admin-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+    
+    .admin-panel {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      width: 80%;
+      max-width: 1200px;
+      height: 90vh;
+      overflow-y: auto;
+      z-index: 1001;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .admin-close {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      cursor: pointer;
+      font-size: 24px;
+      color: #4a5568;
+      transition: color 0.3s ease;
+    }
+    
+    .admin-close:hover {
+      color: #2d3748;
+    }
+    
+    #adminLogin h2 {
+      color: #00A396;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    
+    .admin-login {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .admin-login input {
+      padding: 12px 15px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+      outline: none;
+    }
+    
+    .admin-login input:focus {
+      border-color: #00A396;
+    }
+    
+    .admin-login button {
+      background: #00A396;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+    
+    .admin-login button:hover {
+      background: #019183;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 163, 150, 0.2);
+    }
+    
+    .admin-input-group {
+      position: relative;
+    }
+    
+    .admin-input-group i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #a0aec0;
+    }
+    
+    .admin-input-group input {
+      padding-left: 40px;
+      width: 100%;
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      
+      .harf-kutusu {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+      }
+      
+      .btn {
+        min-width: 100px;
+        padding: 0.8rem 1.2rem;
+      }
+      
+      h1 {
+        font-size: 1.2rem;
+      }
+    }
+
+    .sonuc-gorsel {
+      display: none;
+      background: linear-gradient(135deg, #00A396, #019183);
+      padding: 20px;
+      border-radius: 15px;
+      color: white;
+      text-align: center;
+      margin: 20px auto;
+      width: 300px;
+      position: relative;
+    }
+
+    .sonuc-gorsel h2 {
+      font-size: 1.5em;
+      margin-bottom: 15px;
+    }
+
+    .sonuc-gorsel .skor-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .sonuc-gorsel .skor-item {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .sonuc-gorsel .logo {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border-radius: 50%;
+    }
+
+    /* Admin ikon stili */
+    .admin-icon {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background-color: #00A396;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      z-index: 999;
+      transition: all 0.3s ease;
+    }
+    
+    .admin-icon:hover {
+      transform: scale(1.1);
+      background-color: #019183;
+    }
+    
+    @media (max-width: 480px) {
+      .admin-icon {
+        top: 10px;
+        right: 10px;
+        width: 35px;
+        height: 35px;
+      }
+    }
+
+    /* Admin Panel içindeki kelime listesi stilleri */
+    .kelime-grid {
+      display: grid;
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .kelime-gun {
+      background: #f7fafc;
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .gun-label {
+      min-width: 90px;
+      font-weight: bold;
+      color: #4a5568;
+    }
+    
+    .kelime-input-grup {
+      flex: 1;
+      position: relative;
+    }
+    
+    .kelime-input-grup input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .kelime-input-grup input:focus {
+      border-color: #00A396;
+      outline: none;
+    }
+    
+    .kelime-kaydet {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #00A396;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .kelime-kaydet:hover {
+      background: #019183;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 163, 150, 0.2);
+    }
+
+    /* İstatistik Bölümü Stilleri */
+    .istatistik-bolumu {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid #e2e8f0;
+    }
+    
+    .istatistik-ozet {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .ozet-kart {
+      background: linear-gradient(135deg, #00A396, #019183);
+      padding: 15px;
+      border-radius: 10px;
+      color: white;
+      text-align: center;
+    }
+    
+    .ozet-sayi {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .ozet-baslik {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    
+    .grafik-container {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    
+    .grafik-kart {
+      min-height: 300px;
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .grafik-kart h3 {
+      margin-bottom: 15px;
+      color: #2d3748;
+      font-size: 16px;
+    }
+    
+    .tablo-container {
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .tablo-container h3 {
+      margin-bottom: 20px;
+      color: #2d3748;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .tablo-scroll {
+      overflow-x: auto;
+      border-radius: 10px;
+      background: #f8fafc;
+    }
+    
+    .istatistik-tablo {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 0;
+    }
+    
+    .istatistik-tablo th {
+      background: #00A396;
+      color: white;
+      font-weight: 500;
+      padding: 15px;
+      text-align: left;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    
+    .istatistik-tablo th:first-child {
+      border-top-left-radius: 10px;
+    }
+    
+    .istatistik-tablo th:last-child {
+      border-top-right-radius: 10px;
+    }
+    
+    .istatistik-tablo td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 14px;
+      color: #4a5568;
+    }
+    
+    .istatistik-tablo tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .istatistik-tablo tr:hover td {
+      background-color: #f1f5f9;
+    }
+    
+    .basari-oran {
+      font-weight: 600;
+      color: #00A396;
+    }
+    
+    .tarih-hucre {
+      color: #718096;
+      font-weight: 500;
+    }
+    
+    @media (max-width: 768px) {
+      .istatistik-ozet,
+      .grafik-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Kelime listesi ve istatistik bölümlerinin düzeni */
+    #adminContent {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    
+    .kelime-ve-istatistik {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 30px;
+      align-items: start;
+    }
+    
+    .kelime-bolumu {
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Modern istatistik kartları */
+    .istatistik-kartlar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 20px 0;
+      padding: 20px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .istatistik-kart {
+      background: linear-gradient(135deg, #00A396, #019183);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      color: white;
+      transition: transform 0.3s ease;
+    }
+    
+    .istatistik-kart:hover {
+      transform: translateY(-5px);
+    }
+    
+    .kart-sayi {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    
+    .kart-baslik {
+      font-size: 14px;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .grafik-baslik {
+      font-size: 18px;
+      color: #2d3748;
+      margin-bottom: 20px;
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    .grafik-bolum {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
+  <div class="admin-icon" onclick="toggleAdmin(true)">
+    <i class="fas fa-lock"></i>
+  </div>
+
+  <!-- Admin Panel -->
+  <div class="admin-overlay" id="adminOverlay">
+    <div class="admin-panel">
+      <span class="admin-close" onclick="toggleAdmin(false)">&times;</span>
+      <div id="adminLogin">
+        <h2>Admin Girişi</h2>
+        <div class="admin-login">
+          <div class="admin-input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="adminUser" placeholder="Kullanıcı Adı">
+          </div>
+          <div class="admin-input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="adminPass" placeholder="Şifre">
+          </div>
+          <button class="btn" onclick="adminGiris()">Giriş</button>
+        </div>
+      </div>
+      <div id="adminContent" style="display: none;">
+        <div class="kelime-ve-istatistik">
+          <div class="kelime-bolumu">
+            <h2>Haftalık Kelime Listesi</h2>
+            <div class="kelime-grid">
+              <div class="kelime-gun">
+                <span class="gun-label">Pazartesi:</span>
+                <div class="kelime-input-grup">
+                  <input type="text" id="kelime0" maxlength="10" placeholder="Kelime girin...">
+                </div>
+              </div>
+              <div class="kelime-gun">
+                <span class="gun-label">Salı:</span>
+                <div class="kelime-input-grup">
+                  <input type="text" id="kelime1" maxlength="10" placeholder="Kelime girin...">
+                </div>
+              </div>
+              <div class="kelime-gun">
+                <span class="gun-label">Çarşamba:</span>
+                <div class="kelime-input-grup">
+                  <input type="text" id="kelime2" maxlength="10" placeholder="Kelime girin...">
+                </div>
+              </div>
+              <div class="kelime-gun">
+                <span class="gun-label">Perşembe:</span>
+                <div class="kelime-input-grup">
+                  <input type="text" id="kelime3" maxlength="10" placeholder="Kelime girin...">
+                </div>
+              </div>
+              <div class="kelime-gun">
+                <span class="gun-label">Cuma:</span>
+                <div class="kelime-input-grup">
+                  <input type="text" id="kelime4" maxlength="10" placeholder="Kelime girin...">
+                </div>
+              </div>
+              <div class="kelime-gun">
+                <span class="gun-label">Cumartesi:</span>
+                <div class="kelime-input-grup">
+                  <input type="text" id="kelime5" maxlength="10" placeholder="Kelime girin...">
+                </div>
+              </div>
+              <div class="kelime-gun">
+                <span class="gun-label">Pazar:</span>
+                <div class="kelime-input-grup">
+                  <input type="text" id="kelime6" maxlength="10" placeholder="Kelime girin...">
+                </div>
+              </div>
+            </div>
+            <button class="kelime-kaydet" onclick="kelimeleriKaydet()">Kelimeleri Kaydet</button>
+          </div>
+          
+          <div class="istatistik-bolumu">
+            <h2>Oyun İstatistikleri</h2>
+            <div class="istatistik-kartlar">
+              <div class="istatistik-kart">
+                <div class="kart-sayi" id="toplamOyuncuSayi">0</div>
+                <div class="kart-baslik">Toplam Oyuncu</div>
+              </div>
+              <div class="istatistik-kart">
+                <div class="kart-sayi" id="toplamOyunSayi">0</div>
+                <div class="kart-baslik">Toplam Oyun</div>
+              </div>
+              <div class="istatistik-kart">
+                <div class="kart-sayi" id="ortalamaBasari">0%</div>
+                <div class="kart-baslik">Ortalama Başarı</div>
+              </div>
+            </div>
+            
+            <div class="grafik-bolum">
+              <div class="grafik-baslik">Günlük Oyun İstatistikleri</div>
+              <canvas id="gunlukGrafik"></canvas>
+            </div>
+            
+            <div class="grafik-baslik">Başarı Dağılımı</div>
+            <canvas id="basariGrafik"></canvas>
+            
+            <div class="tablo-container">
+              <h3>Son 7 Günün Detaylı İstatistikleri</h3>
+              <div class="tablo-scroll">
+                <table class="istatistik-tablo">
+                  <thead>
+                    <tr>
+                      <th>📅 Tarih</th>
+                      <th>👥 Oyuncu</th>
+                      <th>🎮 Toplam Oyun</th>
+                      <th>🏆 Kazanılan</th>
+                      <th>📊 Ort. Deneme</th>
+                      <th>✨ Başarı Oranı</th>
+                    </tr>
+                  </thead>
+                  <tbody id="istatistik-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="oyun-alani">
     <div class="logo-alani">
       <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" alt="Kunduz Logo">
     </div>
-    <h1>Kunduz Kelime Şöleni 📝</h1>
+    <h1>Kunduz Kelime Keşfi 📝</h1>
     <div class="aciklama">
       Günlük kelimeyi <span class="vurgula">6 denemede</span> doğru tahmin etmeye çalışın. Harf kutularının renklerine dikkat edin:
       <ul>
@@ -275,8 +902,24 @@
 
     <div id="istatistik-alani">
       <h3>İstatistikler</h3>
-      <p>Kazanma Oranı: <span id="kazanma-orani">0%</span></p>
-      <p>Toplam Oyun Sayısı: <span id="oyun-sayisi">0</span></p>
+      <div class="istatistik-grid">
+        <div class="istatistik-kutu">
+          <span class="istatistik-sayi" id="toplam-tahmin">0</span>
+          <span class="istatistik-baslik">Toplam Tahmin</span>
+        </div>
+        <div class="istatistik-kutu">
+          <span class="istatistik-sayi" id="oyun-sayisi">0</span>
+          <span class="istatistik-baslik">Oyun Sayısı</span>
+        </div>
+        <div class="istatistik-kutu">
+          <span class="istatistik-sayi" id="kazanma-sayisi">0</span>
+          <span class="istatistik-baslik">Kazanılan</span>
+        </div>
+        <div class="istatistik-kutu">
+          <span class="istatistik-sayi" id="kazanma-orani">0%</span>
+          <span class="istatistik-baslik">Başarı Oranı</span>
+        </div>
+      </div>
     </div>
 
     <!-- Paylaşım Butonları -->
@@ -293,19 +936,80 @@
         <i class="fab fa-whatsapp"></i>
         <span>WhatsApp</span>
       </button>
-      <button class="btn btn-twitter" onclick="paylas('twitter')">
-        <i class="fab fa-twitter"></i>
-        <span>Twitter</span>
+      <button class="btn btn-x" onclick="paylas('x')">
+        <i class="fab fa-x-twitter"></i>
+        <span>X</span>
       </button>
+      <a href="https://t.kndz.link/uF4J" class="btn btn-kunduz">
+        <i class="fas fa-arrow-left"></i>
+        <span>Kunduz'a Dön</span>
+      </a>
+    </div>
+
+    <!-- Görsel Paylaşım için gizli div -->
+    <div id="sonucGorsel" class="sonuc-gorsel">
+      <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" 
+           alt="Kunduz Logo" class="logo">
+      <h2>Kunduz Kelime Keşfi</h2>
+      <div class="skor-grid">
+        <div class="skor-item">
+          <div>Toplam Oyun</div>
+          <div id="gorselOyunSayisi">0</div>
+        </div>
+        <div class="skor-item">
+          <div>Kazanılan</div>
+          <div id="gorselKazanilan">0</div>
+        </div>
+        <div class="skor-item">
+          <div>Başarı Oranı</div>
+          <div id="gorselBasariOrani">0%</div>
+        </div>
+        <div class="skor-item">
+          <div>Toplam Tahmin</div>
+          <div id="gorselTahminSayisi">0</div>
+        </div>
+      </div>
+      <div>t.kndz.link/uF4J</div>
     </div>
   </div>
-</body>
-
 
   <script>
+    function toggleAdmin(show) {
+      const overlay = document.getElementById('adminOverlay');
+      if (overlay) {
+        overlay.style.display = show ? 'block' : 'none';
+        if (show) {
+          document.getElementById('adminLogin').style.display = 'block';
+          document.getElementById('adminContent').style.display = 'none';
+          document.getElementById('adminUser').value = '';
+          document.getElementById('adminPass').value = '';
+        }
+      }
+    }
+
+    function adminGiris() {
+      const user = document.getElementById('adminUser').value;
+      const pass = document.getElementById('adminPass').value;
+      
+      if (user === "engagement" && pass === "engagement2534") {
+        document.getElementById('adminLogin').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        kelimeListesiniGoster();
+        istatistikleriYukle();
+      } else {
+        alert('Hatalı kullanıcı adı veya şifre!');
+      }
+    }
+
+    // Global değişkenler
+    let defaultKelimeler = ["kurs", "ders", "eğitim", "okul", "konu", "sınav", "kunduz"];
+    let gizliKelime;
+
+    // Haftanın günlerini doğru sırayla ayarlayalım
+    const gunler = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+
     document.addEventListener("DOMContentLoaded", () => {
-      const defaultKelimeler = ["kurs", "ders", "eğitim", "okul", "konu", "sınav", "kunduz"];
-      let gizliKelime = defaultKelimeler[new Date().getDay() % defaultKelimeler.length];
+      gizliKelime = defaultKelimeler[new Date().getDay()];
       const gonderTusu = document.getElementById("gonder-tusu");
       const yenidenBaslatTusu = document.getElementById("yeniden-baslat-tusu");
       const tahminGirdisi = document.getElementById("tahmin-girdisi");
@@ -316,6 +1020,9 @@
       let oyunSayisi = 0;
       let kazanmaSayisi = 0;
       let oyunBitti = false;
+      let toplamTahmin = 0;
+      const toplamTahminEl = document.getElementById("toplam-tahmin");
+      const kazanmaSayisiEl = document.getElementById("kazanma-sayisi");
 
       function mesajGoster(mesaj, basarili = true) {
         uyariMesaji.textContent = mesaj;
@@ -326,28 +1033,30 @@
         }, 5000);
       }
 
-function tabloyuOlustur() {
-  const tablo = document.getElementById("oyun-tablosu");
-  tablo.innerHTML = "";
-  const harfSayisi = gizliKelime.length; // Harf sayısına göre oluşturulacak kutular
+      function tabloyuOlustur() {
+        const tablo = document.getElementById("oyun-tablosu");
+        tablo.innerHTML = "";
+        const harfSayisi = gizliKelime.length; // Harf sayısına göre oluşturulacak kutular
 
-  for (let i = 0; i < 6; i++) { // 6 satır
-    const satir = document.createElement("div");
-    satir.classList.add("satir");
+        for (let i = 0; i < 6; i++) { // 6 satır
+          const satir = document.createElement("div");
+          satir.classList.add("satir");
 
-    for (let j = 0; j < harfSayisi; j++) { // Harf sayısı kadar kutu ekle
-      const kutu = document.createElement("div");
-      kutu.classList.add("harf-kutusu");
-      satir.appendChild(kutu);
-    }
+          for (let j = 0; j < harfSayisi; j++) { // Harf sayısı kadar kutu ekle
+            const kutu = document.createElement("div");
+            kutu.classList.add("harf-kutusu");
+            satir.appendChild(kutu);
+          }
 
-    tablo.appendChild(satir);
-  }
-}
-
+          tablo.appendChild(satir);
+        }
+      }
 
       function tahminYap() {
         if (oyunBitti) return;
+
+        toplamTahmin++;
+        toplamTahminEl.textContent = toplamTahmin;
 
          const tahmin = tahminGirdisi.value.trim().toLocaleLowerCase("tr-TR");
   if (tahmin.length !== gizliKelime.length) {
@@ -374,6 +1083,7 @@ function tabloyuOlustur() {
 
         if (tahmin === gizliKelime) {
           kazanmaSayisi++;
+          kazanmaSayisiEl.textContent = kazanmaSayisi;
           oyunBitti = true;
           mesajGoster("Tebrikler! Doğru tahmin! 🎉");
           yenidenBaslatTusu.style.display = "block";
@@ -397,43 +1107,323 @@ function tabloyuOlustur() {
         }
       });
 
-      yenidenBaslatTusu.addEventListener("click", () => {
+      function yenidenBasla() {
         mevcutSatir = 0;
         oyunBitti = false;
-        yenidenBaslatTusu.style.display = "none";
+        yenidenBaslatTusu.style.display = 'none';
         tabloyuOlustur();
-        tahminGirdisi.value = "";
-        gizliKelime = defaultKelimeler[new Date().getDay() % defaultKelimeler.length];
-      });
-
-      tabloyuOlustur();
-    });
-
-    function paylas(platform) {
-      const kazanmaOrani = document.getElementById("kazanma-orani").textContent || "0%";
-      const oyunSayisi = document.getElementById("oyun-sayisi").textContent || "0";
-      const metin = `Kelime Şöleni 📝! 🐾\nToplam oyun sayım: ${oyunSayisi}\nKazanma oranım: ${kazanmaOrani}\nSiz de deneyin!`;
-
-      let url = "";
-
-      switch (platform) {
-        case "instagram":
-          alert("Instagram paylaşımı için metni kopyalayın:\n\n" + metin);
-          return;
-        case "facebook":
-          url = `https://www.facebook.com/sharer/sharer.php?u=https://kelimesoleni.com&quote=${encodeURIComponent(metin)}`;
-          break;
-        case "whatsapp":
-          url = `https://api.whatsapp.com/send?text=${encodeURIComponent(metin)}`;
-          break;
-        case "twitter":
-          url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(metin)}`;
-          break;
-        default:
-          return;
+        tahminGirdisi.value = '';
+        gizliKelime = defaultKelimeler[new Date().getDay()];
       }
 
-      window.open(url, "_blank");
+      yenidenBaslatTusu.addEventListener("click", yenidenBasla);
+
+      tabloyuOlustur();
+
+      // kelimeleriKaydet fonksiyonunu window objesine bağlayalım
+      window.kelimeleriKaydet = function() {
+        const kelimeListesi = [];
+        // Günleri doğru sırayla alıp kaydedelim
+        const gunSirasi = [1, 2, 3, 4, 5, 6, 0]; // Pazartesi'den Pazar'a
+        for (let i = 0; i < 7; i++) {
+          const kelime = document.getElementById(`kelime${i}`).value.trim().toLowerCase();
+          if (!kelime) {
+            alert('Lütfen tüm günler için kelime girin!');
+            return;
+          }
+          // Doğru gün indeksine yerleştir
+          kelimeListesi[gunSirasi[i]] = kelime;
+        }
+        
+        // Yeni kelime listesini kaydet
+        localStorage.setItem('kelimeListesi', JSON.stringify(kelimeListesi));
+        defaultKelimeler = kelimeListesi;
+        // Günün kelimesini güncelle
+        gizliKelime = defaultKelimeler[new Date().getDay()];
+        // Oyun alanını yenile
+        tabloyuOlustur();
+        yenidenBasla(); // Oyunu yeniden başlat
+        alert('Kelime listesi başarıyla kaydedildi!');
+      }
+      
+      function istatistikleriYukle() {
+        // Örnek veriler - gerçek uygulamada API'den gelecek
+        const sonYediGun = [
+          { tarih: '2024-03-01', oyuncu: 150, toplamOyun: 300, kazanilan: 240, ortDeneme: 3.5, basariOrani: 80 },
+          { tarih: '2024-03-02', oyuncu: 180, toplamOyun: 360, kazanilan: 288, ortDeneme: 3.2, basariOrani: 80 },
+          { tarih: '2024-03-03', oyuncu: 200, toplamOyun: 400, kazanilan: 340, ortDeneme: 3.8, basariOrani: 85 },
+          { tarih: '2024-03-04', oyuncu: 220, toplamOyun: 440, kazanilan: 374, ortDeneme: 3.4, basariOrani: 85 },
+          { tarih: '2024-03-05', oyuncu: 250, toplamOyun: 500, kazanilan: 425, ortDeneme: 3.6, basariOrani: 85 },
+          { tarih: '2024-03-06', oyuncu: 280, toplamOyun: 560, kazanilan: 476, ortDeneme: 3.3, basariOrani: 85 },
+          { tarih: '2024-03-07', oyuncu: 300, toplamOyun: 600, kazanilan: 510, ortDeneme: 3.7, basariOrani: 85 }
+        ];
+        
+        // Özet kartları güncelle
+        document.getElementById('toplamOyuncuSayi').textContent = sonYediGun[6].oyuncu;
+        document.getElementById('toplamOyunSayi').textContent = sonYediGun[6].toplamOyun;
+        document.getElementById('ortalamaBasari').textContent = sonYediGun[6].basariOrani + '%';
+        
+        // Tablo güncelleme
+        const tbody = document.getElementById('istatistik-tbody');
+        tbody.innerHTML = sonYediGun.map(stat => `
+          <tr>
+            <td class="tarih-hucre">${stat.tarih}</td>
+            <td>${stat.oyuncu.toLocaleString()}</td>
+            <td>${stat.toplamOyun.toLocaleString()}</td>
+            <td>${stat.kazanilan.toLocaleString()}</td>
+            <td>${stat.ortDeneme.toFixed(1)}</td>
+            <td class="basari-oran">${stat.basariOrani}%</td>
+          </tr>
+        `).join('');
+        
+        // Günlük grafik
+        const gunlukCtx = document.getElementById('gunlukGrafik').getContext('2d');
+        new Chart(gunlukCtx, {
+          type: 'line',
+          data: {
+            labels: sonYediGun.map(item => item.tarih),
+            datasets: [{
+              label: 'Oyuncu Sayısı',
+              data: sonYediGun.map(item => item.oyuncu),
+              borderColor: '#00A396',
+              backgroundColor: 'rgba(0, 163, 150, 0.1)',
+              fill: true,
+              tension: 0.4
+            }, {
+              label: 'Kazanılan Oyunlar',
+              data: sonYediGun.map(item => item.kazanilan),
+              borderColor: '#FABE00',
+              backgroundColor: 'rgba(250, 190, 0, 0.1)',
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              },
+              tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                padding: 12,
+                titleFont: {
+                  size: 14
+                },
+                bodyFont: {
+                  size: 13
+                }
+              }
+            }
+          }
+        });
+        
+        // Başarı dağılımı grafik
+        const basariCtx = document.getElementById('basariGrafik').getContext('2d');
+        new Chart(basariCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['1. Denemede', '2. Denemede', '3. Denemede', '4. Denemede', '5. Denemede', '6. Denemede'],
+            datasets: [{
+              data: [15, 25, 30, 15, 10, 5],
+              backgroundColor: [
+                '#00A396',
+                '#01CCBC',
+                '#FABE00',
+                '#FCD34D',
+                '#F59E0B',
+                '#DC2626'
+              ]
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }
+        });
+      }
+
+      // kelimeListesiniGoster fonksiyonunu güncelleyelim
+      window.kelimeListesiniGoster = function() {
+        // Günleri doğru sırayla göster
+        const gunSirasi = [1, 2, 3, 4, 5, 6, 0]; // Pazartesi'den Pazar'a
+        for (let i = 0; i < 7; i++) {
+          const input = document.getElementById(`kelime${i}`);
+          if (input) {
+            input.value = defaultKelimeler[gunSirasi[i]];
+          }
+        }
+      }
+    });
+
+    function gorselOlustur() {
+      const gorsel = document.getElementById('sonucGorsel');
+      document.getElementById('gorselOyunSayisi').textContent = oyunSayisi;
+      document.getElementById('gorselKazanilan').textContent = kazanmaSayisi;
+      document.getElementById('gorselBasariOrani').textContent = kazanmaOrani + '%';
+      document.getElementById('gorselTahminSayisi').textContent = toplamTahmin;
+      
+      // Görseli canvas'a çevirip base64 formatına dönüştürme
+      return html2canvas(gorsel).then(canvas => {
+        return canvas.toDataURL('image/png');
+      });
+    }
+
+    function paylas(platform) {
+      // Oyun skorlarını al
+      const kazanmaOrani = document.getElementById("kazanma-orani").textContent;
+      const oyunSayisi = document.getElementById("oyun-sayisi").textContent;
+      const toplamTahmin = document.getElementById("toplam-tahmin").textContent;
+      const kazanmaSayisi = document.getElementById("kazanma-sayisi").textContent;
+      
+      // Paylaşım metni
+      const metin = `🎯 Kunduz Kelime Keşfi Skorlarım:
+📊 Toplam Oyun: ${oyunSayisi}
+🎯 Kazanılan: ${kazanmaSayisi}
+✨ Başarı Oranı: ${kazanmaOrani}
+🎲 Toplam Tahmin: ${toplamTahmin}
+
+Siz de oynayın: https://t.kndz.link/uF4J`;
+
+      // Görsel oluştur ve paylaş
+      gorselOlustur().then(gorselUrl => {
+        switch (platform) {
+          case "instagram":
+            // Instagram Story paylaşımı için özel sayfa
+            const storyPage = window.open('', '_blank');
+            storyPage.document.write(`
+              <html>
+                <head>
+                  <title>Instagram Story Paylaş</title>
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  <style>
+                    body {
+                      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                      background: #fafafa;
+                      margin: 0;
+                      padding: 20px;
+                      text-align: center;
+                    }
+                    .container {
+                      max-width: 500px;
+                      margin: 0 auto;
+                      background: white;
+                      border-radius: 12px;
+                      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+                      padding: 20px;
+                    }
+                    .story-img {
+                      max-width: 100%;
+                      border-radius: 8px;
+                      margin: 20px 0;
+                      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    }
+                    .instructions {
+                      background: #f8f9fa;
+                      padding: 15px;
+                      border-radius: 8px;
+                      margin: 15px 0;
+                      text-align: left;
+                      line-height: 1.6;
+                    }
+                    .btn {
+                      background: #0095f6;
+                      color: white;
+                      border: none;
+                      padding: 12px 24px;
+                      border-radius: 8px;
+                      font-weight: 600;
+                      cursor: pointer;
+                      margin: 10px;
+                    }
+                    .btn:hover {
+                      background: #0081d6;
+                    }
+                  </style>
+                </head>
+                <body>
+                  <div class="container">
+                    <h2>Instagram Story'de Paylaş</h2>
+                    <img src="${gorselUrl}" alt="Oyun Sonucu" class="story-img">
+                    <div class="instructions">
+                      <strong>Nasıl Paylaşılır:</strong>
+                      <ol>
+                        <li>Görseli kaydetmek için üzerine uzun basın (mobil) veya sağ tıklayıp "Resmi Farklı Kaydet" seçin</li>
+                        <li>Instagram uygulamasını açın</li>
+                        <li>Story paylaşmak için kamerayı açın</li>
+                        <li>Galerinizden kaydettiğiniz görseli seçin</li>
+                        <li>Metni yapıştırın ve paylaşın!</li>
+                      </ol>
+                    </div>
+                    <button class="btn" onclick="navigator.clipboard.writeText('${metin}')">
+                      Metni Kopyala
+                    </button>
+                    <button class="btn" onclick="window.open('instagram://story-camera')">
+                      Instagram'ı Aç
+                    </button>
+                  </div>
+                </body>
+              </html>
+            `);
+            break;
+
+          case "facebook":
+            // Facebook paylaşımı için Web Share API kullan
+            if (navigator.share) {
+              navigator.share({
+                title: 'Kunduz Kelime Keşfi',
+                text: metin,
+                url: 'https://t.kndz.link/uF4J',
+                files: [dataURLtoFile(gorselUrl, 'kelime-kesfi.png')]
+              }).catch(err => {
+                // Fallback olarak normal paylaşım
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=https://t.kndz.link/uF4J&quote=${encodeURIComponent(metin)}`, '_blank');
+              });
+            } else {
+              window.open(`https://www.facebook.com/sharer/sharer.php?u=https://t.kndz.link/uF4J&quote=${encodeURIComponent(metin)}`, '_blank');
+            }
+            break;
+
+          case "whatsapp":
+            // WhatsApp için görsel ve metin paylaşımı
+            if (navigator.share) {
+              navigator.share({
+                title: 'Kunduz Kelime Keşfi',
+                text: metin,
+                files: [dataURLtoFile(gorselUrl, 'kelime-kesfi.png')]
+              }).catch(err => {
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(metin)}`, '_blank');
+              });
+            } else {
+              window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(metin)}`, '_blank');
+            }
+            break;
+
+          case "x":
+            // X (Twitter) için görsel ve metin paylaşımı
+            const tweetIntent = `https://twitter.com/intent/tweet?text=${encodeURIComponent(metin)}`;
+            window.open(tweetIntent, 'tweet', 'width=550,height=420');
+            break;
+        }
+      });
+    }
+
+    // Data URL'i File objesine çevir
+    function dataURLtoFile(dataurl, filename) {
+      let arr = dataurl.split(','),
+          mime = arr[0].match(/:(.*?);/)[1],
+          bstr = atob(arr[1]),
+          n = bstr.length,
+          u8arr = new Uint8Array(n);
+      while(n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, {type:mime});
     }
   </script>
 </body>
