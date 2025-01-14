@@ -18,11 +18,6 @@
     body {
       background-color: #edf2f7;
       font-family: "Roboto", sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 150vh;
-      height: calc(100vh - 10px);
       padding: 20px;
       overflow-y: auto;
       overflow-x: hidden;
@@ -35,28 +30,48 @@
       background-color: #ffffff;
       border: 3px solid #00A396;
       border-radius: 15px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-      margin-top: 20px;
+      margin: 0 auto;
     }
 
-    .logo-alani {
-      text-align: center;
-      margin-bottom: 15px;
+    .oyun-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 25px;
+      gap: 15px;
+      position: relative;
     }
 
-    .logo-alani img {
-      max-width: 80px;
-      margin-bottom: 5px;
+    .oyun-header::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: #00A396;
+      border-radius: 2px;
     }
 
-    h1 {
-      font-size: 1.5rem;
-      text-align: center;
+    .oyun-header img {
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 163, 150, 0.2);
+      border: 2px solid #00A396;
+      padding: 2px;
+      background: white;
+    }
+
+    .oyun-header h1 {
+      margin: 0;
+      font-size: 1.5em;
+      font-weight: 700;
       color: #00A396;
-      margin-bottom: 20px;
+      text-shadow: 0 2px 4px rgba(0, 163, 150, 0.1);
     }
 
     .aciklama {
@@ -186,8 +201,13 @@
     }
 
     #istatistik-alani {
-      margin-top: 20px;
-      text-align: center;
+      width: 100%;
+      max-width: 450px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     }
 
     #yeniden-baslat-tusu {
@@ -207,12 +227,42 @@
       background-color: #e53e3e;
     }
 
-    .btn-container {
-      margin-top: 20px;
+    .save-stats-btn {
+      width: 100%;
+      max-width: 450px;
+      margin: 20px auto;
+      padding: 12px 24px;
+      background: #00A396;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
       display: flex;
+      align-items: center;
       justify-content: center;
       gap: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 163, 150, 0.2);
+    }
+
+    .save-stats-btn:hover {
+      background: white;
+      color: #00A396;
+      border: 2px solid #00A396;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 163, 150, 0.15);
+    }
+
+    .btn-container {
+      width: 100%;
+      max-width: 450px;
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
       flex-wrap: wrap;
+      gap: 10px;
     }
 
     .btn {
@@ -277,18 +327,256 @@
       color: #4a5568;
     }
 
+    .grafik-container {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .grafik-kart {
+      min-height: 300px;
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .grafik-kart h3 {
+      margin-bottom: 15px;
+      color: #2d3748;
+      font-size: 16px;
+    }
+
+    .tablo-container {
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .tablo-container h3 {
+      margin-bottom: 20px;
+      color: #2d3748;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .tablo-scroll {
+      overflow-x: auto;
+      border-radius: 10px;
+      background: #f8fafc;
+    }
+
+    .istatistik-tablo {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 0;
+    }
+
+    .istatistik-tablo th {
+      background: #00A396;
+      color: white;
+      font-weight: 500;
+      padding: 15px;
+      text-align: left;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .istatistik-tablo th:first-child {
+      border-top-left-radius: 10px;
+    }
+
+    .istatistik-tablo th:last-child {
+      border-top-right-radius: 10px;
+    }
+
+    .istatistik-tablo td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 14px;
+      color: #4a5568;
+    }
+
+    .istatistik-tablo tr:last-child td {
+      border-bottom: none;
+    }
+
+    .istatistik-tablo tr:hover td {
+      background-color: #f1f5f9;
+    }
+
+    .basari-oran {
+      font-weight: 600;
+      color: #00A396;
+    }
+
+    .tarih-hucre {
+      color: #718096;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .istatistik-ozet,
+      .grafik-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    #adminContent {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .kelime-ve-istatistik {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .kelime-bolumu {
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .kelime-grid {
+      display: grid;
+      gap: 12px;
+    }
+    
+    .kelime-gun {
+      background: white;
+      padding: 12px 15px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    
+    .kelime-gun:hover {
+      border-color: #00A396;
+      box-shadow: 0 2px 8px rgba(0, 163, 150, 0.1);
+    }
+    
+    .kelime-kaydet {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #00A396;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .kelime-kaydet:hover {
+      background: #019183;
+      transform: translateY(-2px);
+    }
+
+    .admin-login button {
+      width: 100%;
+      padding: 12px;
+      background: #00A396;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      margin-top: 10px;
+      box-shadow: 0 4px 6px rgba(0, 163, 150, 0.2);
+    }
+
+    .admin-login button:hover {
+      background: white;
+      color: #00A396;
+      border: 2px solid #00A396;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 163, 150, 0.15);
+    }
+
+    .admin-input-group input {
+      width: 100%;
+      padding: 12px 12px 12px 40px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+      background: #f8fafc;
+    }
+
+    .admin-input-group input:focus {
+      outline: none;
+      border-color: #00A396;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0, 163, 150, 0.1);
+    }
+
+    .admin-input-group i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #64748b;
+      transition: color 0.3s ease;
+    }
+
+    .admin-input-group input:focus + i {
+      color: #00A396;
+    }
+
     .btn-kunduz {
       background-color: #00A396;
       color: white;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 2px solid transparent;
+      box-shadow: 0 4px 6px rgba(0, 163, 150, 0.2);
     }
 
     .btn-kunduz:hover {
-      background-color: #019183;
+      background-color: white;
+      color: #00A396;
+      border: 2px solid #00A396;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 163, 150, 0.15);
     }
 
-    /* Admin Panel Stilleri */
+    .btn-kunduz i {
+      font-size: 16px;
+      transition: transform 0.3s ease;
+    }
+
+    .btn-kunduz:hover i {
+      transform: translateX(-4px);
+    }
+
+    .istatistik-ayirici {
+      width: 100%;
+      height: 2px;
+      background: #e2e8f0;
+      margin: 25px 0;
+      border-radius: 2px;
+    }
+
     .admin-overlay {
-      display: none;
       position: fixed;
       top: 0;
       left: 0;
@@ -296,162 +584,349 @@
       height: 100%;
       background: rgba(0, 0, 0, 0.5);
       z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    
+
     .admin-panel {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
       background: white;
       padding: 30px;
       border-radius: 15px;
-      width: 80%;
-      max-width: 1200px;
-      height: 90vh;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 400px;
+      max-height: 90vh;
       overflow-y: auto;
       z-index: 1001;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      position: relative;
     }
-    
-    .admin-close {
-      position: absolute;
-      right: 15px;
-      top: 15px;
-      cursor: pointer;
-      font-size: 24px;
-      color: #4a5568;
-      transition: color 0.3s ease;
+
+    .admin-panel.expanded {
+      width: 90%;
+      max-width: 1200px;
+      height: 90vh;
     }
-    
-    .admin-close:hover {
-      color: #2d3748;
+
+    #adminLogin {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0;
+      position: relative;
     }
-    
+
+    #adminContent {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      padding: 20px;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+    }
+
     #adminLogin h2 {
       color: #00A396;
-      margin-bottom: 20px;
-      text-align: center;
-      font-size: 1.5rem;
+      font-size: 1.8em;
+      margin-bottom: 25px;
+      font-weight: 600;
     }
-    
+
     .admin-login {
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      margin-top: 20px;
+      gap: 20px;
+      width: 100%;
+      padding: 10px;
     }
-    
-    .admin-login input {
-      padding: 12px 15px;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 16px;
-      transition: border-color 0.3s ease;
-      outline: none;
-    }
-    
-    .admin-login input:focus {
-      border-color: #00A396;
-    }
-    
-    .admin-login button {
-      background: #00A396;
-      color: white;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 10px;
-    }
-    
-    .admin-login button:hover {
-      background: #019183;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 163, 150, 0.2);
-    }
-    
+
     .admin-input-group {
       position: relative;
+      width: 100%;
     }
-    
+
+    .admin-input-group input {
+      width: 100%;
+      padding: 12px 12px 12px 40px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      height: 45px;
+      background: #f8fafc;
+      transition: all 0.3s ease;
+    }
+
+    .admin-input-group input:focus {
+      outline: none;
+      border-color: #00A396;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0, 163, 150, 0.1);
+    }
+
     .admin-input-group i {
       position: absolute;
       left: 12px;
       top: 50%;
       transform: translateY(-50%);
-      color: #a0aec0;
+      color: #64748b;
+      font-size: 16px;
+      transition: color 0.3s ease;
     }
-    
-    .admin-input-group input {
-      padding-left: 40px;
+
+    .admin-input-group input:focus + i {
+      color: #00A396;
+    }
+
+    .admin-login button {
       width: 100%;
+      height: 45px;
+      background: #00A396;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 163, 150, 0.2);
     }
-    
-    @media (max-width: 480px) {
-      body {
+
+    .admin-login button:hover {
+      background: white;
+      color: #00A396;
+      border: 2px solid #00A396;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 163, 150, 0.15);
+    }
+
+    .kelime-ve-istatistik {
+      display: grid;
+      gap: 30px;
+      grid-template-columns: 350px 1fr;
+      height: calc(100% - 80px);
+      overflow-y: auto;
+    }
+
+    @media (min-width: 768px) {
+      .kelime-ve-istatistik {
+        grid-template-columns: 350px 1fr;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .admin-panel {
+        width: 95%;
+        padding: 20px;
+      }
+
+      .admin-panel.expanded {
+        width: 95%;
+        height: 95vh;
+        overflow-y: auto;
+      }
+
+      #adminContent {
         padding: 10px;
       }
-      
-      .harf-kutusu {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
+
+      .kelime-bolumu {
+        order: -1;
       }
-      
-      .btn {
-        min-width: 100px;
-        padding: 0.8rem 1.2rem;
+
+      .istatistik-kartlar {
+        grid-template-columns: repeat(2, 1fr);
       }
-      
-      h1 {
-        font-size: 1.2rem;
+
+      .grafik-bolum {
+        height: 300px;
       }
+    }
+
+    @media (max-width: 480px) {
+      .admin-panel {
+        padding: 15px;
+      }
+
+      #adminLogin h2 {
+        font-size: 1.5em;
+      }
+
+      .admin-login {
+        padding: 10px;
+      }
+
+      .istatistik-kartlar {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .grafik-bolum {
+        height: 250px;
+      }
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .admin-header h2 {
+      margin: 0;
+      color: #00A396;
+      font-size: 1.5em;
+      font-weight: 600;
+    }
+
+    .admin-buttons {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .admin-logout {
+      padding: 8px 15px;
+      background: #f56565;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .admin-logout:hover {
+      background: #e53e3e;
+      transform: translateY(-2px);
+    }
+
+    .admin-close {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e2e8f0;
+      border-radius: 50%;
+      cursor: pointer;
+      color: #64748b;
+      font-size: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .admin-close:hover {
+      background: #cbd5e0;
+      color: #4a5568;
+    }
+
+    .login-close {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e2e8f0;
+      border-radius: 50%;
+      cursor: pointer;
+      color: #64748b;
+      font-size: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .login-close:hover {
+      background: #cbd5e0;
+      color: #4a5568;
+      transform: rotate(90deg);
     }
 
     .sonuc-gorsel {
-      display: none;
-      background: linear-gradient(135deg, #00A396, #019183);
-      padding: 20px;
+      background: white;
+      padding: 30px;
       border-radius: 15px;
-      color: white;
+      color: #2d3748;
       text-align: center;
-      margin: 20px auto;
-      width: 300px;
+      width: 100%;
       position: relative;
+      overflow: hidden;
+      background-image: linear-gradient(135deg, rgba(0, 163, 150, 0.05) 0%, rgba(1, 145, 131, 0.1) 100%);
     }
 
-    .sonuc-gorsel h2 {
-      font-size: 1.5em;
-      margin-bottom: 15px;
+    .sonuc-gorsel .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 25px;
+      white-space: nowrap;
     }
 
-    .sonuc-gorsel .skor-grid {
+    .sonuc-gorsel .header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 163, 150, 0.2);
+      border: 2px solid #00A396;
+      padding: 4px;
+      background: white;
+    }
+
+    .sonuc-gorsel .header h2 {
+      margin: 0;
+      font-size: 1.4em;
+      font-weight: 700;
+      color: #00A396;
+      text-shadow: 0 2px 4px rgba(0, 163, 150, 0.1);
+      line-height: 1;
+    }
+
+    .skor-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin: 15px 0;
+      gap: 15px;
+      margin-top: 20px;
     }
 
-    .sonuc-gorsel .skor-item {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 10px;
-      border-radius: 8px;
+    .skor-item {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 163, 150, 0.1);
+      border: 2px solid rgba(0, 163, 150, 0.1);
+      transition: all 0.3s ease;
     }
 
-    .sonuc-gorsel .logo {
-      width: 50px;
-      height: 50px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      border-radius: 50%;
+    .skor-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 163, 150, 0.15);
+      border-color: #00A396;
     }
 
-    /* Admin ikon stili */
+    .skor-item .baslik {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .skor-item .deger {
+      font-size: 24px;
+      font-weight: 700;
+      color: #00A396;
+    }
+
     .admin-icon {
       position: fixed;
       top: 20px;
@@ -469,236 +944,31 @@
       z-index: 999;
       transition: all 0.3s ease;
     }
-    
+
     .admin-icon:hover {
       transform: scale(1.1);
-      background-color: #019183;
-    }
-    
-    @media (max-width: 480px) {
-      .admin-icon {
-        top: 10px;
-        right: 10px;
-        width: 35px;
-        height: 35px;
-      }
-    }
-
-    /* Admin Panel içindeki kelime listesi stilleri */
-    .kelime-grid {
-      display: grid;
-      gap: 15px;
-      margin: 20px 0;
-    }
-    
-    .kelime-gun {
-      background: #f7fafc;
-      border-radius: 10px;
-      padding: 15px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .gun-label {
-      min-width: 90px;
-      font-weight: bold;
-      color: #4a5568;
-    }
-    
-    .kelime-input-grup {
-      flex: 1;
-      position: relative;
-    }
-    
-    .kelime-input-grup input {
-      width: 100%;
-      padding: 8px 12px;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-    
-    .kelime-input-grup input:focus {
-      border-color: #00A396;
-      outline: none;
-    }
-    
-    .kelime-kaydet {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      background: #00A396;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .kelime-kaydet:hover {
-      background: #019183;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 163, 150, 0.2);
-    }
-
-    /* İstatistik Bölümü Stilleri */
-    .istatistik-bolumu {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 2px solid #e2e8f0;
-    }
-    
-    .istatistik-ozet {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      margin: 20px 0;
-    }
-    
-    .ozet-kart {
-      background: linear-gradient(135deg, #00A396, #019183);
-      padding: 15px;
-      border-radius: 10px;
-      color: white;
-      text-align: center;
-    }
-    
-    .ozet-sayi {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    
-    .ozet-baslik {
-      font-size: 14px;
-      opacity: 0.9;
-    }
-    
-    .grafik-container {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 20px;
-      margin: 20px 0;
-    }
-    
-    .grafik-kart {
-      min-height: 300px;
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .grafik-kart h3 {
-      margin-bottom: 15px;
-      color: #2d3748;
-      font-size: 16px;
-    }
-    
-    .tablo-container {
-      margin-top: 30px;
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .tablo-container h3 {
-      margin-bottom: 20px;
-      color: #2d3748;
-      font-size: 18px;
-      font-weight: 600;
-    }
-    
-    .tablo-scroll {
-      overflow-x: auto;
-      border-radius: 10px;
-      background: #f8fafc;
-    }
-    
-    .istatistik-tablo {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      margin: 0;
-    }
-    
-    .istatistik-tablo th {
-      background: #00A396;
-      color: white;
-      font-weight: 500;
-      padding: 15px;
-      text-align: left;
-      font-size: 14px;
-      white-space: nowrap;
-    }
-    
-    .istatistik-tablo th:first-child {
-      border-top-left-radius: 10px;
-    }
-    
-    .istatistik-tablo th:last-child {
-      border-top-right-radius: 10px;
-    }
-    
-    .istatistik-tablo td {
-      padding: 12px 15px;
-      border-bottom: 1px solid #e2e8f0;
-      font-size: 14px;
-      color: #4a5568;
-    }
-    
-    .istatistik-tablo tr:last-child td {
-      border-bottom: none;
-    }
-    
-    .istatistik-tablo tr:hover td {
-      background-color: #f1f5f9;
-    }
-    
-    .basari-oran {
-      font-weight: 600;
+      background-color: white;
       color: #00A396;
-    }
-    
-    .tarih-hucre {
-      color: #718096;
-      font-weight: 500;
-    }
-    
-    @media (max-width: 768px) {
-      .istatistik-ozet,
-      .grafik-container {
-        grid-template-columns: 1fr;
-      }
+      border: 2px solid #00A396;
     }
 
-    /* Kelime listesi ve istatistik bölümlerinin düzeni */
-    #adminContent {
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-    }
-    
-    .kelime-ve-istatistik {
-      display: grid;
-      grid-template-columns: 350px 1fr;
-      gap: 30px;
-      align-items: start;
-    }
-    
-    .kelime-bolumu {
-      background: #f8fafc;
-      padding: 20px;
+    .admin-panel {
+      background: white;
+      padding: 30px;
       border-radius: 15px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 400px;
+      max-height: 90vh;
+      overflow-y: auto;
+      z-index: 1001;
     }
 
-    /* Modern istatistik kartları */
+    .admin-panel.expanded {
+      width: 90%;
+      max-width: 1200px;
+      height: 90vh;
+    }
+
     .istatistik-kartlar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -709,7 +979,7 @@
       border-radius: 15px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    
+
     .istatistik-kart {
       background: linear-gradient(135deg, #00A396, #019183);
       padding: 20px;
@@ -718,24 +988,24 @@
       color: white;
       transition: transform 0.3s ease;
     }
-    
+
     .istatistik-kart:hover {
       transform: translateY(-5px);
     }
-    
+
     .kart-sayi {
       font-size: 32px;
       font-weight: bold;
       margin-bottom: 8px;
     }
-    
+
     .kart-baslik {
       font-size: 14px;
       opacity: 0.9;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    
+
     .grafik-baslik {
       font-size: 18px;
       color: #2d3748;
@@ -743,7 +1013,7 @@
       font-weight: 600;
       text-align: center;
     }
-    
+
     .grafik-bolum {
       background: white;
       padding: 20px;
@@ -751,18 +1021,44 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       margin-bottom: 20px;
     }
+
+    .tablo-container {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .istatistik-tablo {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .istatistik-tablo th,
+    .istatistik-tablo td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .istatistik-tablo th {
+      background: #f8fafc;
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    .tablo-scroll {
+      overflow-x: auto;
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
-  <div class="admin-icon" onclick="toggleAdmin(true)">
-    <i class="fas fa-lock"></i>
-  </div>
-
   <!-- Admin Panel -->
-  <div class="admin-overlay" id="adminOverlay">
+  <div class="admin-overlay" id="adminOverlay" style="display: none;">
     <div class="admin-panel">
-      <span class="admin-close" onclick="toggleAdmin(false)">&times;</span>
       <div id="adminLogin">
+        <span class="login-close" onclick="toggleAdmin(false)">&times;</span>
         <h2>Admin Girişi</h2>
         <div class="admin-login">
           <div class="admin-input-group">
@@ -773,10 +1069,20 @@
             <i class="fas fa-lock"></i>
             <input type="password" id="adminPass" placeholder="Şifre">
           </div>
-          <button class="btn" onclick="adminGiris()">Giriş</button>
+          <button onclick="adminGiris()">Giriş Yap</button>
         </div>
       </div>
       <div id="adminContent" style="display: none;">
+        <div class="admin-header">
+          <h2>Admin Paneli</h2>
+          <div class="admin-buttons">
+            <button class="admin-logout" onclick="adminCikis()">
+              
+              <span>Çıkış</span>
+            </button>
+            <span class="admin-close" onclick="toggleAdmin(false)">&times;</span>
+          </div>
+        </div>
         <div class="kelime-ve-istatistik">
           <div class="kelime-bolumu">
             <h2>Haftalık Kelime Listesi</h2>
@@ -876,100 +1182,69 @@
     </div>
   </div>
 
-  <div id="oyun-alani">
-    <div class="logo-alani">
-      <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" alt="Kunduz Logo">
-    </div>
-    <h1>Kunduz Kelime Keşfi 📝</h1>
-    <div class="aciklama">
-      Günlük kelimeyi <span class="vurgula">6 denemede</span> doğru tahmin etmeye çalışın. Harf kutularının renklerine dikkat edin:
-      <ul>
-        <li><span class="vurgula yesil-vurgula">Yeşil:</span> Harf doğru ve doğru konumda!</li>
-        <li><span class="vurgula sari-vurgula">Sarı:</span> Harf doğru ama yanlış konumda!</li>
-        <li><span class="vurgula gri-vurgula">Gri:</span> Harf yanlış!</li>
-      </ul>
-      En az denemede doğru kelimeyi bularak puanınızı artırın! 🎯
-    </div>
+  <!-- Admin Giriş Butonu -->
+  <div class="admin-icon" onclick="toggleAdmin(true)">
+    <i class="fas fa-lock"></i>
+  </div>
 
-    <div id="oyun-tablosu"></div>
-    <div id="giris-alani">
-      <input type="text" id="tahmin-girdisi" placeholder="Tahmin..." maxlength="gizliKelime.length">
-      <button id="gonder-tusu">Gönder</button>
-    </div>
+  <div class="container">
+    <div id="oyun-alani">
+      <div class="oyun-header">
+        <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" 
+             alt="Kunduz Logo">
+        <h1>Kunduz Kelime Keşfi 📝</h1>
+      </div>
+      <div class="aciklama">
+        Günlük kelimeyi <span class="vurgula">6 denemede</span> doğru tahmin etmeye çalışın. Harf kutularının renklerine dikkat edin:
+        <ul>
+          <li><span class="vurgula yesil-vurgula">Yeşil:</span> Harf doğru ve doğru konumda!</li>
+          <li><span class="vurgula sari-vurgula">Sarı:</span> Harf doğru ama yanlış konumda!</li>
+          <li><span class="vurgula gri-vurgula">Gri:</span> Harf yanlış!</li>
+        </ul>
+        En az denemede doğru kelimeyi bularak puanınızı artırın! 🎯
+      </div>
 
-    <div class="mesaj-kutusu" id="uyari-mesaji"></div>
-    <button id="yeniden-baslat-tusu">Yeniden Başlat</button>
+      <div id="oyun-tablosu"></div>
+      <div id="giris-alani">
+        <input type="text" id="tahmin-girdisi" placeholder="Tahmin..." maxlength="gizliKelime.length">
+        <button id="gonder-tusu">Gönder</button>
+      </div>
 
-    <div id="istatistik-alani">
-      <h3>İstatistikler</h3>
-      <div class="istatistik-grid">
-        <div class="istatistik-kutu">
-          <span class="istatistik-sayi" id="toplam-tahmin">0</span>
-          <span class="istatistik-baslik">Toplam Tahmin</span>
+      <div class="mesaj-kutusu" id="uyari-mesaji"></div>
+      <button id="yeniden-baslat-tusu">Yeniden Başlat</button>
+
+      <div class="istatistik-ayirici"></div>
+
+      <div class="sonuc-gorsel" style="display: block;">
+        <div class="header">
+          <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" 
+               alt="Kunduz Logo">
+          <h2>Kelime Keşfi Sonuçlarım</h2>
         </div>
-        <div class="istatistik-kutu">
-          <span class="istatistik-sayi" id="oyun-sayisi">0</span>
-          <span class="istatistik-baslik">Oyun Sayısı</span>
-        </div>
-        <div class="istatistik-kutu">
-          <span class="istatistik-sayi" id="kazanma-sayisi">0</span>
-          <span class="istatistik-baslik">Kazanılan</span>
-        </div>
-        <div class="istatistik-kutu">
-          <span class="istatistik-sayi" id="kazanma-orani">0%</span>
-          <span class="istatistik-baslik">Başarı Oranı</span>
+        <div class="skor-grid">
+          <div class="skor-item">
+            <div class="baslik">Toplam Oyun</div>
+            <div class="deger" id="oyun-sayisi">0</div>
+          </div>
+          <div class="skor-item">
+            <div class="baslik">Kazanılan</div>
+            <div class="deger" id="kazanma-sayisi">0</div>
+          </div>
+          <div class="skor-item">
+            <div class="baslik">Başarı Oranı</div>
+            <div class="deger" id="kazanma-orani">0%</div>
+          </div>
+          <div class="skor-item">
+            <div class="baslik">Toplam Tahmin</div>
+            <div class="deger" id="toplam-tahmin">0</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Paylaşım Butonları -->
-    <div class="btn-container">
-      <button class="btn btn-instagram" onclick="paylas('instagram')">
-        <i class="fab fa-instagram"></i>
-        <span>Instagram</span>
+      <button class="save-stats-btn" onclick="istatistikleriKaydet()">
+        <i class="fas fa-download"></i>
+        <span>İstatistikleri Kaydet</span>
       </button>
-      <button class="btn btn-facebook" onclick="paylas('facebook')">
-        <i class="fab fa-facebook-f"></i>
-        <span>Facebook</span>
-      </button>
-      <button class="btn btn-whatsapp" onclick="paylas('whatsapp')">
-        <i class="fab fa-whatsapp"></i>
-        <span>WhatsApp</span>
-      </button>
-      <button class="btn btn-x" onclick="paylas('x')">
-        <i class="fab fa-x-twitter"></i>
-        <span>X</span>
-      </button>
-      <a href="https://t.kndz.link/uF4J" class="btn btn-kunduz">
-        <i class="fas fa-arrow-left"></i>
-        <span>Kunduz'a Dön</span>
-      </a>
-    </div>
-
-    <!-- Görsel Paylaşım için gizli div -->
-    <div id="sonucGorsel" class="sonuc-gorsel">
-      <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" 
-           alt="Kunduz Logo" class="logo">
-      <h2>Kunduz Kelime Keşfi</h2>
-      <div class="skor-grid">
-        <div class="skor-item">
-          <div>Toplam Oyun</div>
-          <div id="gorselOyunSayisi">0</div>
-        </div>
-        <div class="skor-item">
-          <div>Kazanılan</div>
-          <div id="gorselKazanilan">0</div>
-        </div>
-        <div class="skor-item">
-          <div>Başarı Oranı</div>
-          <div id="gorselBasariOrani">0%</div>
-        </div>
-        <div class="skor-item">
-          <div>Toplam Tahmin</div>
-          <div id="gorselTahminSayisi">0</div>
-        </div>
-      </div>
-      <div>t.kndz.link/uF4J</div>
     </div>
   </div>
 
@@ -977,7 +1252,7 @@
     function toggleAdmin(show) {
       const overlay = document.getElementById('adminOverlay');
       if (overlay) {
-        overlay.style.display = show ? 'block' : 'none';
+        overlay.style.display = show ? 'flex' : 'none';
         if (show) {
           document.getElementById('adminLogin').style.display = 'block';
           document.getElementById('adminContent').style.display = 'none';
@@ -994,6 +1269,7 @@
       if (user === "engagement" && pass === "engagement2534") {
         document.getElementById('adminLogin').style.display = 'none';
         document.getElementById('adminContent').style.display = 'block';
+        document.querySelector('.admin-panel').classList.add('expanded');
         kelimeListesiniGoster();
         istatistikleriYukle();
       } else {
@@ -1004,9 +1280,10 @@
     // Global değişkenler
     let defaultKelimeler = ["kurs", "ders", "eğitim", "okul", "konu", "sınav", "kunduz"];
     let gizliKelime;
-
-    // Haftanın günlerini doğru sırayla ayarlayalım
-    const gunler = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+    let oyunSayisi = 0;
+    let kazanmaSayisi = 0;
+    let toplamTahmin = 0;
+    let kazanmaOrani = 0;
 
     document.addEventListener("DOMContentLoaded", () => {
       gizliKelime = defaultKelimeler[new Date().getDay()];
@@ -1017,10 +1294,7 @@
       const oyunSayisiEl = document.getElementById("oyun-sayisi");
       const kazanmaOraniEl = document.getElementById("kazanma-orani");
       let mevcutSatir = 0;
-      let oyunSayisi = 0;
-      let kazanmaSayisi = 0;
       let oyunBitti = false;
-      let toplamTahmin = 0;
       const toplamTahminEl = document.getElementById("toplam-tahmin");
       const kazanmaSayisiEl = document.getElementById("kazanma-sayisi");
 
@@ -1094,7 +1368,7 @@
         }
 
         oyunSayisi++;
-        const kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
+        kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
         oyunSayisiEl.textContent = oyunSayisi;
         kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
       }
@@ -1268,162 +1542,94 @@
       document.getElementById('gorselBasariOrani').textContent = kazanmaOrani + '%';
       document.getElementById('gorselTahminSayisi').textContent = toplamTahmin;
       
+      // Görseli görünür yap (geçici olarak)
+      gorsel.style.display = 'block';
+      
       // Görseli canvas'a çevirip base64 formatına dönüştürme
       return html2canvas(gorsel).then(canvas => {
+        // İşlem bittikten sonra görseli tekrar gizle
+        gorsel.style.display = 'none';
         return canvas.toDataURL('image/png');
       });
     }
 
-    function paylas(platform) {
-      // Oyun skorlarını al
-      const kazanmaOrani = document.getElementById("kazanma-orani").textContent;
-      const oyunSayisi = document.getElementById("oyun-sayisi").textContent;
-      const toplamTahmin = document.getElementById("toplam-tahmin").textContent;
-      const kazanmaSayisi = document.getElementById("kazanma-sayisi").textContent;
+    async function istatistikleriKaydet() {
+      const gorsel = document.querySelector('.sonuc-gorsel');
+      const logoImg = gorsel.querySelector('img');
       
-      // Paylaşım metni
-      const metin = `🎯 Kunduz Kelime Keşfi Skorlarım:
-📊 Toplam Oyun: ${oyunSayisi}
-🎯 Kazanılan: ${kazanmaSayisi}
-✨ Başarı Oranı: ${kazanmaOrani}
-🎲 Toplam Tahmin: ${toplamTahmin}
-
-Siz de oynayın: https://t.kndz.link/uF4J`;
-
-      // Görsel oluştur ve paylaş
-      gorselOlustur().then(gorselUrl => {
-        switch (platform) {
-          case "instagram":
-            // Instagram Story paylaşımı için özel sayfa
-            const storyPage = window.open('', '_blank');
-            storyPage.document.write(`
-              <html>
-                <head>
-                  <title>Instagram Story Paylaş</title>
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <style>
-                    body {
-                      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                      background: #fafafa;
-                      margin: 0;
-                      padding: 20px;
-                      text-align: center;
-                    }
-                    .container {
-                      max-width: 500px;
-                      margin: 0 auto;
-                      background: white;
-                      border-radius: 12px;
-                      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-                      padding: 20px;
-                    }
-                    .story-img {
-                      max-width: 100%;
-                      border-radius: 8px;
-                      margin: 20px 0;
-                      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                    }
-                    .instructions {
-                      background: #f8f9fa;
-                      padding: 15px;
-                      border-radius: 8px;
-                      margin: 15px 0;
-                      text-align: left;
-                      line-height: 1.6;
-                    }
-                    .btn {
-                      background: #0095f6;
-                      color: white;
-                      border: none;
-                      padding: 12px 24px;
-                      border-radius: 8px;
-                      font-weight: 600;
-                      cursor: pointer;
-                      margin: 10px;
-                    }
-                    .btn:hover {
-                      background: #0081d6;
-                    }
-                  </style>
-                </head>
-                <body>
-                  <div class="container">
-                    <h2>Instagram Story'de Paylaş</h2>
-                    <img src="${gorselUrl}" alt="Oyun Sonucu" class="story-img">
-                    <div class="instructions">
-                      <strong>Nasıl Paylaşılır:</strong>
-                      <ol>
-                        <li>Görseli kaydetmek için üzerine uzun basın (mobil) veya sağ tıklayıp "Resmi Farklı Kaydet" seçin</li>
-                        <li>Instagram uygulamasını açın</li>
-                        <li>Story paylaşmak için kamerayı açın</li>
-                        <li>Galerinizden kaydettiğiniz görseli seçin</li>
-                        <li>Metni yapıştırın ve paylaşın!</li>
-                      </ol>
-                    </div>
-                    <button class="btn" onclick="navigator.clipboard.writeText('${metin}')">
-                      Metni Kopyala
-                    </button>
-                    <button class="btn" onclick="window.open('instagram://story-camera')">
-                      Instagram'ı Aç
-                    </button>
-                  </div>
-                </body>
-              </html>
-            `);
-            break;
-
-          case "facebook":
-            // Facebook paylaşımı için Web Share API kullan
-            if (navigator.share) {
-              navigator.share({
-                title: 'Kunduz Kelime Keşfi',
-                text: metin,
-                url: 'https://t.kndz.link/uF4J',
-                files: [dataURLtoFile(gorselUrl, 'kelime-kesfi.png')]
-              }).catch(err => {
-                // Fallback olarak normal paylaşım
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=https://t.kndz.link/uF4J&quote=${encodeURIComponent(metin)}`, '_blank');
-              });
-            } else {
-              window.open(`https://www.facebook.com/sharer/sharer.php?u=https://t.kndz.link/uF4J&quote=${encodeURIComponent(metin)}`, '_blank');
-            }
-            break;
-
-          case "whatsapp":
-            // WhatsApp için görsel ve metin paylaşımı
-            if (navigator.share) {
-              navigator.share({
-                title: 'Kunduz Kelime Keşfi',
-                text: metin,
-                files: [dataURLtoFile(gorselUrl, 'kelime-kesfi.png')]
-              }).catch(err => {
-                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(metin)}`, '_blank');
-              });
-            } else {
-              window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(metin)}`, '_blank');
-            }
-            break;
-
-          case "x":
-            // X (Twitter) için görsel ve metin paylaşımı
-            const tweetIntent = `https://twitter.com/intent/tweet?text=${encodeURIComponent(metin)}`;
-            window.open(tweetIntent, 'tweet', 'width=550,height=420');
-            break;
+      // Logo'yu base64'e çevir
+      try {
+        const response = await fetch(logoImg.src);
+        const blob = await response.blob();
+        const reader = new FileReader();
+        await new Promise((resolve, reject) => {
+          reader.onload = resolve;
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+        logoImg.src = reader.result;
+      } catch (error) {
+        console.error('Logo yüklenirken hata:', error);
+      }
+      
+      // Görseli görünür yap ve pozisyonla
+      gorsel.style.position = 'fixed';
+      gorsel.style.top = '50%';
+      gorsel.style.left = '50%';
+      gorsel.style.transform = 'translate(-50%, -50%)';
+      gorsel.style.width = '450px';
+      gorsel.style.background = 'white';
+      gorsel.style.zIndex = '-1000';
+      
+      // Logo'nun yüklenmesini bekle
+      await new Promise((resolve) => {
+        if (logoImg.complete) {
+          resolve();
+        } else {
+          logoImg.onload = resolve;
         }
       });
-    }
-
-    // Data URL'i File objesine çevir
-    function dataURLtoFile(dataurl, filename) {
-      let arr = dataurl.split(','),
-          mime = arr[0].match(/:(.*?);/)[1],
-          bstr = atob(arr[1]),
-          n = bstr.length,
-          u8arr = new Uint8Array(n);
-      while(n--) {
-        u8arr[n] = bstr.charCodeAt(n);
+      
+      try {
+        const canvas = await html2canvas(gorsel, {
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          scale: 2,
+          logging: false,
+          onclone: (clonedDoc) => {
+            const clonedGorsel = clonedDoc.querySelector('.sonuc-gorsel');
+            clonedGorsel.style.transform = 'none';
+            clonedGorsel.style.position = 'static';
+            // Klonlanan görseldeki logo için de base64 kullan
+            const clonedLogo = clonedGorsel.querySelector('img');
+            clonedLogo.src = logoImg.src;
+          }
+        });
+        
+        // Canvas'ı indirilebilir bağlantıya çevir
+        const dataUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = 'kunduz-kelime-kesfi-istatistiklerim.png';
+        link.href = dataUrl;
+        
+        // Görseli indir
+        link.click();
+      } catch (error) {
+        console.error('Görsel kaydedilirken hata oluştu:', error);
+        alert('Görsel kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.');
+      } finally {
+        // Stilleri temizle
+        gorsel.style.position = '';
+        gorsel.style.top = '';
+        gorsel.style.left = '';
+        gorsel.style.transform = '';
+        gorsel.style.width = '';
+        gorsel.style.background = '';
+        gorsel.style.zIndex = '';
+        // Logo'yu orijinal haline geri döndür
+        logoImg.src = 'https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo';
       }
-      return new File([u8arr], filename, {type:mime});
     }
   </script>
 </body>
