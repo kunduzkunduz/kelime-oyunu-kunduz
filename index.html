@@ -746,25 +746,149 @@
     }
 
     @media (max-width: 480px) {
-      .admin-panel {
-        padding: 15px;
-      }
-
-      #adminLogin h2 {
-        font-size: 1.5em;
-      }
-
-      .admin-login {
+      body {
         padding: 10px;
       }
 
-      .istatistik-kartlar {
-        grid-template-columns: 1fr;
-        gap: 15px;
+      #oyun-alani {
+        padding: 15px;
+        margin: 0;
+        border-width: 2px;
       }
 
-      .grafik-bolum {
-        height: 250px;
+      .oyun-header {
+        margin-bottom: 15px;
+      }
+
+      .oyun-header img {
+        width: 35px;
+        height: 35px;
+      }
+
+      .oyun-header h1 {
+        font-size: 1.2em;
+      }
+
+      .aciklama {
+        font-size: 0.9rem;
+        padding: 12px;
+        margin-bottom: 15px;
+      }
+
+      .harf-kutusu {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+      }
+
+      .satir {
+        gap: 6px;
+      }
+
+      #oyun-tablosu {
+        gap: 6px;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      button {
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      .sonuc-gorsel {
+        padding: 20px 15px;
+      }
+
+      .sonuc-gorsel .header {
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .sonuc-gorsel .header img {
+        width: 32px;
+        height: 32px;
+      }
+
+      .sonuc-gorsel .header h2 {
+        font-size: 1.2em;
+      }
+
+      .skor-grid {
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .skor-item {
+        padding: 12px;
+      }
+
+      .skor-item .baslik {
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+
+      .skor-item .deger {
+        font-size: 20px;
+      }
+
+      .save-stats-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        margin: 15px auto;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .harf-kutusu {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+      }
+
+      .satir {
+        gap: 4px;
+      }
+
+      #oyun-tablosu {
+        gap: 4px;
+      }
+
+      .sonuc-gorsel .header h2 {
+        font-size: 1.1em;
+      }
+
+      .skor-item .deger {
+        font-size: 18px;
+      }
+    }
+
+    @media (max-height: 600px) and (orientation: landscape) {
+      #oyun-alani {
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        align-items: start;
+      }
+
+      .oyun-header {
+        grid-column: 1 / -1;
+      }
+
+      .aciklama {
+        grid-column: 1 / -1;
+      }
+
+      .istatistik-ayirici {
+        display: none;
+      }
+
+      .sonuc-gorsel {
+        margin-top: 0;
       }
     }
 
