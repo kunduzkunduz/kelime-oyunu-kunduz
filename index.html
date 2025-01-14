@@ -1052,28 +1052,29 @@
     }
 
     .admin-icon {
-      position: fixed;
-      top: 20px;
-      right: 20px;
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
       width: 40px;
       height: 40px;
-      background-color: #00A396;
+      background-color: transparent;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      color: white;
+      color: #e2e8f0;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
       z-index: 999;
       transition: all 0.3s ease;
+      opacity: 0.3;
     }
 
     .admin-icon:hover {
       transform: scale(1.1);
-      background-color: white;
+      background-color: transparent;
       color: #00A396;
-      border: 2px solid #00A396;
+      opacity: 1;
     }
 
     .admin-panel {
