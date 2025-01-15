@@ -2603,42 +2603,21 @@ function tabloyuOlustur() {
     });
 
     function hesaplaBasariPuani(denemeSayisi, sure) {
-      // Süre bazlı puanlama
-      const maksimumSure = 180; // 3 dakika
-      let surePuani = 0;
-      
-      if (sure <= 30) { // 30 saniye ve altı
-        surePuani = 100;
-      } else if (sure <= 60) { // 30-60 saniye arası
-        surePuani = 85;
-      } else if (sure <= 120) { // 1-2 dakika arası
-        surePuani = 70;
-      } else if (sure <= 180) { // 2-3 dakika arası
-        surePuani = 55;
-      } else { // 3 dakika üzeri
-        surePuani = Math.max(0, 40 - ((sure - 180) / 60) * 10);
+      // Başlangıç puanı
+      let puan = 100;
+
+      // Deneme sayısına göre puan düşür
+      if (denemeSayisi > 1) {
+        puan -= (denemeSayisi - 1) * 10; // Her fazla deneme için 10 puan düş
       }
-      
-      // Deneme sayısı puanı
-      let denemePuani = 0;
-      switch(denemeSayisi) {
-        case 1: denemePuani = 100; break; // İlk denemede
-        case 2: denemePuani = 85; break;  // İkinci denemede
-        case 3: denemePuani = 70; break;  // Üçüncü denemede
-        case 4: denemePuani = 55; break;  // Dördüncü denemede
-        case 5: denemePuani = 40; break;  // Beşinci denemede
-        case 6: denemePuani = 25; break;  // Son denemede
-        default: denemePuani = 10;        // 6'dan fazla denemede
+
+      // Süreye göre puan düşür
+      if (sure > 30) {
+        puan -= Math.floor((sure - 30) / 30) * 5; // Her ek 30 saniye için 5 puan düş
       }
-      
-      // Toplam puan (süre %60, deneme sayısı %40 ağırlıklı)
-      const toplamPuan = (surePuani * 0.5) + (denemePuani * 0.5);
-      
-      // Bonus: İlk denemede ve 30 saniyeden kısa sürede bulursa +10 puan
-      const bonusPuan = (denemeSayisi <= 2 && sure <= 30) ? 5 : 0;
-      
-      // Final puanı (maksimum 100)
-      return Math.min(100, Math.round(toplamPuan + bonusPuan));
+
+      // Minimum 0, maksimum 100 puan olsun
+      return Math.max(0, Math.min(100, puan));
     }
 
     // Global fonksiyonlar
