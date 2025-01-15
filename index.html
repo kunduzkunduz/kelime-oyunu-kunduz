@@ -825,7 +825,7 @@
         font-size: 14px;
     }
 
-      .sonuc-gorsel {
+    .sonuc-gorsel {
         padding: 20px 15px;
       }
 
@@ -1678,7 +1678,7 @@
     </div>
 
     <div class="mesaj-kutusu" id="uyari-mesaji"></div>
-    <button id="yeniden-baslat-tusu">Yeniden Başlat</button>
+    <button id="yeniden-baslat-tusu" style="display: none;">Denemeye Devam Et</button>
 
     <div class="istatistik-ayirici"></div>
 
@@ -1714,9 +1714,9 @@
       </button>
 
       <a href="https://t.kndz.link/uF4J" class="kunduz-link" target="_blank">
-        <i class="fas fa-arrow-left"></i>
-        <span>Kunduz'a Dön</span>
-      </a>
+          <i class="fas fa-arrow-left"></i>
+          <span>Kunduz'a Dön</span>
+        </a>
     </div>
   </div>
 
@@ -1937,7 +1937,7 @@
     function sureyiGuncelle() {
       if (baslangicZamani && !oyunBitti) {
         const simdikiZaman = new Date();
-        const gecenSure = Math.floor((simdikiZaman - baslangicZamani) / 1000);
+        const gecenSure = Math.floor((simdikiZaman - baslangicZamani) / 1000) + toplamSure;
         document.getElementById('oyun-suresi').textContent = `${gecenSure} sn`;
       }
     }
@@ -1951,15 +1951,16 @@
     }
 
     window.yenidenBasla = function() {
-      mevcutSatir = 0;
-      oyunBitti = false;
-      baslangicZamani = null;
       // Süre sayacını sıfırla
       if (sureSayaci) {
         clearInterval(sureSayaci);
         sureSayaci = null;
       }
-      document.getElementById('oyun-suresi').textContent = '0 sn';
+      
+      // Oyun değişkenlerini sıfırla
+      mevcutSatir = 0;
+      oyunBitti = false;
+      baslangicZamani = null;
       
       // Oyun sonu butonlarını kaldır
       const butonlar = document.querySelector('.oyun-sonu-butonlar');
@@ -2001,7 +2002,7 @@
             <i class="fas fa-eye"></i> Cevabı Gör
           </button>
           <button class="yeniden-basla-btn" onclick="yenidenBasla()">
-            <i class="fas fa-redo"></i> Yeniden Başla
+            <i class="fas fa-redo"></i> Denemeye Devam Et
           </button>
         `;
       }
@@ -2067,44 +2068,51 @@
       }
 
     // Tablo oluşturma fonksiyonu
-    function tabloyuOlustur() {
-      const tablo = document.getElementById("oyun-tablosu");
-      tablo.innerHTML = "";
+function tabloyuOlustur() {
+  const tablo = document.getElementById("oyun-tablosu");
+  tablo.innerHTML = "";
       // Güvenlik kontrolü ekleyelim
       const harfSayisi = gizliKelime ? gizliKelime.length : 5; // Varsayılan 5 harf
 
-      for (let i = 0; i < 6; i++) { // 6 satır
-        const satir = document.createElement("div");
-        satir.classList.add("satir");
+  for (let i = 0; i < 6; i++) { // 6 satır
+    const satir = document.createElement("div");
+    satir.classList.add("satir");
 
-        for (let j = 0; j < harfSayisi; j++) { // Harf sayısı kadar kutu ekle
-          const kutu = document.createElement("div");
-          kutu.classList.add("harf-kutusu");
-          satir.appendChild(kutu);
-        }
-
-        tablo.appendChild(satir);
-      }
+    for (let j = 0; j < harfSayisi; j++) { // Harf sayısı kadar kutu ekle
+      const kutu = document.createElement("div");
+      kutu.classList.add("harf-kutusu");
+      satir.appendChild(kutu);
     }
+
+    tablo.appendChild(satir);
+  }
+}
 
       function tahminYap() {
         if (oyunBitti) return;
 
-        // İlk tahminde süreyi başlat
-        if (!baslangicZamani) {
-          baslangicZamani = new Date();
-          // Süre sayacını başlat
-          sureSayaci = setInterval(sureyiGuncelle, 1000);
-        }
-
-        toplamTahmin++;
-        toplamTahminEl.textContent = toplamTahmin;
-
          const tahmin = tahminGirdisi.value.trim().toLocaleLowerCase("tr-TR");
+        
+        // Harf sayısı kontrolü
   if (tahmin.length !== gizliKelime.length) {
           mesajGoster(`Lütfen ${gizliKelime.length} harf girin!`, false);
     return;
   }
+
+        // İlk tahminde süreyi başlat
+        if (!baslangicZamani && toplamSure === 0) {
+          baslangicZamani = new Date();
+          // Süre sayacını başlat
+          sureSayaci = setInterval(sureyiGuncelle, 1000);
+        } else if (!baslangicZamani && toplamSure > 0) {
+          // Önceki süreden devam et
+          baslangicZamani = new Date(new Date().getTime() - (toplamSure * 1000));
+          sureSayaci = setInterval(sureyiGuncelle, 1000);
+        }
+
+        // Geçerli tahmin yapıldığında toplam tahmin sayısını artır
+        toplamTahmin++;
+        toplamTahminEl.textContent = toplamTahmin;
 
         const mevcutSatirKutular = document.querySelectorAll(".satir")[mevcutSatir].children;
         for (let i = 0; i < gizliKelime.length; i++) {
@@ -2147,7 +2155,7 @@
             basariOrani: basariPuani,
             tahminSuresi: toplamSure
           });
-          const denemeSayisi = mevcutSatir === 1 ? 'ilk' : `${mevcutSatir}.`;
+          const denemeSayisi = toplamTahmin === 1 ? 'ilk' : `${toplamTahmin}.`;
           mesajGoster(`Harika! ${denemeSayisi} denemede buldunuz! 🎉 Başarı puanınız: ${basariPuani}%`, true);
           // Oyun bitti mesajından sonra yeni oyun için bekle
           setTimeout(() => {
@@ -2158,9 +2166,9 @@
         } else if (mevcutSatir >= 6) {
           const bitisZamani = new Date();
           toplamSure = Math.floor((bitisZamani - baslangicZamani) / 1000);
-          oyunSayisi++;
-          kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
-          kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
+        oyunSayisi++;
+        kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
+        kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
           oyunBitti = true;
           mesajGoster("Maalesef bilemediniz!", false);
           gosterOyunSonuSecenekleri();
@@ -2595,14 +2603,42 @@
     });
 
     function hesaplaBasariPuani(denemeSayisi, sure) {
-      // Maksimum süre 300 saniye (5 dakika) olsun
-      const maksimumSure = 300;
-      // Süre puanı (süre arttıkça düşer)
-      const surePuani = Math.max(0, 100 - (sure / maksimumSure * 50));
-      // Deneme sayısı puanı (deneme sayısı arttıkça düşer)
-      const denemePuani = Math.max(0, 100 - ((denemeSayisi - 1) * 15));
-      // Toplam puan (süre ve deneme sayısının ortalaması)
-      return Math.round((surePuani + denemePuani) / 2);
+      // Süre bazlı puanlama
+      const maksimumSure = 180; // 3 dakika
+      let surePuani = 0;
+      
+      if (sure <= 30) { // 30 saniye ve altı
+        surePuani = 100;
+      } else if (sure <= 60) { // 30-60 saniye arası
+        surePuani = 90;
+      } else if (sure <= 120) { // 1-2 dakika arası
+        surePuani = 80;
+      } else if (sure <= 180) { // 2-3 dakika arası
+        surePuani = 70;
+      } else { // 3 dakika üzeri
+        surePuani = Math.max(0, 60 - ((sure - 180) / 60) * 10); // Her ek dakika için -10 puan
+      }
+      
+      // Deneme sayısı puanı
+      let denemePuani = 0;
+      switch(denemeSayisi) {
+        case 1: denemePuani = 100; break; // İlk denemede
+        case 2: denemePuani = 90; break;  // İkinci denemede
+        case 3: denemePuani = 80; break;  // Üçüncü denemede
+        case 4: denemePuani = 70; break;  // Dördüncü denemede
+        case 5: denemePuani = 60; break;  // Beşinci denemede
+        case 6: denemePuani = 50; break;  // Son denemede
+        default: denemePuani = 40;        // 6'dan fazla denemede
+      }
+      
+      // Toplam puan (süre %60, deneme sayısı %40 ağırlıklı)
+      const toplamPuan = (surePuani * 0.6) + (denemePuani * 0.4);
+      
+      // Bonus: İlk denemede ve 30 saniyeden kısa sürede bulursa +10 puan
+      const bonusPuan = (denemeSayisi === 1 && sure <= 30) ? 10 : 0;
+      
+      // Final puanı (maksimum 100)
+      return Math.min(100, Math.round(toplamPuan + bonusPuan));
     }
 
     // Global fonksiyonlar
