@@ -1757,6 +1757,10 @@
 
         // Doğrudan kaydet
         await db.collection('kelimeler').doc('haftalik').set({ liste });
+        // Global değişkeni güncelle
+        defaultKelimeler = liste;
+        // Günün kelimesini güncelle
+        gizliKelime = defaultKelimeler[new Date().getDay()];
 
         console.log('Kelime listesi başarıyla kaydedildi:', liste);
         return true;
@@ -1894,13 +1898,12 @@
       const user = document.getElementById('adminUser').value;
       const pass = document.getElementById('adminPass').value;
       
-      // Admin oturum durumunu localStorage'da sakla
       if (user === "engagement" && pass === "engagement2534") {
         localStorage.setItem('adminOturum', 'true');
         document.getElementById('adminLogin').style.display = 'none';
         document.getElementById('adminContent').style.display = 'block';
         document.querySelector('.admin-panel').classList.add('expanded');
-        // Admin girişinde varsayılan listeyi göster
+        // Admin girişinde kelime listesini göster
         kelimeListesiniGoster();
         istatistikleriGetir().then(istatistikler => {
           guncelleIstatistikGoruntuleri(istatistikler);
@@ -1919,7 +1922,7 @@
     }
 
     // Global değişkenler ve fonksiyonlar
-    let defaultKelimeler = ["kurs", "ders", "eğitim", "okul", "konu", "sınav", "kunduz"];
+    let defaultKelimeler = [];
     let gizliKelime;
     let oyunSayisi = 0;
     let kazanmaSayisi = 0;
@@ -1990,14 +1993,18 @@
 
       const butonContainer = document.createElement('div');
       butonContainer.className = 'oyun-sonu-butonlar';
-      butonContainer.innerHTML = `
-        <button class="cevap-goster-btn" onclick="cevabıGoster()">
-          <i class="fas fa-eye"></i> Cevabı Gör
-        </button>
-        <button class="yeniden-basla-btn" onclick="yenidenBasla()">
-          <i class="fas fa-redo"></i> Yeniden Başla
-        </button>
-      `;
+      
+      // Eğer kelime bilinemediyse tüm butonları göster
+      if (mevcutSatir >= 6) {
+        butonContainer.innerHTML = `
+          <button class="cevap-goster-btn" onclick="cevabıGoster()">
+            <i class="fas fa-eye"></i> Cevabı Gör
+          </button>
+          <button class="yeniden-basla-btn" onclick="yenidenBasla()">
+            <i class="fas fa-redo"></i> Yeniden Başla
+          </button>
+        `;
+      }
       
       document.getElementById('giris-alani').appendChild(butonContainer);
     }
@@ -2022,13 +2029,12 @@
       // Önce kelime listesini al, sonra oyunu başlat
       try {
         const kelimeler = await kelimeListesiniGetir();
-        if (kelimeler && kelimeler.length > 0) {
-          defaultKelimeler = kelimeler;
-        }
+        defaultKelimeler = kelimeler;
         gizliKelime = defaultKelimeler[new Date().getDay()];
         tabloyuOlustur();
       } catch (error) {
         console.error('Başlangıç kelime listesi alınırken hata:', error);
+        defaultKelimeler = ["kurs", "ders", "eğitim", "okul", "konu", "sınav", "kunduz"];
         gizliKelime = defaultKelimeler[new Date().getDay()];
         tabloyuOlustur();
       }
@@ -2141,7 +2147,8 @@
             basariOrani: basariPuani,
             tahminSuresi: toplamSure
           });
-          mesajGoster(`Tebrikler! Başarı puanınız: ${basariPuani}% (${toplamSure} saniye) 🎉`);
+          const denemeSayisi = mevcutSatir === 1 ? 'ilk' : `${mevcutSatir}.`;
+          mesajGoster(`Harika! ${denemeSayisi} denemede buldunuz! 🎉 Başarı puanınız: ${basariPuani}%`, true);
           // Oyun bitti mesajından sonra yeni oyun için bekle
           setTimeout(() => {
             gosterOyunSonuSecenekleri();
@@ -2299,20 +2306,17 @@
       }
 
       // kelimeListesiniGoster fonksiyonunu güncelleyelim
-      window.kelimeListesiniGoster = function() {
-        // Varsayılan kelime listesini kullan
-        const varsayilanKelimeler = ["kurs", "ders", "eğitim", "okul", "konu", "sınav", "kunduz"];
+      window.kelimeListesiniGoster = async function() {
+        // Firebase'den kelime listesini al
+        let kelimeler = await kelimeListesiniGetir();
         const gunSirasi = [1, 2, 3, 4, 5, 6, 0];
 
         for (let i = 0; i < 7; i++) {
           const input = document.getElementById(`kelime${i}`);
           if (input) {
-            input.value = varsayilanKelimeler[gunSirasi[i]];
+            input.value = defaultKelimeler[gunSirasi[i]];
           }
         }
-
-        // Varsayılan listeyi kaydet
-        kelimeListesiniKaydet(varsayilanKelimeler);
       }
     });
 
