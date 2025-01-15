@@ -2610,32 +2610,32 @@ function tabloyuOlustur() {
       if (sure <= 30) { // 30 saniye ve altı
         surePuani = 100;
       } else if (sure <= 60) { // 30-60 saniye arası
-        surePuani = 90;
+        surePuani = 85;
       } else if (sure <= 120) { // 1-2 dakika arası
-        surePuani = 80;
-      } else if (sure <= 180) { // 2-3 dakika arası
         surePuani = 70;
+      } else if (sure <= 180) { // 2-3 dakika arası
+        surePuani = 55;
       } else { // 3 dakika üzeri
-        surePuani = Math.max(0, 60 - ((sure - 180) / 60) * 10); // Her ek dakika için -10 puan
+        surePuani = Math.max(0, 40 - ((sure - 180) / 60) * 10);
       }
       
       // Deneme sayısı puanı
       let denemePuani = 0;
       switch(denemeSayisi) {
         case 1: denemePuani = 100; break; // İlk denemede
-        case 2: denemePuani = 90; break;  // İkinci denemede
-        case 3: denemePuani = 80; break;  // Üçüncü denemede
-        case 4: denemePuani = 70; break;  // Dördüncü denemede
-        case 5: denemePuani = 60; break;  // Beşinci denemede
-        case 6: denemePuani = 50; break;  // Son denemede
-        default: denemePuani = 40;        // 6'dan fazla denemede
+        case 2: denemePuani = 85; break;  // İkinci denemede
+        case 3: denemePuani = 70; break;  // Üçüncü denemede
+        case 4: denemePuani = 55; break;  // Dördüncü denemede
+        case 5: denemePuani = 40; break;  // Beşinci denemede
+        case 6: denemePuani = 25; break;  // Son denemede
+        default: denemePuani = 10;        // 6'dan fazla denemede
       }
       
       // Toplam puan (süre %60, deneme sayısı %40 ağırlıklı)
-      const toplamPuan = (surePuani * 0.6) + (denemePuani * 0.4);
+      const toplamPuan = (surePuani * 0.5) + (denemePuani * 0.5);
       
       // Bonus: İlk denemede ve 30 saniyeden kısa sürede bulursa +10 puan
-      const bonusPuan = (denemeSayisi === 1 && sure <= 30) ? 10 : 0;
+      const bonusPuan = (denemeSayisi <= 2 && sure <= 30) ? 5 : 0;
       
       // Final puanı (maksimum 100)
       return Math.min(100, Math.round(toplamPuan + bonusPuan));
