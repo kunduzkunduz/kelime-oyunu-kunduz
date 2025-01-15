@@ -599,7 +599,7 @@
       border-radius: 15px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       width: 400px;
-      max-height: 90vh;
+      height: auto;
       overflow-y: auto;
       z-index: 1001;
       position: relative;
@@ -608,7 +608,8 @@
     .admin-panel.expanded {
       width: 90%;
       max-width: 1200px;
-      height: 90vh;
+      max-height: 90vh;
+      background: #f8fafc;
     }
 
     #adminLogin {
@@ -708,10 +709,10 @@
 
     .kelime-ve-istatistik {
       display: grid;
-      gap: 30px;
       grid-template-columns: 350px 1fr;
-      height: calc(100% - 80px);
-      overflow-y: auto;
+      gap: 30px;
+      margin-top: 20px;
+      height: calc(100% - 100px);
     }
 
     @media (min-width: 768px) {
@@ -1087,15 +1088,17 @@
       border-radius: 15px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       width: 400px;
-      max-height: 90vh;
+      height: auto;
       overflow-y: auto;
       z-index: 1001;
+      position: relative;
     }
 
     .admin-panel.expanded {
       width: 90%;
       max-width: 1200px;
-      height: 90vh;
+      max-height: 90vh;
+      background: #f8fafc;
     }
 
     .istatistik-kartlar {
@@ -1103,8 +1106,8 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 15px;
       margin: 20px 0;
-      padding: 20px;
       background: white;
+      padding: 20px;
       border-radius: 15px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
@@ -1144,6 +1147,7 @@
     }
 
     .grafik-bolum {
+      min-height: 300px;
       background: white;
       padding: 20px;
       border-radius: 15px;
@@ -1270,6 +1274,14 @@
                 <div class="kart-baslik">Toplam Oyuncu</div>
               </div>
               <div class="istatistik-kart">
+                <div class="kart-sayi" id="aylikOyuncuSayi">0</div>
+                <div class="kart-baslik">Aylık Oyuncu</div>
+              </div>
+              <div class="istatistik-kart">
+                <div class="kart-sayi" id="haftalikOyuncuSayi">0</div>
+                <div class="kart-baslik">Haftalık Oyuncu</div>
+              </div>
+              <div class="istatistik-kart">
                 <div class="kart-sayi" id="toplamOyunSayi">0</div>
                 <div class="kart-baslik">Toplam Oyun</div>
               </div>
@@ -1279,30 +1291,27 @@
               </div>
             </div>
             
-            <div class="grafik-bolum">
-              <div class="grafik-baslik">Günlük Oyun İstatistikleri</div>
-              <canvas id="gunlukGrafik"></canvas>
-            </div>
-            
-            <div class="grafik-baslik">Başarı Dağılımı</div>
-            <canvas id="basariGrafik"></canvas>
-            
-            <div class="tablo-container">
-              <h3>Son 7 Günün Detaylı İstatistikleri</h3>
-              <div class="tablo-scroll">
-                <table class="istatistik-tablo">
-                  <thead>
-                    <tr>
-                      <th>📅 Tarih</th>
-                      <th>👥 Oyuncu</th>
-                      <th>🎮 Toplam Oyun</th>
-                      <th>🏆 Kazanılan</th>
-                      <th>📊 Ort. Deneme</th>
-                      <th>✨ Başarı Oranı</th>
-                    </tr>
-                  </thead>
-                  <tbody id="istatistik-tbody"></tbody>
-                </table>
+            <div class="grafik-container">
+              <!-- Mevcut grafikler -->
+              <div class="grafik-bolum">
+                <div class="grafik-baslik">Günlük Oyun İstatistikleri</div>
+                <canvas id="gunlukGrafik"></canvas>
+              </div>
+              
+              <!-- Yeni grafikler -->
+              <div class="grafik-bolum">
+                <div class="grafik-baslik">Saatlik Aktivite Dağılımı</div>
+                <canvas id="saatlikAktiviteGrafik"></canvas>
+              </div>
+              
+              <div class="grafik-bolum">
+                <div class="grafik-baslik">Kelime Bazlı Başarı Oranları</div>
+                <canvas id="kelimeBazliGrafik"></canvas>
+              </div>
+              
+              <div class="grafik-bolum">
+                <div class="grafik-baslik">Ortalama Tahmin Süreleri</div>
+                <canvas id="tahminSuresiGrafik"></canvas>
               </div>
             </div>
           </div>
@@ -1425,7 +1434,22 @@
         const bugun = new Date();
         bugun.setHours(0, 0, 0, 0);
         
-        // Bugünün istatistiklerini kontrol et
+        // Yeni istatistik alanları ekleyelim
+        const yeniVeri = {
+          ...veri,
+          haftalikOyuncular: {},  // Haftalık tekil oyuncu sayısı
+          gunlukTahminler: {      // Günlük tahmin dağılımı
+            '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0
+          },
+          kelimeBazliIstatistik: {  // Kelime bazlı istatistikler
+            kelime: veri.kelime,
+            toplamDeneme: veri.denemeSayisi,
+            kazanildi: veri.kazandi
+          },
+          saatlikAktivite: {},      // Saatlik oyuncu aktivitesi
+          tahminSuresi: veri.tahminsuresi || 0  // Ortalama tahmin süresi
+        };
+
         const snapshot = await db.collection('istatistikler')
           .where('tarih', '>=', bugun)
           .get();
@@ -1444,7 +1468,7 @@
         } else {
           // Yeni istatistik oluştur
           await db.collection('istatistikler').add({
-            ...veri,
+            ...yeniVeri,
             tarih: firebase.firestore.Timestamp.fromDate(bugun)
           });
         }
@@ -1458,7 +1482,20 @@
     async function istatistikleriGetir() {
       try {
         const bugun = new Date();
+        const birAyOnce = new Date(bugun.getTime() - (30 * 24 * 60 * 60 * 1000));
         const birHaftaOnce = new Date(bugun.getTime() - (7 * 24 * 60 * 60 * 1000));
+        
+        // Aylık istatistikler
+        const aylikSnapshot = await db.collection('istatistikler')
+          .where('tarih', '>=', birAyOnce)
+          .orderBy('tarih', 'desc')
+          .get();
+        
+        // Haftalık istatistikler
+        const haftalikSnapshot = await db.collection('istatistikler')
+          .where('tarih', '>=', birHaftaOnce)
+          .orderBy('tarih', 'desc')
+          .get();
         
         const snapshot = await db.collection('istatistikler')
           .where('tarih', '>=', birHaftaOnce)
@@ -1467,6 +1504,21 @@
           .get();
 
         const istatistikler = [];
+        let aylikOyuncuSayisi = 0;
+        let haftalikOyuncuSayisi = 0;
+        
+        // Aylık oyuncu sayısını hesapla
+        aylikSnapshot.forEach(doc => {
+          const veri = doc.data();
+          aylikOyuncuSayisi += veri.oyuncuSayisi || 0;
+        });
+        
+        // Haftalık oyuncu sayısını hesapla
+        haftalikSnapshot.forEach(doc => {
+          const veri = doc.data();
+          haftalikOyuncuSayisi += veri.oyuncuSayisi || 0;
+        });
+
         snapshot.forEach(doc => {
           const veri = doc.data();
           istatistikler.push({
@@ -1475,7 +1527,9 @@
             toplamOyun: veri.toplamOyun || 0,
             kazanilan: veri.kazanilanOyun || 0,
             ortDeneme: veri.ortalamaDenemeSayisi || 0,
-            basariOrani: veri.basariOrani || 0
+            basariOrani: veri.basariOrani || 0,
+            aylikOyuncu: aylikOyuncuSayisi,
+            haftalikOyuncu: haftalikOyuncuSayisi
           });
         });
         return istatistikler;
@@ -1932,57 +1986,63 @@
     }
 
     function guncelleIstatistikGoruntuleri(istatistikler) {
-      // Özet kartları güncelle
       if (istatistikler.length > 0) {
         const sonIstatistik = istatistikler[0];
         document.getElementById('toplamOyuncuSayi').textContent = sonIstatistik.oyuncu;
+        document.getElementById('aylikOyuncuSayi').textContent = sonIstatistik.aylikOyuncu;
+        document.getElementById('haftalikOyuncuSayi').textContent = sonIstatistik.haftalikOyuncu;
         document.getElementById('toplamOyunSayi').textContent = sonIstatistik.toplamOyun;
         document.getElementById('ortalamaBasari').textContent = sonIstatistik.basariOrani + '%';
       }
-
-      // Tablo güncelleme
-      const tbody = document.getElementById('istatistik-tbody');
-      tbody.innerHTML = istatistikler.map(stat => `
-        <tr>
-          <td class="tarih-hucre">${stat.tarih}</td>
-          <td>${stat.oyuncu.toLocaleString()}</td>
-          <td>${stat.toplamOyun.toLocaleString()}</td>
-          <td>${stat.kazanilan.toLocaleString()}</td>
-          <td>${stat.ortDeneme.toFixed(1)}</td>
-          <td class="basari-oran">${stat.basariOrani}%</td>
-        </tr>
-      `).join('');
 
       // Grafikleri güncelle
       guncelleGrafikler(istatistikler);
     }
 
     function guncelleGrafikler(istatistikler) {
+      // Önceki grafikleri temizle
+      const gunlukGrafikElem = document.getElementById('gunlukGrafik');
+      const basariGrafikElem = document.getElementById('basariGrafik');
+      
+      if (window.gunlukChart) {
+        window.gunlukChart.destroy();
+      }
+      if (window.basariChart) {
+        window.basariChart.destroy();
+      }
+
       // Günlük grafik
       const gunlukCtx = document.getElementById('gunlukGrafik').getContext('2d');
-      new Chart(gunlukCtx, {
+      window.gunlukChart = new Chart(gunlukCtx, {
         type: 'line',
         data: {
           labels: istatistikler.map(item => item.tarih),
           datasets: [{
-            label: 'Oyuncu Sayısı',
+            label: 'Günlük Oyuncu',
             data: istatistikler.map(item => item.oyuncu),
             borderColor: '#00A396',
             backgroundColor: 'rgba(0, 163, 150, 0.1)',
             fill: true,
             tension: 0.4
           }, {
-            label: 'Kazanılan Oyunlar',
-            data: istatistikler.map(item => item.kazanilan),
+            label: 'Haftalık Oyuncu',
+            data: istatistikler.map(item => item.haftalikOyuncu),
             borderColor: '#FABE00',
             backgroundColor: 'rgba(250, 190, 0, 0.1)',
+            fill: true,
+            tension: 0.4
+          }, {
+            label: 'Aylık Oyuncu',
+            data: istatistikler.map(item => item.aylikOyuncu),
+            borderColor: '#DC2626',
+            backgroundColor: 'rgba(220, 38, 38, 0.1)',
             fill: true,
             tension: 0.4
           }]
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
           plugins: {
             legend: { position: 'bottom' },
             tooltip: {
@@ -1997,7 +2057,7 @@
       
       // Başarı dağılımı grafik
       const basariCtx = document.getElementById('basariGrafik').getContext('2d');
-      new Chart(basariCtx, {
+      window.basariChart = new Chart(basariCtx, {
         type: 'doughnut',
         data: {
           labels: ['1. Denemede', '2. Denemede', '3. Denemede', '4. Denemede', '5. Denemede', '6. Denemede'],
@@ -2018,6 +2078,7 @@
         },
         options: {
           responsive: true,
+          maintainAspectRatio: true,
           plugins: {
             legend: { position: 'bottom' }
           }
