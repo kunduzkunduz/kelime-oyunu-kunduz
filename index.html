@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" crossorigin="anonymous">
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
   <!-- Firebase SDK'ları -->
   <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
@@ -438,18 +438,20 @@
 
     .kelime-ve-istatistik {
       display: grid;
-      grid-template-columns: 350px 1fr;
+      grid-template-columns: 300px 1fr;
       gap: 30px;
-      align-items: start;
+      height: 100%;
     }
 
     .kelime-bolumu {
-      background: #f8fafc;
+      background: white;
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      height: 100%;
+      overflow-y: auto;
     }
-    
+
     .kelime-grid {
       display: grid;
       gap: 12px;
@@ -599,17 +601,21 @@
       border-radius: 15px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       width: 400px;
-      height: auto;
+      height: 90vh;
       overflow-y: auto;
       z-index: 1001;
       position: relative;
     }
 
     .admin-panel.expanded {
-      width: 90%;
-      max-width: 1200px;
-      max-height: 90vh;
+      width: 95%;
+      max-width: 1400px;
+      height: 95vh;
       background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      padding: 25px;
+      overflow-y: auto;
     }
 
     #adminLogin {
@@ -623,13 +629,9 @@
     }
 
     #adminContent {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 30px;
-      padding: 20px;
-      width: 100%;
-      height: 100%;
-      overflow-y: auto;
     }
 
     #adminLogin h2 {
@@ -709,54 +711,73 @@
 
     .kelime-ve-istatistik {
       display: grid;
-      grid-template-columns: 350px 1fr;
+      grid-template-columns: 300px 1fr;
       gap: 30px;
+      height: 100%;
+    }
+
+    .istatistik-bolumu {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      height: 100%;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .grafik-container {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
       margin-top: 20px;
-      height: calc(100% - 100px);
     }
 
-    @media (min-width: 768px) {
+    .grafik-bolum {
+      height: 300px;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .analiz-karti {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 1200px) {
+      .grafik-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .analiz-karti {
+        grid-column: span 1;
+      }
+    }
+
+    @media (max-width: 768px) {
       .kelime-ve-istatistik {
-        grid-template-columns: 350px 1fr;
-      }
-    }
-
-    @media (max-width: 767px) {
-      .admin-panel {
-        width: 95%;
-        padding: 20px;
+        grid-template-columns: 1fr;
+        gap: 20px;
       }
 
-      .admin-panel.expanded {
-        width: 95%;
-        height: 95vh;
-        overflow-y: auto;
-      }
-
-      #adminContent {
-        padding: 10px;
-      }
-
-      .kelime-bolumu {
-        order: -1;
-      }
-
-      .istatistik-kartlar {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .grafik-bolum {
-        height: 300px;
+      .kelime-bolumu,
+      .istatistik-bolumu {
+        height: auto;
       }
     }
 
     @media (max-width: 480px) {
       body {
-        padding: 10px;
-      }
+      padding: 10px;
+    }
 
       #oyun-alani {
-        padding: 15px;
+      padding: 15px;
         margin: 0;
         border-width: 2px;
       }
@@ -796,13 +817,13 @@
 
       input[type="text"] {
         padding: 10px;
-        font-size: 14px;
+      font-size: 14px;
       }
 
       button {
         padding: 10px;
         font-size: 14px;
-      }
+    }
 
       .sonuc-gorsel {
         padding: 20px 15px;
@@ -810,7 +831,7 @@
 
       .sonuc-gorsel .header {
         gap: 10px;
-        margin-bottom: 15px;
+      margin-bottom: 15px;
       }
 
       .sonuc-gorsel .header img {
@@ -823,21 +844,71 @@
       }
 
       .skor-grid {
-        gap: 10px;
-        margin-top: 15px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 20px;
       }
 
       .skor-item {
-        padding: 12px;
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 163, 150, 0.1);
+        border: 2px solid rgba(0, 163, 150, 0.1);
+        transition: all 0.3s ease;
+        width: 100%;
+        min-height: 80px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 8px;
+      }
+
+      .skor-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 163, 150, 0.15);
+        border-color: #00A396;
       }
 
       .skor-item .baslik {
-        font-size: 12px;
-        margin-bottom: 6px;
+        font-size: 14px;
+        color: #64748b;
+        margin-bottom: 8px;
+        font-weight: 500;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
 
       .skor-item .deger {
-        font-size: 20px;
+        font-size: 24px;
+        font-weight: 700;
+        color: #00A396;
+        text-align: center;
+        line-height: 1;
+      }
+
+      @media (max-width: 480px) {
+        .skor-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+        }
+
+        .skor-item {
+          padding: 10px;
+          min-height: 70px;
+        }
+
+        .skor-item .baslik {
+          font-size: 12px;
+          margin-bottom: 6px;
+        }
+
+        .skor-item .deger {
+          font-size: 20px;
+        }
       }
 
       .save-stats-btn {
@@ -851,7 +922,7 @@
       .harf-kutusu {
         width: 35px;
         height: 35px;
-        font-size: 14px;
+      font-size: 14px;
       }
 
       .satir {
@@ -874,7 +945,7 @@
     @media (max-height: 600px) and (orientation: landscape) {
       #oyun-alani {
         max-width: 100%;
-        display: grid;
+      display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 20px;
         align-items: start;
@@ -889,7 +960,7 @@
       }
 
       .istatistik-ayirici {
-        display: none;
+      display: none;
       }
 
       .sonuc-gorsel {
@@ -901,7 +972,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       padding-bottom: 15px;
       border-bottom: 2px solid #e2e8f0;
     }
@@ -990,6 +1061,8 @@
       position: relative;
       overflow: hidden;
       background-image: linear-gradient(135deg, rgba(0, 163, 150, 0.05) 0%, rgba(1, 145, 131, 0.1) 100%);
+      max-width: 450px;
+      margin: 0 auto;
     }
 
     .sonuc-gorsel .header {
@@ -1023,8 +1096,8 @@
 
     .skor-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
       margin-top: 20px;
     }
 
@@ -1035,6 +1108,13 @@
       box-shadow: 0 4px 12px rgba(0, 163, 150, 0.1);
       border: 2px solid rgba(0, 163, 150, 0.1);
       transition: all 0.3s ease;
+      width: 100%;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 8px;
     }
 
     .skor-item:hover {
@@ -1048,38 +1128,73 @@
       color: #64748b;
       margin-bottom: 8px;
       font-weight: 500;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .skor-item .deger {
       font-size: 24px;
       font-weight: 700;
       color: #00A396;
+      text-align: center;
+      line-height: 1;
+    }
+
+    @media (max-width: 480px) {
+      .skor-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .skor-item {
+        padding: 10px;
+        min-height: 70px;
+      }
+
+      .skor-item .baslik {
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+
+      .skor-item .deger {
+        font-size: 20px;
+      }
     }
 
     .admin-icon {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
       width: 40px;
       height: 40px;
-      background-color: transparent;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      color: #e2e8f0;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      z-index: 999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border: 2px solid #00A396;
+      color: #00A396;
       transition: all 0.3s ease;
-      opacity: 0.3;
+      z-index: 1000;
     }
 
     .admin-icon:hover {
-      transform: scale(1.1);
-      background-color: transparent;
-      color: #00A396;
-      opacity: 1;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 163, 150, 0.2);
+      background: #00A396;
+      color: white;
+    }
+
+    @media (max-width: 480px) {
+      .admin-icon {
+        top: 10px;
+        right: 10px;
+        width: 35px;
+        height: 35px;
+      }
     }
 
     .admin-panel {
@@ -1088,54 +1203,86 @@
       border-radius: 15px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       width: 400px;
-      height: auto;
+      height: 90vh;
       overflow-y: auto;
       z-index: 1001;
       position: relative;
     }
 
     .admin-panel.expanded {
-      width: 90%;
-      max-width: 1200px;
-      max-height: 90vh;
+      width: 95%;
+      max-width: 1400px;
+      height: 95vh;
       background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      padding: 25px;
+      overflow-y: auto;
     }
 
     .istatistik-kartlar {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 15px;
-      margin: 20px 0;
+      margin-bottom: 20px;
       background: white;
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      flex-shrink: 0;
     }
 
     .istatistik-kart {
-      background: linear-gradient(135deg, #00A396, #019183);
+      background: white;
       padding: 20px;
       border-radius: 12px;
       text-align: center;
-      color: white;
-      transition: transform 0.3s ease;
+      color: #2d3748;
+      transition: all 0.3s ease;
+      border: 2px solid #e2e8f0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .istatistik-kart::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #00A396, #019183);
     }
 
     .istatistik-kart:hover {
       transform: translateY(-5px);
+      border-color: #00A396;
+      box-shadow: 0 4px 12px rgba(0, 163, 150, 0.15);
     }
 
     .kart-sayi {
       font-size: 32px;
       font-weight: bold;
       margin-bottom: 8px;
+      color: #00A396;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .kart-ikon {
+      font-size: 24px;
+      color: #00A396;
+      margin-bottom: 12px;
     }
 
     .kart-baslik {
       font-size: 14px;
-      opacity: 0.9;
+      color: #64748b;
       text-transform: uppercase;
       letter-spacing: 1px;
+      font-weight: 500;
     }
 
     .grafik-baslik {
@@ -1184,6 +1331,156 @@
       overflow-x: auto;
       margin-top: 15px;
     }
+
+    .analiz-karti {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin: 20px 0;
+    }
+    
+    .kelime-analiz-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    .kelime-kutu {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .kelime-kutu h4 {
+      color: #00A396;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .analiz-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    .analiz-kutu {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .kelime-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    
+    .kelime-item:hover {
+      transform: translateX(5px);
+      border-color: #00A396;
+      box-shadow: 0 2px 4px rgba(0, 163, 150, 0.1);
+    }
+
+    .kelime-item .kelime {
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    .kelime-item .oran {
+      color: #00A396;
+      font-weight: 700;
+      background: #f0fdf4;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
+    .oyun-sonu-butonlar {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      justify-content: center;
+    }
+
+    .cevap-goster-btn, .yeniden-basla-btn {
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .cevap-goster-btn {
+      background: #f56565;
+      border: 2px solid #f56565;
+    }
+
+    .yeniden-basla-btn {
+      background: #00A396;
+      border: 2px solid #00A396;
+    }
+
+    .cevap-goster-btn:hover, .yeniden-basla-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .cevap-goster-btn:hover {
+      background: white;
+      color: #f56565;
+    }
+
+    .yeniden-basla-btn:hover {
+      background: white;
+      color: #00A396;
+    }
+
+    .kunduz-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 20px auto;
+      padding: 12px 24px;
+      background: white;
+      color: #00A396;
+      border: 2px solid #00A396;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      width: fit-content;
+    }
+
+    .kunduz-link:hover {
+      background: #00A396;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 163, 150, 0.15);
+    }
+
+    .kunduz-link i {
+      font-size: 14px;
+      transition: transform 0.3s ease;
+    }
+
+    .kunduz-link:hover i {
+      transform: translateX(-4px);
+    }
   </style>
 </head>
 <body>
@@ -1210,12 +1507,12 @@
           <h2>Admin Paneli</h2>
           <div class="admin-buttons">
             <button class="admin-logout" onclick="adminCikis()">
-              
               <span>Çıkış</span>
             </button>
             <span class="admin-close" onclick="toggleAdmin(false)">&times;</span>
           </div>
         </div>
+        <div class="admin-content">
         <div class="kelime-ve-istatistik">
           <div class="kelime-bolumu">
             <h2>Haftalık Kelime Listesi</h2>
@@ -1270,48 +1567,80 @@
             <h2>Oyun İstatistikleri</h2>
             <div class="istatistik-kartlar">
               <div class="istatistik-kart">
+                  <div class="kart-ikon">
+                    <i class="fas fa-users"></i>
+                  </div>
                 <div class="kart-sayi" id="toplamOyuncuSayi">0</div>
                 <div class="kart-baslik">Toplam Oyuncu</div>
               </div>
               <div class="istatistik-kart">
-                <div class="kart-sayi" id="aylikOyuncuSayi">0</div>
-                <div class="kart-baslik">Aylık Oyuncu</div>
+                  <div class="kart-ikon">
+                    <i class="fas fa-calendar"></i>
+                  </div>
+                  <div class="kart-sayi" id="aylikOyuncuSayi">0</div>
+                  <div class="kart-baslik">Aylık Oyuncu</div>
               </div>
               <div class="istatistik-kart">
-                <div class="kart-sayi" id="haftalikOyuncuSayi">0</div>
-                <div class="kart-baslik">Haftalık Oyuncu</div>
-              </div>
-              <div class="istatistik-kart">
-                <div class="kart-sayi" id="toplamOyunSayi">0</div>
-                <div class="kart-baslik">Toplam Oyun</div>
-              </div>
-              <div class="istatistik-kart">
+                  <div class="kart-ikon">
+                    <i class="fas fa-calendar-week"></i>
+                  </div>
+                  <div class="kart-sayi" id="haftalikOyuncuSayi">0</div>
+                  <div class="kart-baslik">Haftalık Oyuncu</div>
+                </div>
+                <div class="istatistik-kart">
+                  <div class="kart-ikon">
+                    <i class="fas fa-chart-line"></i>
+                  </div>
                 <div class="kart-sayi" id="ortalamaBasari">0%</div>
                 <div class="kart-baslik">Ortalama Başarı</div>
               </div>
             </div>
             
-            <div class="grafik-container">
-              <!-- Mevcut grafikler -->
-              <div class="grafik-bolum">
-                <div class="grafik-baslik">Günlük Oyun İstatistikleri</div>
-                <canvas id="gunlukGrafik"></canvas>
+              <div class="grafik-container">
+                <!-- Mevcut grafikler -->
+            <div class="grafik-bolum">
+              <div class="grafik-baslik">Günlük Oyun İstatistikleri</div>
+              <canvas id="gunlukGrafik"></canvas>
+            </div>
+            
+                <div class="grafik-bolum">
+                  <div class="grafik-baslik">Kelime Bazlı Başarı Oranları</div>
+                  <canvas id="kelimeBazliGrafik"></canvas>
+                </div>
+                
+                <div class="grafik-bolum">
+                  <div class="grafik-baslik">Ortalama Tahmin Süreleri</div>
+                  <canvas id="tahminSuresiGrafik"></canvas>
               </div>
-              
-              <!-- Yeni grafikler -->
-              <div class="grafik-bolum">
-                <div class="grafik-baslik">Saatlik Aktivite Dağılımı</div>
-                <canvas id="saatlikAktiviteGrafik"></canvas>
-              </div>
-              
-              <div class="grafik-bolum">
-                <div class="grafik-baslik">Kelime Bazlı Başarı Oranları</div>
-                <canvas id="kelimeBazliGrafik"></canvas>
-              </div>
-              
-              <div class="grafik-bolum">
-                <div class="grafik-baslik">Ortalama Tahmin Süreleri</div>
-                <canvas id="tahminSuresiGrafik"></canvas>
+
+                <!-- Haftalık En İyi/Zor Kelimeler -->
+                <div class="analiz-karti">
+                  <h3>Haftalık Kelime Analizi</h3>
+                  <div class="kelime-analiz-grid">
+                    <div class="kelime-kutu">
+                      <h4>En Kolay Kelimeler</h4>
+                      <div id="enKolayKelimeler"></div>
+            </div>
+                    <div class="kelime-kutu">
+                      <h4>En Zor Kelimeler</h4>
+                      <div id="enZorKelimeler"></div>
+          </div>
+        </div>
+      </div>
+
+                <!-- Oyuncu Sadakati ve Zorluk Analizi -->
+                <div class="analiz-karti">
+                  <div class="analiz-grid">
+                    <div class="analiz-kutu">
+                      <h4>Oyuncu Sadakati</h4>
+                      <canvas id="sadakatGrafik"></canvas>
+                    </div>
+                    <div class="analiz-kutu">
+                      <h4>Zorluk Seviyesi Dağılımı</h4>
+                      <canvas id="zorluktGrafik"></canvas>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1326,63 +1655,68 @@
   </div>
 
   <div class="container">
-    <div id="oyun-alani">
-      <div class="oyun-header">
+  <div id="oyun-alani">
+    <div class="oyun-header">
+      <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" 
+           alt="Kunduz Logo">
+      <h1>Kunduz Kelime Keşfi 📝</h1>
+    </div>
+    <div class="aciklama">
+      Günlük kelimeyi <span class="vurgula">6 denemede</span> doğru tahmin etmeye çalışın. Harf kutularının renklerine dikkat edin:
+      <ul>
+        <li><span class="vurgula yesil-vurgula">Yeşil:</span> Harf doğru ve doğru konumda!</li>
+        <li><span class="vurgula sari-vurgula">Sarı:</span> Harf doğru ama yanlış konumda!</li>
+        <li><span class="vurgula gri-vurgula">Gri:</span> Harf yanlış!</li>
+      </ul>
+      En az denemede doğru kelimeyi bularak puanınızı artırın! 🎯
+    </div>
+
+    <div id="oyun-tablosu"></div>
+    <div id="giris-alani">
+        <input type="text" id="tahmin-girdisi" placeholder="Tahmininizi Buraya Yazabilirsiniz 💫" maxlength="gizliKelime.length">
+      <button id="gonder-tusu">Gönder</button>
+    </div>
+
+    <div class="mesaj-kutusu" id="uyari-mesaji"></div>
+    <button id="yeniden-baslat-tusu">Yeniden Başlat</button>
+
+    <div class="istatistik-ayirici"></div>
+
+    <div class="sonuc-gorsel" style="display: block;">
+      <div class="header">
         <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" 
              alt="Kunduz Logo">
-        <h1>Kunduz Kelime Keşfi 📝</h1>
+        <h2>Kelime Keşfi Sonuçlarım</h2>
       </div>
-      <div class="aciklama">
-        Günlük kelimeyi <span class="vurgula">6 denemede</span> doğru tahmin etmeye çalışın. Harf kutularının renklerine dikkat edin:
-        <ul>
-          <li><span class="vurgula yesil-vurgula">Yeşil:</span> Harf doğru ve doğru konumda!</li>
-          <li><span class="vurgula sari-vurgula">Sarı:</span> Harf doğru ama yanlış konumda!</li>
-          <li><span class="vurgula gri-vurgula">Gri:</span> Harf yanlış!</li>
-        </ul>
-        En az denemede doğru kelimeyi bularak puanınızı artırın! 🎯
-      </div>
-
-      <div id="oyun-tablosu"></div>
-      <div id="giris-alani">
-        <input type="text" id="tahmin-girdisi" placeholder="Tahmininizi Buraya Yazabilirsiniz 💫" maxlength="gizliKelime.length">
-        <button id="gonder-tusu">Gönder</button>
-      </div>
-
-      <div class="mesaj-kutusu" id="uyari-mesaji"></div>
-      <button id="yeniden-baslat-tusu">Yeniden Başlat</button>
-
-      <div class="istatistik-ayirici"></div>
-
-      <div class="sonuc-gorsel" style="display: block;">
-        <div class="header">
-          <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" 
-               alt="Kunduz Logo">
-          <h2>Kelime Keşfi Sonuçlarım</h2>
+      <div class="skor-grid">
+        <div class="skor-item">
+          <div class="baslik">Kazanılan</div>
+          <div class="deger" id="kazanma-sayisi">0</div>
         </div>
-        <div class="skor-grid">
-          <div class="skor-item">
-            <div class="baslik">Toplam Oyun</div>
-            <div class="deger" id="oyun-sayisi">0</div>
-          </div>
-          <div class="skor-item">
-            <div class="baslik">Kazanılan</div>
-            <div class="deger" id="kazanma-sayisi">0</div>
-          </div>
-          <div class="skor-item">
-            <div class="baslik">Başarı Oranı</div>
-            <div class="deger" id="kazanma-orani">0%</div>
-          </div>
-          <div class="skor-item">
-            <div class="baslik">Toplam Tahmin</div>
-            <div class="deger" id="toplam-tahmin">0</div>
-          </div>
+        <div class="skor-item">
+          <div class="baslik">Başarı Puanı</div>
+          <div class="deger" id="kazanma-orani">0%</div>
+        </div>
+        <div class="skor-item">
+          <div class="baslik">Toplam Tahmin</div>
+          <div class="deger" id="toplam-tahmin">0</div>
+        </div>
+        <div class="skor-item">
+          <div class="baslik">Oyun Süresi</div>
+          <div class="deger" id="oyun-suresi">0 sn</div>
         </div>
       </div>
+    </div>
 
       <button class="save-stats-btn" onclick="istatistikleriKaydet()">
         <i class="fas fa-download"></i>
         <span>Paylaşmak İçin İstatistiklerinizi Kaydedin</span>
       </button>
+
+      <a href="https://kunduz.com" class="kunduz-link">
+        <i class="fas fa-arrow-left"></i>
+        <span>Kunduz'a Dön</span>
+      </a>
     </div>
   </div>
 
@@ -1400,27 +1734,31 @@
     // Firebase'i başlat
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+    const auth = firebase.auth();
 
-    // Kelime listesi yönetimi için Firebase fonksiyonları
-    async function kelimeListesiniGetir() {
+    // Anonim giriş fonksiyonu
+    async function anonimGirisYap() {
       try {
-        const doc = await db.collection('kelimeler').doc('haftalik').get();
-        if (doc.exists && doc.data().liste) {
-          return doc.data().liste;
-        }
-        return defaultKelimeler;
+        const userCredential = await auth.signInAnonymously();
+        console.log('Anonim giriş başarılı:', userCredential.user.uid);
+        return true;
       } catch (error) {
-        console.error('Kelime listesi alınırken hata:', error);
-        return defaultKelimeler;
+        console.error('Anonim giriş hatası:', error);
+        return false;
       }
     }
 
     async function kelimeListesiniKaydet(liste) {
       try {
-        await db.collection('kelimeler').doc('haftalik').set({
-          liste: liste,
-          guncellemeTarihi: firebase.firestore.FieldValue.serverTimestamp()
-        });
+        // Hata kontrolü ekle
+        if (!liste || liste.length === 0) {
+          throw new Error('Geçersiz kelime listesi');
+        }
+
+        // Doğrudan kaydet
+        await db.collection('kelimeler').doc('haftalik').set({ liste });
+
+        console.log('Kelime listesi başarıyla kaydedildi:', liste);
         return true;
       } catch (error) {
         console.error('Kelime listesi kaydedilirken hata:', error);
@@ -1562,10 +1900,8 @@
         document.getElementById('adminLogin').style.display = 'none';
         document.getElementById('adminContent').style.display = 'block';
         document.querySelector('.admin-panel').classList.add('expanded');
-        kelimeListesiniGetir().then(kelimeler => {
-          defaultKelimeler = kelimeler;
-          kelimeListesiniGoster();
-        });
+        // Admin girişinde varsayılan listeyi göster
+        kelimeListesiniGoster();
         istatistikleriGetir().then(istatistikler => {
           guncelleIstatistikGoruntuleri(istatistikler);
         });
@@ -1582,13 +1918,105 @@
       document.querySelector('.admin-panel').classList.add('expanded');
     }
 
-    // Global değişkenler
+    // Global değişkenler ve fonksiyonlar
     let defaultKelimeler = ["kurs", "ders", "eğitim", "okul", "konu", "sınav", "kunduz"];
     let gizliKelime;
     let oyunSayisi = 0;
     let kazanmaSayisi = 0;
     let toplamTahmin = 0;
     let kazanmaOrani = 0;
+    let baslangicZamani = null;
+    let toplamSure = 0;
+    let mevcutSatir = 0;
+    let oyunBitti = false;
+    let sureSayaci = null;
+
+    function sureyiGuncelle() {
+      if (baslangicZamani && !oyunBitti) {
+        const simdikiZaman = new Date();
+        const gecenSure = Math.floor((simdikiZaman - baslangicZamani) / 1000);
+        document.getElementById('oyun-suresi').textContent = `${gecenSure} sn`;
+      }
+    }
+
+    // Global fonksiyonlar
+    window.cevabıGoster = function() {
+      const mesajKutusu = document.getElementById("uyari-mesaji");
+      mesajKutusu.textContent = `Doğru kelime: ${gizliKelime}`;
+      mesajKutusu.className = "mesaj-kutusu mesaj-hata";
+      mesajKutusu.style.display = "block";
+    }
+
+    window.yenidenBasla = function() {
+      mevcutSatir = 0;
+      oyunBitti = false;
+      baslangicZamani = null;
+      // Süre sayacını sıfırla
+      if (sureSayaci) {
+        clearInterval(sureSayaci);
+        sureSayaci = null;
+      }
+      document.getElementById('oyun-suresi').textContent = '0 sn';
+      
+      // Oyun sonu butonlarını kaldır
+      const butonlar = document.querySelector('.oyun-sonu-butonlar');
+      if (butonlar) {
+        butonlar.remove();
+      }
+      
+      // Mesaj kutusunu temizle
+      const mesajKutusu = document.getElementById("uyari-mesaji");
+      mesajKutusu.style.display = "none";
+      
+      // Yeni kelimeyi al
+      gizliKelime = defaultKelimeler[new Date().getDay()];
+      
+      // Tüm harf kutularını temizle
+      const kutular = document.querySelectorAll('.harf-kutusu');
+      kutular.forEach(kutu => {
+        kutu.textContent = '';
+        kutu.className = 'harf-kutusu';
+      });
+      
+      document.getElementById("tahmin-girdisi").value = '';
+    }
+
+    window.gosterOyunSonuSecenekleri = function() {
+      // Önceki butonları temizle
+      const eskiButonlar = document.querySelector('.oyun-sonu-butonlar');
+      if (eskiButonlar) {
+        eskiButonlar.remove();
+      }
+
+      const butonContainer = document.createElement('div');
+      butonContainer.className = 'oyun-sonu-butonlar';
+      butonContainer.innerHTML = `
+        <button class="cevap-goster-btn" onclick="cevabıGoster()">
+          <i class="fas fa-eye"></i> Cevabı Gör
+        </button>
+        <button class="yeniden-basla-btn" onclick="yenidenBasla()">
+          <i class="fas fa-redo"></i> Yeniden Başla
+        </button>
+      `;
+      
+      document.getElementById('giris-alani').appendChild(butonContainer);
+    }
+
+    // Kelime listesi yönetimi için Firebase fonksiyonları
+    async function kelimeListesiniGetir() {
+      try {
+        const doc = await db.collection('kelimeler').doc('haftalik').get();
+        if (doc.exists && doc.data().liste) {
+          return doc.data().liste;
+        }
+        // Eğer Firebase'de kelime listesi yoksa varsayılan listeyi kullan
+        return ["kurs", "ders", "eğitim", "okul", "konu", "sınav", "kunduz"];
+      } catch (error) {
+        console.error('Kelime listesi alınırken hata:', error);
+        // Hata durumunda varsayılan listeyi döndür
+        return ["kurs", "ders", "eğitim", "okul", "konu", "sınav", "kunduz"];
+      }
+    }
 
     document.addEventListener("DOMContentLoaded", async () => {
       // Önce kelime listesini al, sonra oyunu başlat
@@ -1620,8 +2048,6 @@
       const uyariMesaji = document.getElementById("uyari-mesaji");
       const oyunSayisiEl = document.getElementById("oyun-sayisi");
       const kazanmaOraniEl = document.getElementById("kazanma-orani");
-      let mevcutSatir = 0;
-      let oyunBitti = false;
       const toplamTahminEl = document.getElementById("toplam-tahmin");
       const kazanmaSayisiEl = document.getElementById("kazanma-sayisi");
 
@@ -1634,35 +2060,43 @@
         }, 5000);
       }
 
-      function tabloyuOlustur() {
-        const tablo = document.getElementById("oyun-tablosu");
-        tablo.innerHTML = "";
-        // Güvenlik kontrolü ekleyelim
-        const harfSayisi = gizliKelime ? gizliKelime.length : 5; // Varsayılan 5 harf
+    // Tablo oluşturma fonksiyonu
+    function tabloyuOlustur() {
+      const tablo = document.getElementById("oyun-tablosu");
+      tablo.innerHTML = "";
+      // Güvenlik kontrolü ekleyelim
+      const harfSayisi = gizliKelime ? gizliKelime.length : 5; // Varsayılan 5 harf
 
-        for (let i = 0; i < 6; i++) { // 6 satır
-          const satir = document.createElement("div");
-          satir.classList.add("satir");
+      for (let i = 0; i < 6; i++) { // 6 satır
+        const satir = document.createElement("div");
+        satir.classList.add("satir");
 
-          for (let j = 0; j < harfSayisi; j++) { // Harf sayısı kadar kutu ekle
-            const kutu = document.createElement("div");
-            kutu.classList.add("harf-kutusu");
-            satir.appendChild(kutu);
-          }
-
-          tablo.appendChild(satir);
+        for (let j = 0; j < harfSayisi; j++) { // Harf sayısı kadar kutu ekle
+          const kutu = document.createElement("div");
+          kutu.classList.add("harf-kutusu");
+          satir.appendChild(kutu);
         }
+
+        tablo.appendChild(satir);
       }
+    }
 
       function tahminYap() {
         if (oyunBitti) return;
+
+        // İlk tahminde süreyi başlat
+        if (!baslangicZamani) {
+          baslangicZamani = new Date();
+          // Süre sayacını başlat
+          sureSayaci = setInterval(sureyiGuncelle, 1000);
+        }
 
         toplamTahmin++;
         toplamTahminEl.textContent = toplamTahmin;
 
          const tahmin = tahminGirdisi.value.trim().toLocaleLowerCase("tr-TR");
   if (tahmin.length !== gizliKelime.length) {
-    mesajGoster(`Lütfen ${gizliKelime.length} harf girin!`, false); // Uyarı mesajı
+          mesajGoster(`Lütfen ${gizliKelime.length} harf girin!`, false);
     return;
   }
 
@@ -1684,39 +2118,48 @@
         tahminGirdisi.value = "";
 
         if (tahmin === gizliKelime) {
+          // Süreyi hesapla
+          const bitisZamani = new Date();
+          toplamSure = Math.floor((bitisZamani - baslangicZamani) / 1000); // saniye cinsinden
+          const basariPuani = hesaplaBasariPuani(mevcutSatir, toplamSure);
+
           kazanmaSayisi++;
           kazanmaSayisiEl.textContent = kazanmaSayisi;
+          oyunSayisi++;
+          kazanmaOrani = basariPuani;
+          kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
+          document.getElementById('oyun-suresi').textContent = `${toplamSure} sn`;
           oyunBitti = true;
           istatistikKaydet({
             kazandi: true,
-            denemeSayisi: mevcutSatir + 1,
+            denemeSayisi: mevcutSatir,
             kelime: gizliKelime,
             oyuncuSayisi: 1,
             toplamOyun: 1,
             kazanilanOyun: 1,
-            ortalamaDenemeSayisi: mevcutSatir + 1,
-            basariOrani: 100
+            ortalamaDenemeSayisi: mevcutSatir,
+            basariOrani: basariPuani,
+            tahminSuresi: toplamSure
           });
-          mesajGoster("Tebrikler! Doğru tahmin! 🎉");
+          mesajGoster(`Tebrikler! Başarı puanınız: ${basariPuani}% (${toplamSure} saniye) 🎉`);
+          // Oyun bitti mesajından sonra yeni oyun için bekle
+          setTimeout(() => {
+            gosterOyunSonuSecenekleri();
+          }, 2000);
+          // Süre sayacını durdur
+          clearInterval(sureSayaci);
         } else if (mevcutSatir >= 6) {
+          const bitisZamani = new Date();
+          toplamSure = Math.floor((bitisZamani - baslangicZamani) / 1000);
+          oyunSayisi++;
+          kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
+          kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
           oyunBitti = true;
-          istatistikKaydet({
-            kazandi: false,
-            denemeSayisi: 6,
-            kelime: gizliKelime,
-            oyuncuSayisi: 1,
-            toplamOyun: 1,
-            kazanilanOyun: 0,
-            ortalamaDenemeSayisi: 6,
-            basariOrani: 0
-          });
-          mesajGoster(`Oyun bitti! Doğru kelime: ${gizliKelime}`, false);
+          mesajGoster("Maalesef bilemediniz!", false);
+          gosterOyunSonuSecenekleri();
+          // Süre sayacını durdur
+          clearInterval(sureSayaci);
         }
-
-        oyunSayisi++;
-        kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
-        oyunSayisiEl.textContent = oyunSayisi;
-        kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
       }
 
       gonderTusu.addEventListener("click", tahminYap);
@@ -1726,26 +2169,6 @@
           tahminYap();
         }
       });
-
-      function yenidenBasla() {
-        mevcutSatir = 0;
-        oyunBitti = false;
-        yenidenBaslatTusu.style.display = 'none';
-        // Firebase'den güncel kelime listesini al
-        kelimeListesiniGetir().then(kelimeler => {
-          if (kelimeler && kelimeler.length > 0) {
-            defaultKelimeler = kelimeler;
-          }
-          gizliKelime = defaultKelimeler[new Date().getDay()];
-          tabloyuOlustur();
-          tahminGirdisi.value = '';
-        }).catch(error => {
-          console.error('Kelime listesi alınırken hata:', error);
-          gizliKelime = defaultKelimeler[new Date().getDay()];
-          tabloyuOlustur();
-          tahminGirdisi.value = '';
-        });
-      }
 
       yenidenBaslatTusu.addEventListener("click", yenidenBasla);
 
@@ -1766,8 +2189,8 @@
         
         const basarili = await kelimeListesiniKaydet(kelimeListesi);
         if (basarili) {
-          defaultKelimeler = kelimeListesi;
-          alert('Kelime listesi başarıyla kaydedildi!');
+        defaultKelimeler = kelimeListesi;
+        alert('Kelime listesi başarıyla kaydedildi!');
         } else {
           alert('Kelime listesi kaydedilirken bir hata oluştu!');
         }
@@ -1877,20 +2300,24 @@
 
       // kelimeListesiniGoster fonksiyonunu güncelleyelim
       window.kelimeListesiniGoster = function() {
-        // Günleri doğru sırayla göster
-        const gunSirasi = [1, 2, 3, 4, 5, 6, 0]; // Pazartesi'den Pazar'a
+        // Varsayılan kelime listesini kullan
+        const varsayilanKelimeler = ["kurs", "ders", "eğitim", "okul", "konu", "sınav", "kunduz"];
+        const gunSirasi = [1, 2, 3, 4, 5, 6, 0];
+
         for (let i = 0; i < 7; i++) {
           const input = document.getElementById(`kelime${i}`);
           if (input) {
-            input.value = defaultKelimeler[gunSirasi[i]];
+            input.value = varsayilanKelimeler[gunSirasi[i]];
           }
         }
+
+        // Varsayılan listeyi kaydet
+        kelimeListesiniKaydet(varsayilanKelimeler);
       }
     });
 
     function gorselOlustur() {
       const gorsel = document.getElementById('sonucGorsel');
-      document.getElementById('gorselOyunSayisi').textContent = oyunSayisi;
       document.getElementById('gorselKazanilan').textContent = kazanmaSayisi;
       document.getElementById('gorselBasariOrani').textContent = kazanmaOrani + '%';
       document.getElementById('gorselTahminSayisi').textContent = toplamTahmin;
@@ -1991,7 +2418,6 @@
         document.getElementById('toplamOyuncuSayi').textContent = sonIstatistik.oyuncu;
         document.getElementById('aylikOyuncuSayi').textContent = sonIstatistik.aylikOyuncu;
         document.getElementById('haftalikOyuncuSayi').textContent = sonIstatistik.haftalikOyuncu;
-        document.getElementById('toplamOyunSayi').textContent = sonIstatistik.toplamOyun;
         document.getElementById('ortalamaBasari').textContent = sonIstatistik.basariOrani + '%';
       }
 
@@ -2000,90 +2426,158 @@
     }
 
     function guncelleGrafikler(istatistikler) {
-      // Önceki grafikleri temizle
+      // Grafik elementlerinin varlığını kontrol et
       const gunlukGrafikElem = document.getElementById('gunlukGrafik');
-      const basariGrafikElem = document.getElementById('basariGrafik');
+      const kelimeBazliGrafikElem = document.getElementById('kelimeBazliGrafik');
+      const tahminSuresiGrafikElem = document.getElementById('tahminSuresiGrafik');
+      const sadakatGrafikElem = document.getElementById('sadakatGrafik');
+      const zorlukGrafikElem = document.getElementById('zorluktGrafik');
+
+      // Önceki grafikleri temizle
+      if (window.charts) {
+        Object.values(window.charts).forEach(chart => {
+          if (chart) chart.destroy();
+        });
+      }
       
-      if (window.gunlukChart) {
-        window.gunlukChart.destroy();
-      }
-      if (window.basariChart) {
-        window.basariChart.destroy();
-      }
+      // Grafik nesnelerini saklamak için global obje
+      window.charts = {};
 
       // Günlük grafik
-      const gunlukCtx = document.getElementById('gunlukGrafik').getContext('2d');
-      window.gunlukChart = new Chart(gunlukCtx, {
-        type: 'line',
-        data: {
-          labels: istatistikler.map(item => item.tarih),
-          datasets: [{
-            label: 'Günlük Oyuncu',
-            data: istatistikler.map(item => item.oyuncu),
-            borderColor: '#00A396',
-            backgroundColor: 'rgba(0, 163, 150, 0.1)',
-            fill: true,
-            tension: 0.4
-          }, {
-            label: 'Haftalık Oyuncu',
-            data: istatistikler.map(item => item.haftalikOyuncu),
-            borderColor: '#FABE00',
-            backgroundColor: 'rgba(250, 190, 0, 0.1)',
-            fill: true,
-            tension: 0.4
-          }, {
-            label: 'Aylık Oyuncu',
-            data: istatistikler.map(item => item.aylikOyuncu),
-            borderColor: '#DC2626',
-            backgroundColor: 'rgba(220, 38, 38, 0.1)',
-            fill: true,
-            tension: 0.4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          plugins: {
-            legend: { position: 'bottom' },
-            tooltip: {
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
-              padding: 12,
-              titleFont: { size: 14 },
-              bodyFont: { size: 13 }
+      if (gunlukGrafikElem) {
+        const gunlukCtx = gunlukGrafikElem.getContext('2d');
+        window.charts.gunluk = new Chart(gunlukCtx, {
+          type: 'line',
+          data: {
+            labels: istatistikler.map(item => item.tarih),
+            datasets: [{
+              label: 'Günlük Oyuncu',
+              data: istatistikler.map(item => item.oyuncu),
+              borderColor: '#00A396',
+              backgroundColor: 'rgba(0, 163, 150, 0.1)',
+              fill: true,
+              tension: 0.4
+            }, {
+              label: 'Haftalık Oyuncu',
+              data: istatistikler.map(item => item.haftalikOyuncu),
+              borderColor: '#FABE00',
+              backgroundColor: 'rgba(250, 190, 0, 0.1)',
+              fill: true,
+              tension: 0.4
+            }, {
+              label: 'Aylık Oyuncu',
+              data: istatistikler.map(item => item.aylikOyuncu),
+              borderColor: '#DC2626',
+              backgroundColor: 'rgba(220, 38, 38, 0.1)',
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: { position: 'bottom' },
+              tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                padding: 12,
+                titleFont: { size: 14 },
+                bodyFont: { size: 13 }
+              }
             }
           }
-        }
-      });
-      
-      // Başarı dağılımı grafik
-      const basariCtx = document.getElementById('basariGrafik').getContext('2d');
-      window.basariChart = new Chart(basariCtx, {
-        type: 'doughnut',
-        data: {
-          labels: ['1. Denemede', '2. Denemede', '3. Denemede', '4. Denemede', '5. Denemede', '6. Denemede'],
-          datasets: [{
-            data: istatistikler.reduce((acc, curr) => {
-              acc[curr.denemeSayisi - 1] = (acc[curr.denemeSayisi - 1] || 0) + 1;
-              return acc;
-            }, Array(6).fill(0)),
-            backgroundColor: [
-              '#00A396',
-              '#01CCBC',
-              '#FABE00',
-              '#FCD34D',
-              '#F59E0B',
-              '#DC2626'
-            ]
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          plugins: {
-            legend: { position: 'bottom' }
+        });
+      }
+
+      // Kelime bazlı başarı oranları
+      if (kelimeBazliGrafikElem) {
+        const kelimeBazliCtx = kelimeBazliGrafikElem.getContext('2d');
+        window.charts.kelimeBazli = new Chart(kelimeBazliCtx, {
+          type: 'bar',
+          data: {
+            labels: istatistikler.map(item => item.kelime),
+            datasets: [{
+              label: 'Başarı Oranı (%)',
+              data: istatistikler.map(item => item.basariOrani),
+              backgroundColor: '#00A396'
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: 'bottom' }
+            }
           }
-        }
-      });
+        });
+      }
+
+      // Ortalama tahmin süreleri
+      if (tahminSuresiGrafikElem) {
+        const tahminSuresiCtx = tahminSuresiGrafikElem.getContext('2d');
+        window.charts.tahminSuresi = new Chart(tahminSuresiCtx, {
+          type: 'line',
+          data: {
+            labels: istatistikler.map(item => item.tarih),
+            datasets: [{
+              label: 'Ortalama Tahmin Süresi (sn)',
+              data: istatistikler.map(item => item.ortTahminSuresi || 0),
+              borderColor: '#FABE00'
+            }]
+          }
+        });
+      }
+
+      // Oyuncu sadakati grafiği
+      if (sadakatGrafikElem) {
+        const sadakatCtx = sadakatGrafikElem.getContext('2d');
+        window.charts.sadakat = new Chart(sadakatCtx, {
+          type: 'pie',
+          data: {
+            labels: ['Düzenli Oyuncular', 'Ara Sıra Oynayanlar', 'Tek Seferlik'],
+            datasets: [{
+              data: [60, 30, 10],
+              backgroundColor: ['#00A396', '#FABE00', '#DC2626']
+            }]
+          }
+        });
+      }
+
+      // Zorluk seviyesi dağılımı
+      if (zorlukGrafikElem) {
+        const zorlukCtx = zorlukGrafikElem.getContext('2d');
+        window.charts.zorluk = new Chart(zorlukCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Kolay', 'Orta', 'Zor'],
+            datasets: [{
+              data: [30, 50, 20],
+              backgroundColor: ['#00A396', '#FABE00', '#DC2626']
+            }]
+          }
+        });
+      }
+
+      // En kolay ve en zor kelimeleri göster
+      const enKolayDiv = document.getElementById('enKolayKelimeler');
+      const enZorDiv = document.getElementById('enZorKelimeler');
+      
+      if (enKolayDiv && enZorDiv) {
+        const kelimeler = istatistikler.sort((a, b) => b.basariOrani - a.basariOrani);
+        
+        enKolayDiv.innerHTML = kelimeler.slice(0, 3).map(k => `
+          <div class="kelime-item">
+            <span class="kelime">${k.kelime}</span>
+            <span class="oran">%${k.basariOrani}</span>
+          </div>
+        `).join('');
+        
+        enZorDiv.innerHTML = kelimeler.slice(-3).reverse().map(k => `
+          <div class="kelime-item">
+            <span class="kelime">${k.kelime}</span>
+            <span class="oran">%${k.basariOrani}</span>
+          </div>
+        `).join('');
+      }
     }
 
     function hataYonet(error, mesaj) {
@@ -2095,6 +2589,36 @@
     db.enableNetwork().catch(error => {
       hataYonet(error, 'Firebase bağlantısı kurulamadı. Lütfen internet bağlantınızı kontrol edin.');
     });
+
+    function hesaplaBasariPuani(denemeSayisi, sure) {
+      // Maksimum süre 300 saniye (5 dakika) olsun
+      const maksimumSure = 300;
+      // Süre puanı (süre arttıkça düşer)
+      const surePuani = Math.max(0, 100 - (sure / maksimumSure * 50));
+      // Deneme sayısı puanı (deneme sayısı arttıkça düşer)
+      const denemePuani = Math.max(0, 100 - ((denemeSayisi - 1) * 15));
+      // Toplam puan (süre ve deneme sayısının ortalaması)
+      return Math.round((surePuani + denemePuani) / 2);
+    }
+
+    // Global fonksiyonlar
+    window.adminCikis = function() {
+      // Admin oturumunu sonlandır
+      localStorage.removeItem('adminOturum');
+      
+      // Admin panelini küçült ve giriş ekranına dön
+      document.getElementById('adminLogin').style.display = 'block';
+      document.getElementById('adminContent').style.display = 'none';
+      document.querySelector('.admin-panel').classList.remove('expanded');
+      
+      // Input alanlarını temizle
+      document.getElementById('adminUser').value = '';
+      document.getElementById('adminPass').value = '';
+      
+      // Admin panelini kapat
+      toggleAdmin(false);
+    }
   </script>
 </body>
 </html>
+
