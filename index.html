@@ -2607,8 +2607,8 @@ function tabloyuOlustur() {
       let puan = 100;
 
       // Deneme sayısına göre puan düşür
-      if (denemeSayisi > 1) {
-        puan -= (denemeSayisi - 1) * 10; // Her fazla deneme için 10 puan düş
+      if (toplamTahmin > 1) {
+        puan -= (toplamTahmin - 1) * 10; // Her fazla deneme için 10 puan düş
       }
 
       // Süreye göre puan düşür
