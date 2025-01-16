@@ -2104,13 +2104,13 @@ function tabloyuOlustur() {
       function tahminYap() {
         if (oyunBitti) return;
 
-        const tahmin = tahminGirdisi.value.trim().toLocaleLowerCase("tr-TR");
+         const tahmin = tahminGirdisi.value.trim().toLocaleLowerCase("tr-TR");
         
         // Harf sayısı kontrolü
-        if (tahmin.length !== gizliKelime.length) {
+  if (tahmin.length !== gizliKelime.length) {
           mesajGoster(`Lütfen ${gizliKelime.length} harf girin!`, false);
-          return;
-        }
+    return;
+  }
 
         // İlk tahminde süreyi başlat
         if (!baslangicZamani) {
@@ -2177,9 +2177,9 @@ function tabloyuOlustur() {
         } else if (mevcutSatir >= 6) {
           const bitisZamani = new Date();
           const gecenSure = Math.floor((bitisZamani - baslangicZamani) / 1000);
-          oyunSayisi++;
-          kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
-          kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
+        oyunSayisi++;
+        kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
+        kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
           oyunBitti = true;
           mesajGoster("Maalesef bilemediniz!", false);
           gosterOyunSonuSecenekleri();
@@ -2435,13 +2435,48 @@ function tabloyuOlustur() {
       }
     }
 
-    function guncelleIstatistikGoruntuleri(istatistikler) {
+    async function guncelleIstatistikGoruntuleri(istatistikler) {
       if (istatistikler.length > 0) {
         const sonIstatistik = istatistikler[0];
         document.getElementById('toplamOyuncuSayi').textContent = sonIstatistik.oyuncu;
         document.getElementById('aylikOyuncuSayi').textContent = sonIstatistik.aylikOyuncu;
         document.getElementById('haftalikOyuncuSayi').textContent = sonIstatistik.haftalikOyuncu;
         document.getElementById('ortalamaBasari').textContent = sonIstatistik.basariOrani + '%';
+      }
+
+      // Kelime listesini Firebase'den al
+      try {
+        const kelimeListesi = await kelimeListesiniGetir();
+        if (kelimeListesi && kelimeListesi.length > 0) {
+          defaultKelimeler = kelimeListesi;
+        }
+      } catch (error) {
+        console.error('Kelime listesi alınırken hata:', error);
+      }
+
+      // En kolay ve en zor kelimeleri göster
+      const enKolayDiv = document.getElementById('enKolayKelimeler');
+      const enZorDiv = document.getElementById('enZorKelimeler');
+      
+      if (enKolayDiv && enZorDiv) {
+        // İstatistikleri kelimelerle eşleştir
+        const kelimeIstatistikleri = istatistikler
+          .filter(stat => stat.kelime && defaultKelimeler.includes(stat.kelime))
+          .sort((a, b) => b.basariOrani - a.basariOrani);
+        
+        enKolayDiv.innerHTML = kelimeIstatistikleri.slice(0, 3).map(k => `
+          <div class="kelime-item">
+            <span class="kelime">${k.kelime}</span>
+            <span class="oran">%${k.basariOrani}</span>
+          </div>
+        `).join('');
+        
+        enZorDiv.innerHTML = kelimeIstatistikleri.slice(-3).reverse().map(k => `
+          <div class="kelime-item">
+            <span class="kelime">${k.kelime}</span>
+            <span class="oran">%${k.basariOrani}</span>
+          </div>
+        `).join('');
       }
 
       // Grafikleri güncelle
@@ -2578,28 +2613,6 @@ function tabloyuOlustur() {
             }]
           }
         });
-      }
-
-      // En kolay ve en zor kelimeleri göster
-      const enKolayDiv = document.getElementById('enKolayKelimeler');
-      const enZorDiv = document.getElementById('enZorKelimeler');
-      
-      if (enKolayDiv && enZorDiv) {
-        const kelimeler = istatistikler.sort((a, b) => b.basariOrani - a.basariOrani);
-        
-        enKolayDiv.innerHTML = kelimeler.slice(0, 3).map(k => `
-          <div class="kelime-item">
-            <span class="kelime">${k.kelime}</span>
-            <span class="oran">%${k.basariOrani}</span>
-          </div>
-        `).join('');
-        
-        enZorDiv.innerHTML = kelimeler.slice(-3).reverse().map(k => `
-          <div class="kelime-item">
-            <span class="kelime">${k.kelime}</span>
-            <span class="oran">%${k.basariOrani}</span>
-          </div>
-        `).join('');
       }
     }
 
