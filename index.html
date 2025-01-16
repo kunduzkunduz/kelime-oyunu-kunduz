@@ -1481,6 +1481,187 @@
     .kunduz-link:hover i {
       transform: translateX(-4px);
     }
+
+    .bilgi-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #00A396;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 5px;
+      box-shadow: none;
+    }
+
+    .bilgi-btn:hover {
+      color: #019183;
+      background: none;
+      box-shadow: none;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    .modal-content {
+      position: relative;
+      background-color: #fff;
+      margin: 2% auto;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 480px) {
+      .modal-content {
+        margin: 0 auto;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+      }
+    }
+
+    .modal-content::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .modal-content::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    .modal-content::-webkit-scrollbar-thumb {
+      background: #00A396;
+      border-radius: 4px;
+    }
+
+    .modal-content::-webkit-scrollbar-thumb:hover {
+      background: #019183;
+    }
+
+    .close-modal {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 24px;
+      color: #64748b;
+      cursor: pointer;
+      position: sticky;
+      top: 0;
+      background: white;
+      padding: 5px;
+      z-index: 1;
+    }
+
+    .modal-title {
+      color: #00A396;
+      margin-bottom: 20px;
+      font-size: 1.5em;
+      text-align: center;
+    }
+
+    .modal-section {
+      margin-bottom: 15px;
+    }
+
+    .modal-section h3 {
+      color: #00A396;
+      margin-bottom: 10px;
+    }
+
+    .ornek-kelime {
+      margin-bottom: 15px;
+    }
+
+    .ornek-satir {
+      display: flex;
+      gap: 5px;
+    }
+
+    .ornek-kutu {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #00A396;
+      border-radius: 4px;
+    }
+
+    .ornek-puan {
+      margin-top: 15px;
+    }
+
+    .ornek-liste {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .ornek-kelime {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    .ornek-satir {
+      display: flex;
+      gap: 5px;
+      justify-content: center;
+      margin: 10px 0;
+    }
+
+    .ornek-kutu {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+      border-radius: 8px;
+    }
+
+    .ornek-puan {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    .ornek-puan ul {
+      margin-top: 10px;
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .ornek-puan li {
+      padding: 5px 0;
+      color: #64748b;
+    }
+
+    .modal-section ul {
+      margin-top: 10px;
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .modal-section li {
+      padding: 5px 0;
+      color: #64748b;
+    }
   </style>
 </head>
 <body>
@@ -1657,9 +1838,11 @@
   <div class="container">
   <div id="oyun-alani">
     <div class="oyun-header">
-      <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" 
-           alt="Kunduz Logo">
-      <h1>Kunduz Kelime Keşfi 📝</h1>
+      <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" alt="Kunduz Logo">
+      <h1>Kunduz Kelime Keşfi</h1>
+      <button id="bilgi-butonu" class="bilgi-btn">
+        <i class="fas fa-info-circle"></i>
+      </button>
     </div>
     <div class="aciklama">
       Günlük kelimeyi <span class="vurgula">6 denemede</span> doğru tahmin etmeye çalışın. Harf kutularının renklerine dikkat edin:
@@ -1684,9 +1867,8 @@
 
     <div class="sonuc-gorsel" style="display: block;">
       <div class="header">
-        <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" 
-             alt="Kunduz Logo">
-        <h2>Kelime Keşfi Sonuçlarım</h2>
+        <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" alt="Kunduz Logo">
+        <h2>Kunduz Kelime Keşfi Sonuçlarım</h2>
       </div>
       <div class="skor-grid">
         <div class="skor-item">
@@ -1717,6 +1899,57 @@
           <i class="fas fa-arrow-left"></i>
           <span>Kunduz'a Dön</span>
         </a>
+    </div>
+  </div>
+
+  <div id="bilgi-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2 class="modal-title">Nasıl Oynanır?</h2>
+      
+      <div class="modal-section">
+        <h3>Oyun Kuralları</h3>
+        <ul>
+          <li>Her gün yeni bir kelime belirlenir.</li>
+          <li>Kelimenin uzunluğu kadar harf girmeniz gerekir.</li>
+          <li>Toplam 6 deneme hakkınız vardır.</li>
+        </ul>
+      </div>
+      
+      <div class="modal-section">
+        <h3>Renk Anlamları</h3>
+        <div class="ornek-kelime">
+          <p>Örnek: Gizli kelime "DERS" iken "DANS" tahmini yapılırsa:</p>
+          <div class="ornek-satir">
+            <div class="ornek-kutu yesil">D</div>
+            <div class="ornek-kutu gri">A</div>
+            <div class="ornek-kutu gri">N</div>
+            <div class="ornek-kutu sari">S</div>
+          </div>
+        </div>
+        <ul>
+          <li><span class="yesil-vurgula">Yeşil (D):</span> Harf doğru yerde</li>
+          <li><span class="sari-vurgula">Sarı (S):</span> Harf var ama yanlış yerde</li>
+          <li><span class="gri-vurgula">Gri (A,N):</span> Harf kelimede yok</li>
+        </ul>
+      </div>
+      
+      <div class="modal-section">
+        <h3>Puanlama</h3>
+        <div class="ornek-puan">
+          <p>Örnek puanlama:</p>
+          <ul>
+            <li>1. denemede: 100 puan</li>
+            <li>3. denemede (45 sn): 65 puan</li>
+            <li>6. denemede (120 sn): 30 puan</li>
+          </ul>
+        </div>
+        <ul>
+          <li>Her fazla deneme için 10 puan düşer</li>
+          <li>Her 30 saniye için 5 puan düşer</li>
+          <li>İlk denemede bilirseniz bonus puan!</li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -2660,6 +2893,25 @@ function tabloyuOlustur() {
       
       // Admin panelini kapat
       toggleAdmin(false);
+    }
+
+    // Bilgi modalı için
+    const bilgiModal = document.getElementById('bilgi-modal');
+    const bilgiBtn = document.getElementById('bilgi-butonu');
+    const closeModal = document.querySelector('.close-modal');
+
+    bilgiBtn.onclick = function() {
+      bilgiModal.style.display = "block";
+    }
+
+    closeModal.onclick = function() {
+      bilgiModal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == bilgiModal) {
+        bilgiModal.style.display = "none";
+      }
     }
   </script>
 </body>
