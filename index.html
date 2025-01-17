@@ -1484,7 +1484,7 @@
       transition: all 0.3s ease;
       width: fit-content;
     }
-
+    
     .kunduz-link:hover {
       background: #00A396;
       color: white;
@@ -2327,38 +2327,58 @@ function tabloyuOlustur() {
       function tahminYap() {
         if (oyunBitti) return;
 
-         const tahmin = tahminGirdisi.value.trim().toLocaleLowerCase("tr-TR");
+        const tahmin = tahminGirdisi.value.trim().toLocaleLowerCase("tr-TR");
         
-        // Harf sayısı kontrolü
-  if (tahmin.length !== gizliKelime.length) {
+        if (tahmin.length !== gizliKelime.length) {
           mesajGoster(`Lütfen ${gizliKelime.length} harf girin!`, false);
-    return;
-  }
+          return;
+        }
 
         // İlk tahminde süreyi başlat
         if (!baslangicZamani) {
           baslangicZamani = new Date();
-          // Süre sayacını başlat
           sureSayaci = setInterval(sureyiGuncelle, 1000);
           ilkOyun = false;
         }
 
-        // Geçerli tahmin yapıldığında toplam tahmin sayısını artır
         toplamTahmin++;
         toplamTahminEl.textContent = toplamTahmin;
 
         const mevcutSatirKutular = document.querySelectorAll(".satir")[mevcutSatir].children;
+        
+        // Harflerin durumunu kontrol et
+        const harfDurumu = new Array(gizliKelime.length).fill('gri');
+        const harfSayisi = {};
+        
+        // Gizli kelimedeki harf sayılarını hesapla
+        for (let i = 0; i < gizliKelime.length; i++) {
+          harfSayisi[gizliKelime[i]] = (harfSayisi[gizliKelime[i]] || 0) + 1;
+        }
+        
+        // Önce doğru yerdeki harfleri işaretle
+        for (let i = 0; i < gizliKelime.length; i++) {
+          if (tahmin[i] === gizliKelime[i]) {
+            harfDurumu[i] = 'yesil';
+            harfSayisi[tahmin[i]]--;
+          }
+        }
+        
+        // Sonra kalan harfleri kontrol et
+        for (let i = 0; i < gizliKelime.length; i++) {
+          if (harfDurumu[i] !== 'yesil') { // Eğer harf zaten yeşil değilse
+            if (harfSayisi[tahmin[i]] > 0) { // Ve bu harften hala kalan varsa
+              harfDurumu[i] = 'sari';
+              harfSayisi[tahmin[i]]--;
+            }
+            // Eğer harften kalmadıysa veya hiç yoksa gri kalacak
+          }
+        }
+        
+        // Kutuları renklendir
         for (let i = 0; i < gizliKelime.length; i++) {
           const kutu = mevcutSatirKutular[i];
           kutu.textContent = tahmin[i];
-          kutu.className = "harf-kutusu";
-          kutu.classList.add(
-            tahmin[i] === gizliKelime[i]
-              ? "yesil"
-              : gizliKelime.includes(tahmin[i])
-              ? "sari"
-              : "gri"
-          );
+          kutu.className = 'harf-kutusu ' + harfDurumu[i];
         }
 
         mevcutSatir++;
@@ -2946,7 +2966,34 @@ function tabloyuOlustur() {
     window.onload = function() {
       modal.classList.add('show');
     }
+
+    function tahminKontrol(tahmin) {
+      const sonuc = Array(tahmin.length).fill('gri');
+      const gizliHarfSayisi = {};
+
+      // Gizli kelimedeki her harfin sayısını hesapla
+      for (let harf of gizliKelime) {
+        gizliHarfSayisi[harf] = (gizliHarfSayisi[harf] || 0) + 1;
+      }
+
+      // Doğru yerdeki harfleri yeşil yap
+      for (let i = 0; i < tahmin.length; i++) {
+        if (tahmin[i] === gizliKelime[i]) {
+          sonuc[i] = 'yesil';
+          gizliHarfSayisi[tahmin[i]]--;
+        }
+      }
+
+      // Yanlış yerdeki harfleri kontrol et
+      for (let i = 0; i < tahmin.length; i++) {
+        if (sonuc[i] !== 'yesil' && gizliHarfSayisi[tahmin[i]] > 0) {
+          sonuc[i] = 'sari';
+          gizliHarfSayisi[tahmin[i]]--;
+        }
+      }
+
+      return sonuc;
+    }
   </script>
 </body>
 </html>
-
