@@ -2023,22 +2023,21 @@
       }
     }
 
-    async function kunduzDonTiklamaKaydet(event) {
-      event.preventDefault();
-      console.log('Kunduz\'a Dön butonuna tıklandı, kayıt başlıyor...');
-      try {
-        const userId = auth.currentUser.uid;
-        console.log('Kullanıcı ID:', userId);
-        const bugun = new Date().toISOString().split('T')[0];
-        const docId = `${userId}_${bugun}`;
-        
-        const tiklamaDoc = await db.collection('kunduz_tiklamalari').doc(docId).get();
-        if (tiklamaDoc.exists) {
-          console.log('Kullanıcı bugün zaten tıkladı');
-          window.open('https://t.kndz.link/uF4J', '_blank');
-          return;
-        }
-
+async function kunduzDonTiklamaKaydet(event) {
+  event.preventDefault();
+  console.log('Kunduz\'a Dön butonuna tıklandı, kayıt başlıyor...');
+  const link = event.target.closest('a');
+  
+  // İstatistik kaydını arka planda çalıştır
+  (async () => {
+    try {
+      const userId = auth.currentUser.uid;
+      console.log('Kullanıcı ID:', userId);
+      const bugun = new Date().toISOString().split('T')[0];
+      const docId = `${userId}_${bugun}`;
+      
+      const tiklamaDoc = await db.collection('kunduz_tiklamalari').doc(docId).get();
+      if (!tiklamaDoc.exists) {
         await db.collection('kunduz_tiklamalari').doc(docId).set({
           tiklandi: true,
           date: bugun,
@@ -2053,16 +2052,21 @@
             const istatistikler = await istatistikleriGetir();
             guncelleIstatistikGoruntuleri(istatistikler);
           }
-        } else {
-          throw new Error('İstatistik kaydı başarısız');
         }
-      } catch (error) {
-        console.error('Kunduz\'a Dön tıklama kaydı başarısız:', error);
-        mesajGoster('İstatistik kaydedilemedi.', false);
-      } finally {
-        window.open('https://t.kndz.link/uF4J', '_blank');
+      } else {
+        console.log('Kullanıcı bugün zaten tıkladı');
       }
+    } catch (error) {
+      console.error('Kunduz\'a Dön tıklama kaydı başarısız:', error);
+      mesajGoster('İstatistik kaydedilemedi.', false);
     }
+  })();
+
+  // Hemen yönlendir (mevcut sekme)
+  if (link && link.href) {
+    window.location.href = link.href;
+  }
+}
 
     async function istatistikleriGetir(gunSayisi = 7, baslangicTarihi = null, bitisTarihi = null) {
       try {
