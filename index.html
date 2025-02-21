@@ -282,27 +282,6 @@
       justify-content: center;
     }
 
-    .btn i {
-      font-size: 20px;
-      margin-right: 8px;
-    }
-
-    .btn-instagram {
-      background: linear-gradient(to right, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-    }
-
-    .btn-facebook {
-      background-color: #1877f2;
-    }
-
-    .btn-whatsapp {
-      background-color: #25d366;
-    }
-
-    .btn-x {
-      background-color: #000000;
-    }
-
     .istatistik-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -773,11 +752,11 @@
 
     @media (max-width: 480px) {
       body {
-      padding: 10px;
-    }
+        padding: 10px;
+      }
 
       #oyun-alani {
-      padding: 15px;
+        padding: 15px;
         margin: 0;
         border-width: 2px;
       }
@@ -817,21 +796,21 @@
 
       input[type="text"] {
         padding: 10px;
-      font-size: 14px;
+        font-size: 14px;
       }
 
       button {
         padding: 10px;
         font-size: 14px;
-    }
+      }
 
-    .sonuc-gorsel {
+      .sonuc-gorsel {
         padding: 20px 15px;
       }
 
       .sonuc-gorsel .header {
         gap: 10px;
-      margin-bottom: 15px;
+        margin-bottom: 15px;
       }
 
       .sonuc-gorsel .header img {
@@ -922,7 +901,7 @@
       .harf-kutusu {
         width: 35px;
         height: 35px;
-      font-size: 14px;
+        font-size: 14px;
       }
 
       .satir {
@@ -945,7 +924,7 @@
     @media (max-height: 600px) and (orientation: landscape) {
       #oyun-alani {
         max-width: 100%;
-      display: grid;
+        display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 20px;
         align-items: start;
@@ -960,7 +939,7 @@
       }
 
       .istatistik-ayirici {
-      display: none;
+        display: none;
       }
 
       .sonuc-gorsel {
@@ -1648,6 +1627,59 @@
     .admin-button:hover i {
       color: #00A396;
     }
+
+    .istatistik-filtre {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filtre-grup {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .filtre-grup label {
+      font-size: 14px;
+      color: #2d3748;
+      font-weight: 500;
+    }
+
+    .filtre-grup select,
+    .filtre-grup input {
+      padding: 8px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      background: #f8fafc;
+      transition: all 0.3s ease;
+    }
+
+    .filtre-grup select:focus,
+    .filtre-grup input:focus {
+      outline: none;
+      border-color: #00A396;
+      background: white;
+    }
+
+    .filtre-uygula {
+      padding: 8px 20px;
+      background: #00A396;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filtre-uygula:hover {
+      background: #019183;
+      transform: translateY(-2px);
+    }
   </style>
 </head>
 <body>
@@ -1655,12 +1687,12 @@
   <div class="admin-overlay" id="adminOverlay" style="display: none;">
     <div class="admin-panel">
       <div id="adminLogin">
-        <span class="login-close" onclick="toggleAdmin(false)">&times;</span>
+        <span class="login-close" onclick="toggleAdmin(false)">×</span>
         <h2>Admin Girişi</h2>
         <div class="admin-login">
           <div class="admin-input-group">
             <i class="fas fa-user"></i>
-            <input type="text" id="adminUser" placeholder="Kullanıcı Adı">
+            <input type="text" id="adminUser" placeholder="E-posta">
           </div>
           <div class="admin-input-group">
             <i class="fas fa-lock"></i>
@@ -1676,137 +1708,97 @@
             <button class="admin-logout" onclick="adminCikis()">
               <span>Çıkış</span>
             </button>
-            <span class="admin-close" onclick="toggleAdmin(false)">&times;</span>
+            <span class="admin-close" onclick="toggleAdmin(false)">×</span>
           </div>
         </div>
         <div class="admin-content">
-        <div class="kelime-ve-istatistik">
-          <div class="kelime-bolumu">
-            <h2>Haftalık Kelime Listesi</h2>
-            <div class="kelime-grid">
-              <div class="kelime-gun">
-                <span class="gun-label">Pazartesi:</span>
-                <div class="kelime-input-grup">
-                  <input type="text" id="kelime0" maxlength="10" placeholder="Kelime girin...">
+          <div class="kelime-ve-istatistik">
+            <div class="kelime-bolumu">
+              <h2>Haftalık Kelime Listesi</h2>
+              <div class="kelime-grid">
+                <div class="kelime-gun">
+                  <span class="gun-label">Pazartesi:</span>
+                  <div class="kelime-input-grup">
+                    <input type="text" id="kelime0" maxlength="10" placeholder="Kelime girin...">
+                  </div>
+                </div>
+                <div class="kelime-gun">
+                  <span class="gun-label">Salı:</span>
+                  <div class="kelime-input-grup">
+                    <input type="text" id="kelime1" maxlength="10" placeholder="Kelime girin...">
+                  </div>
+                </div>
+                <div class="kelime-gun">
+                  <span class="gun-label">Çarşamba:</span>
+                  <div class="kelime-input-grup">
+                    <input type="text" id="kelime2" maxlength="10" placeholder="Kelime girin...">
+                  </div>
+                </div>
+                <div class="kelime-gun">
+                  <span class="gun-label">Perşembe:</span>
+                  <div class="kelime-input-grup">
+                    <input type="text" id="kelime3" maxlength="10" placeholder="Kelime girin...">
+                  </div>
+                </div>
+                <div class="kelime-gun">
+                  <span class="gun-label">Cuma:</span>
+                  <div class="kelime-input-grup">
+                    <input type="text" id="kelime4" maxlength="10" placeholder="Kelime girin...">
+                  </div>
+                </div>
+                <div class="kelime-gun">
+                  <span class="gun-label">Cumartesi:</span>
+                  <div class="kelime-input-grup">
+                    <input type="text" id="kelime5" maxlength="10" placeholder="Kelime girin...">
+                  </div>
+                </div>
+                <div class="kelime-gun">
+                  <span class="gun-label">Pazar:</span>
+                  <div class="kelime-input-grup">
+                    <input type="text" id="kelime6" maxlength="10" placeholder="Kelime girin...">
+                  </div>
                 </div>
               </div>
-              <div class="kelime-gun">
-                <span class="gun-label">Salı:</span>
-                <div class="kelime-input-grup">
-                  <input type="text" id="kelime1" maxlength="10" placeholder="Kelime girin...">
-                </div>
-              </div>
-              <div class="kelime-gun">
-                <span class="gun-label">Çarşamba:</span>
-                <div class="kelime-input-grup">
-                  <input type="text" id="kelime2" maxlength="10" placeholder="Kelime girin...">
-                </div>
-              </div>
-              <div class="kelime-gun">
-                <span class="gun-label">Perşembe:</span>
-                <div class="kelime-input-grup">
-                  <input type="text" id="kelime3" maxlength="10" placeholder="Kelime girin...">
-                </div>
-              </div>
-              <div class="kelime-gun">
-                <span class="gun-label">Cuma:</span>
-                <div class="kelime-input-grup">
-                  <input type="text" id="kelime4" maxlength="10" placeholder="Kelime girin...">
-                </div>
-              </div>
-              <div class="kelime-gun">
-                <span class="gun-label">Cumartesi:</span>
-                <div class="kelime-input-grup">
-                  <input type="text" id="kelime5" maxlength="10" placeholder="Kelime girin...">
-                </div>
-              </div>
-              <div class="kelime-gun">
-                <span class="gun-label">Pazar:</span>
-                <div class="kelime-input-grup">
-                  <input type="text" id="kelime6" maxlength="10" placeholder="Kelime girin...">
-                </div>
-              </div>
+              <button class="kelime-kaydet" onclick="kelimeleriKaydet()">Kelimeleri Kaydet</button>
             </div>
-            <button class="kelime-kaydet" onclick="kelimeleriKaydet()">Kelimeleri Kaydet</button>
-          </div>
-          
-          <div class="istatistik-bolumu">
-            <h2>Oyun İstatistikleri</h2>
-            <div class="istatistik-kartlar">
-              <div class="istatistik-kart">
-                  <div class="kart-ikon">
-                    <i class="fas fa-users"></i>
-                  </div>
-                <div class="kart-sayi" id="toplamOyuncuSayi">0</div>
-                <div class="kart-baslik">Toplam Oyuncu</div>
+            <div class="istatistik-bolumu">
+              <h2>Oyun İstatistikleri</h2>
+              <div class="istatistik-filtre">
+                <div class="filtre-grup">
+                  <label for="tarih-araligi">Tarih Aralığı:</label>
+                  <select id="tarih-araligi">
+                    <option value="7">Son 7 Gün</option>
+                    <option value="30">Son 30 Gün</option>
+                    <option value="90">Son 90 Gün</option>
+                    <option value="ozel">Özel Tarih Aralığı</option>
+                  </select>
+                </div>
+                <div class="filtre-grup" id="ozel-tarih" style="display: none;">
+                  <label for="baslangic-tarihi">Başlangıç:</label>
+                  <input type="date" id="baslangic-tarihi">
+                </div>
+                <div class="filtre-grup" id="ozel-tarih-bitis" style="display: none;">
+                  <label for="bitis-tarihi">Bitiş:</label>
+                  <input type="date" id="bitis-tarihi">
+                </div>
+                <button class="filtre-uygula" onclick="istatistikleriFiltrele()">Filtrele</button>
               </div>
-              <div class="istatistik-kart">
-                  <div class="kart-ikon">
-                    <i class="fas fa-calendar"></i>
-                  </div>
-                  <div class="kart-sayi" id="aylikOyuncuSayi">0</div>
-                  <div class="kart-baslik">Aylık Oyuncu</div>
-              </div>
-              <div class="istatistik-kart">
-                  <div class="kart-ikon">
-                    <i class="fas fa-calendar-week"></i>
-                  </div>
-                  <div class="kart-sayi" id="haftalikOyuncuSayi">0</div>
-                  <div class="kart-baslik">Haftalık Oyuncu</div>
+              <div class="istatistik-kartlar" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="istatistik-kart">
+                  <div class="kart-ikon"><i class="fas fa-users"></i></div>
+                  <div class="kart-sayi" id="toplamOyuncuSayi">0</div>
+                  <div class="kart-baslik">Toplam Oyuncu</div>
                 </div>
                 <div class="istatistik-kart">
-                  <div class="kart-ikon">
-                    <i class="fas fa-chart-line"></i>
-                  </div>
-                <div class="kart-sayi" id="ortalamaBasari">0%</div>
-                <div class="kart-baslik">Ortalama Başarı</div>
-              </div>
-            </div>
-            
-              <div class="grafik-container">
-                <!-- Mevcut grafikler -->
-            <div class="grafik-bolum">
-              <div class="grafik-baslik">Günlük Oyun İstatistikleri</div>
-              <canvas id="gunlukGrafik"></canvas>
-            </div>
-            
-                <div class="grafik-bolum">
-                  <div class="grafik-baslik">Kelime Bazlı Başarı Oranları</div>
-                  <canvas id="kelimeBazliGrafik"></canvas>
+                  <div class="kart-ikon"><i class="fas fa-arrow-left"></i></div>
+                  <div class="kart-sayi" id="kunduzDonTiklama">0</div>
+                  <div class="kart-baslik">Kunduz'a Dön Tıklama</div>
                 </div>
-                
-                <div class="grafik-bolum">
-                  <div class="grafik-baslik">Ortalama Tahmin Süreleri</div>
-                  <canvas id="tahminSuresiGrafik"></canvas>
               </div>
-
-                <!-- Haftalık En İyi/Zor Kelimeler -->
-                <div class="analiz-karti">
-                  <h3>Haftalık Kelime Analizi</h3>
-                  <div class="kelime-analiz-grid">
-                    <div class="kelime-kutu">
-                      <h4>En Kolay Kelimeler</h4>
-                      <div id="enKolayKelimeler"></div>
-            </div>
-                    <div class="kelime-kutu">
-                      <h4>En Zor Kelimeler</h4>
-                      <div id="enZorKelimeler"></div>
-          </div>
-        </div>
-      </div>
-
-                <!-- Oyuncu Sadakati ve Zorluk Analizi -->
-                <div class="analiz-karti">
-                  <div class="analiz-grid">
-                    <div class="analiz-kutu">
-                      <h4>Oyuncu Sadakati</h4>
-                      <canvas id="sadakatGrafik"></canvas>
-                    </div>
-                    <div class="analiz-kutu">
-                      <h4>Zorluk Seviyesi Dağılımı</h4>
-                      <canvas id="zorluktGrafik"></canvas>
-                    </div>
-                  </div>
+              <div class="grafik-container" style="grid-template-columns: 1fr;">
+                <div class="grafik-bolum">
+                  <h3 class="grafik-baslik">Günlük Oyuncu Sayısı ve Kunduz'a Dön Tıklamaları</h3>
+                  <canvas id="gunlukGrafik"></canvas>
                 </div>
               </div>
             </div>
@@ -1814,10 +1806,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div id="admin-panel" style="display: none;">
-    <!-- Admin panel içeriği -->
   </div>
 
   <!-- Admin butonu -->
@@ -1826,75 +1814,75 @@
   </button>
 
   <div class="container">
-  <div id="oyun-alani">
-    <div class="oyun-header">
-      <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" alt="Kunduz Logo">
-      <h1>Kunduz Kelime Keşfi</h1>
-      <button id="bilgi-butonu" class="bilgi-btn">
-        <i class="fas fa-info-circle"></i>
-      </button>
-    </div>
-    <div class="aciklama">
-      Günlük kelimeyi <span class="vurgula">6 denemede</span> doğru tahmin etmeye çalışın. Harf kutularının renklerine dikkat edin:
-      <ul>
-        <li><span class="vurgula yesil-vurgula">Yeşil:</span> Harf doğru ve doğru konumda!</li>
-        <li><span class="vurgula sari-vurgula">Sarı:</span> Harf doğru ama yanlış konumda!</li>
-        <li><span class="vurgula gri-vurgula">Gri:</span> Harf yanlış!</li>
-      </ul>
-      En az denemede doğru kelimeyi bularak puanınızı artırın! 🎯
-    </div>
-
-    <div id="oyun-tablosu"></div>
-    <div id="giris-alani">
-        <input type="text" id="tahmin-girdisi" placeholder="Tahmininizi Buraya Yazabilirsiniz 💫" maxlength="gizliKelime.length">
-      <button id="gonder-tusu">Gönder</button>
-    </div>
-
-    <div class="mesaj-kutusu" id="uyari-mesaji"></div>
-    <button id="yeniden-baslat-tusu" style="display: none;">Denemeye Devam Et</button>
-
-    <div class="istatistik-ayirici"></div>
-
-    <div class="sonuc-gorsel" style="display: block;">
-      <div class="header">
+    <div id="oyun-alani">
+      <div class="oyun-header">
         <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" alt="Kunduz Logo">
-        <h2>Kunduz Kelime Keşfi Sonuçlarım</h2>
+        <h1>Kunduz Kelime Keşfi</h1>
+        <button id="bilgi-butonu" class="bilgi-btn">
+          <i class="fas fa-info-circle"></i>
+        </button>
       </div>
-      <div class="skor-grid">
-        <div class="skor-item">
-          <div class="baslik">Kazanılan</div>
-          <div class="deger" id="kazanma-sayisi">0</div>
+      <div class="aciklama">
+        Günlük kelimeyi <span class="vurgula">6 denemede</span> doğru tahmin etmeye çalışın. Harf kutularının renklerine dikkat edin:
+        <ul>
+          <li><span class="vurgula yesil-vurgula">Yeşil:</span> Harf doğru ve doğru konumda!</li>
+          <li><span class="vurgula sari-vurgula">Sarı:</span> Harf doğru ama yanlış konumda!</li>
+          <li><span class="vurgula gri-vurgula">Gri:</span> Harf yanlış!</li>
+        </ul>
+        En az denemede doğru kelimeyi bularak puanınızı artırın! 🎯
+      </div>
+
+      <div id="oyun-tablosu"></div>
+      <div id="giris-alani">
+        <input type="text" id="tahmin-girdisi" placeholder="Tahmininizi Buraya Yazabilirsiniz 💫" maxlength="gizliKelime.length">
+        <button id="gonder-tusu">Gönder</button>
+      </div>
+
+      <div class="mesaj-kutusu" id="uyari-mesaji"></div>
+      <button id="yeniden-baslat-tusu" style="display: none;">Denemeye Devam Et</button>
+
+      <div class="istatistik-ayirici"></div>
+
+      <div class="sonuc-gorsel" style="display: block;">
+        <div class="header">
+          <img src="https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo" alt="Kunduz Logo">
+          <h2>Kunduz Kelime Keşfi Sonuçlarım</h2>
         </div>
-        <div class="skor-item">
-          <div class="baslik">Başarı Puanı</div>
-          <div class="deger" id="kazanma-orani">0%</div>
-        </div>
-        <div class="skor-item">
-          <div class="baslik">Toplam Tahmin</div>
-          <div class="deger" id="toplam-tahmin">0</div>
-        </div>
-        <div class="skor-item">
-          <div class="baslik">Oyun Süresi</div>
-          <div class="deger" id="oyun-suresi">0 sn</div>
+        <div class="skor-grid">
+          <div class="skor-item">
+            <div class="baslik">Kazanılan</div>
+            <div class="deger" id="kazanma-sayisi">0</div>
+          </div>
+          <div class="skor-item">
+            <div class="baslik">Başarı Puanı</div>
+            <div class="deger" id="kazanma-orani">0%</div>
+          </div>
+          <div class="skor-item">
+            <div class="baslik">Toplam Tahmin</div>
+            <div class="deger" id="toplam-tahmin">0</div>
+          </div>
+          <div class="skor-item">
+            <div class="baslik">Oyun Süresi</div>
+            <div class="deger" id="oyun-suresi">0 sn</div>
+          </div>
         </div>
       </div>
-    </div>
 
       <button class="save-stats-btn" onclick="istatistikleriKaydet()">
         <i class="fas fa-download"></i>
         <span>Paylaşmak İçin İstatistiklerinizi Kaydedin</span>
       </button>
 
-      <a href="https://t.kndz.link/uF4J" class="kunduz-link" target="_blank">
+      <a href="https://t.kndz.link/uF4J" class="kunduz-link" target="_blank" onclick="kunduzDonTiklamaKaydet(event)">
           <i class="fas fa-arrow-left"></i>
           <span>Kunduz'a Dön</span>
-        </a>
+      </a>
     </div>
-    </div>
+  </div>
 
   <div id="bilgi-modal" class="modal">
     <div class="modal-content">
-      <span class="close-modal">&times;</span>
+      <span class="close-modal">×</span>
       <h2 class="modal-title">Nasıl Oynanır?</h2>
       
       <div class="modal-section">
@@ -1904,7 +1892,7 @@
           <li>Kelimenin uzunluğu kadar harf girmeniz gerekir.</li>
           <li>Toplam 6 deneme hakkınız vardır.</li>
         </ul>
-  </div>
+      </div>
       
       <div class="modal-section">
         <h3>Renklerin Anlamları</h3>
@@ -1916,13 +1904,13 @@
             <div class="ornek-kutu sari">S</div>
             <div class="ornek-kutu gri">T</div>
           </div>
-          </div>
+        </div>
         <ul>
           <li><span class="yesil-vurgula">Yeşil (D):</span> Harf doğru yerde</li>
           <li><span class="sari-vurgula">Sarı (S):</span> Harf var ama yanlış yerde</li>
           <li><span class="gri-vurgula">Gri (O,T):</span> Harf kelimede yok</li>
         </ul>
-          </div>
+      </div>
       
       <div class="modal-section">
         <h3>Puanlama</h3>
@@ -1933,13 +1921,13 @@
             <li>3. denemede (45 sn): 65 puan</li>
             <li>6. denemede (120 sn): 30 puan</li>
           </ul>
-          </div>
+        </div>
         <ul>
           <li>Her fazla deneme için 10 puan düşer</li>
           <li>Her 30 saniye için 5 puan düşer</li>
           <li>İlk denemede bilirseniz bonus puan!</li>
         </ul>
-        </div>
+      </div>
     </div>
   </div>
 
@@ -1959,12 +1947,22 @@
     const db = firebase.firestore();
     const auth = firebase.auth();
 
+    // Güvenlik için input sanitizasyon fonksiyonu
+    function sanitizeInput(input) {
+      const div = document.createElement('div');
+      div.textContent = input;
+      return div.innerHTML;
+    }
+
     // Anonim giriş fonksiyonu
     async function anonimGirisYap() {
       try {
-        const userCredential = await auth.signInAnonymously();
-        console.log('Anonim giriş başarılı:', userCredential.user.uid);
-        return true;
+        if (!auth.currentUser) { // Eğer zaten bir kullanıcı yoksa
+          const userCredential = await auth.signInAnonymously();
+          console.log('Anonim giriş başarılı:', userCredential.user.uid);
+          return true;
+        }
+        return true; // Zaten bir kullanıcı varsa devam et
       } catch (error) {
         console.error('Anonim giriş hatası:', error);
         return false;
@@ -1973,19 +1971,14 @@
 
     async function kelimeListesiniKaydet(liste) {
       try {
-        // Hata kontrolü ekle
         if (!liste || liste.length === 0) {
           throw new Error('Geçersiz kelime listesi');
         }
-
-        // Doğrudan kaydet
-        await db.collection('kelimeler').doc('haftalik').set({ liste });
-        // Global değişkeni güncelle
-        defaultKelimeler = liste;
-        // Günün kelimesini güncelle
+        const sanitizedListe = liste.map(kelime => sanitizeInput(kelime));
+        await db.collection('kelimeler').doc('haftalik').set({ liste: sanitizedListe });
+        defaultKelimeler = sanitizedListe;
         gizliKelime = defaultKelimeler[new Date().getDay()];
-
-        console.log('Kelime listesi başarıyla kaydedildi:', liste);
+        console.log('Kelime listesi başarıyla kaydedildi:', sanitizedListe);
         return true;
       } catch (error) {
         console.error('Kelime listesi kaydedilirken hata:', error);
@@ -1993,50 +1986,36 @@
       }
     }
 
-    // İstatistik yönetimi için Firebase fonksiyonları
     async function istatistikKaydet(veri) {
       try {
         const bugun = new Date();
         bugun.setHours(0, 0, 0, 0);
-        
-        // Yeni istatistik alanları ekleyelim
-        const yeniVeri = {
-          ...veri,
-          haftalikOyuncular: {},  // Haftalık tekil oyuncu sayısı
-          gunlukTahminler: {      // Günlük tahmin dağılımı
-            '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0
-          },
-          kelimeBazliIstatistik: {  // Kelime bazlı istatistikler
-            kelime: veri.kelime,
-            toplamDeneme: veri.denemeSayisi,
-            kazanildi: veri.kazandi
-          },
-          saatlikAktivite: {},      // Saatlik oyuncu aktivitesi
-          tahminSuresi: veri.tahminsuresi || 0  // Ortalama tahmin süresi
+        const tarihStr = bugun.toISOString().split('T')[0];
+        const docRef = db.collection('istatistikler').doc(tarihStr);
+
+        const doc = await docRef.get();
+        const mevcutVeri = doc.exists ? doc.data() : { 
+          oyuncuSayisi: 0, 
+          kunduzDonTiklama: 0, 
+          toplamOyun: 0,
+          kazanilanOyun: 0,
+          ortalamaDenemeSayisi: 0,
+          basariOrani: 0,
+          tarih: firebase.firestore.Timestamp.fromDate(bugun) 
         };
 
-        const snapshot = await db.collection('istatistikler')
-          .where('tarih', '>=', bugun)
-          .get();
-        
-        if (!snapshot.empty) {
-          // Mevcut istatistikleri güncelle
-          const doc = snapshot.docs[0];
-          const mevcutVeri = doc.data();
-          await doc.ref.update({
-            oyuncuSayisi: mevcutVeri.oyuncuSayisi + 1,
-            toplamOyun: mevcutVeri.toplamOyun + 1,
-            kazanilanOyun: mevcutVeri.kazanilanOyun + (veri.kazandi ? 1 : 0),
-            ortalamaDenemeSayisi: (mevcutVeri.ortalamaDenemeSayisi * mevcutVeri.toplamOyun + veri.denemeSayisi) / (mevcutVeri.toplamOyun + 1),
-            basariOrani: Math.round(((mevcutVeri.kazanilanOyun + (veri.kazandi ? 1 : 0)) / (mevcutVeri.toplamOyun + 1)) * 100)
-          });
-        } else {
-          // Yeni istatistik oluştur
-          await db.collection('istatistikler').add({
-            ...yeniVeri,
-            tarih: firebase.firestore.Timestamp.fromDate(bugun)
-          });
-        }
+        await docRef.set({
+          oyuncuSayisi: mevcutVeri.oyuncuSayisi + (veri.oyuncuSayisi || 0),
+          kunduzDonTiklama: mevcutVeri.kunduzDonTiklama + (veri.kunduzDonTiklama || 0),
+          toplamOyun: mevcutVeri.toplamOyun + (veri.toplamOyun || 0),
+          kazanilanOyun: mevcutVeri.kazanilanOyun + (veri.kazanilanOyun || 0),
+          ortalamaDenemeSayisi: veri.denemeSayisi ? 
+            (mevcutVeri.ortalamaDenemeSayisi * mevcutVeri.toplamOyun + veri.denemeSayisi) / (mevcutVeri.toplamOyun + 1) : 
+            mevcutVeri.ortalamaDenemeSayisi,
+          basariOrani: veri.basariOrani || mevcutVeri.basariOrani,
+          tarih: firebase.firestore.Timestamp.fromDate(bugun)
+        }, { merge: true });
+
         return true;
       } catch (error) {
         console.error('İstatistik kaydedilirken hata:', error);
@@ -2044,57 +2023,80 @@
       }
     }
 
-    async function istatistikleriGetir() {
+    async function kunduzDonTiklamaKaydet(event) {
+      event.preventDefault();
+      console.log('Kunduz\'a Dön butonuna tıklandı, kayıt başlıyor...');
+      try {
+        const userId = auth.currentUser.uid;
+        console.log('Kullanıcı ID:', userId);
+        const bugun = new Date().toISOString().split('T')[0];
+        const docId = `${userId}_${bugun}`;
+        
+        const tiklamaDoc = await db.collection('kunduz_tiklamalari').doc(docId).get();
+        if (tiklamaDoc.exists) {
+          console.log('Kullanıcı bugün zaten tıkladı');
+          window.open('https://t.kndz.link/uF4J', '_blank');
+          return;
+        }
+
+        await db.collection('kunduz_tiklamalari').doc(docId).set({
+          tiklandi: true,
+          date: bugun,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        console.log('Kullanıcı tıklaması kaydedildi (kunduz_tiklamalari)');
+
+        const basarili = await istatistikKaydet({ kunduzDonTiklama: 1 });
+        if (basarili) {
+          console.log('Genel istatistik kaydedildi (istatistikler)');
+          if (document.getElementById('adminContent').style.display === 'block') {
+            const istatistikler = await istatistikleriGetir();
+            guncelleIstatistikGoruntuleri(istatistikler);
+          }
+        } else {
+          throw new Error('İstatistik kaydı başarısız');
+        }
+      } catch (error) {
+        console.error('Kunduz\'a Dön tıklama kaydı başarısız:', error);
+        mesajGoster('İstatistik kaydedilemedi.', false);
+      } finally {
+        window.open('https://t.kndz.link/uF4J', '_blank');
+      }
+    }
+
+    async function istatistikleriGetir(gunSayisi = 7, baslangicTarihi = null, bitisTarihi = null) {
       try {
         const bugun = new Date();
-        const birAyOnce = new Date(bugun.getTime() - (30 * 24 * 60 * 60 * 1000));
-        const birHaftaOnce = new Date(bugun.getTime() - (7 * 24 * 60 * 60 * 1000));
-        
-        // Aylık istatistikler
-        const aylikSnapshot = await db.collection('istatistikler')
-          .where('tarih', '>=', birAyOnce)
-          .orderBy('tarih', 'desc')
-          .get();
-        
-        // Haftalık istatistikler
-        const haftalikSnapshot = await db.collection('istatistikler')
-          .where('tarih', '>=', birHaftaOnce)
-          .orderBy('tarih', 'desc')
-          .get();
-        
+        bugun.setHours(0, 0, 0, 0);
+        let baslangic, bitis;
+
+        if (baslangicTarihi && bitisTarihi) {
+          baslangic = new Date(baslangicTarihi);
+          bitis = new Date(bitisTarihi);
+          baslangic.setHours(0, 0, 0, 0);
+          bitis.setHours(23, 59, 59, 999);
+        } else {
+          baslangic = new Date(bugun.getTime() - (gunSayisi * 24 * 60 * 60 * 1000));
+          bitis = bugun;
+        }
+
         const snapshot = await db.collection('istatistikler')
-          .where('tarih', '>=', birHaftaOnce)
-          .orderBy('tarih', 'desc')
-          .limit(7)
+          .where('tarih', '>=', firebase.firestore.Timestamp.fromDate(baslangic))
+          .where('tarih', '<=', firebase.firestore.Timestamp.fromDate(bitis))
+          .orderBy('tarih', 'asc')
           .get();
 
         const istatistikler = [];
-        let aylikOyuncuSayisi = 0;
-        let haftalikOyuncuSayisi = 0;
-        
-        // Aylık oyuncu sayısını hesapla
-        aylikSnapshot.forEach(doc => {
-          const veri = doc.data();
-          aylikOyuncuSayisi += veri.oyuncuSayisi || 0;
-        });
-        
-        // Haftalık oyuncu sayısını hesapla
-        haftalikSnapshot.forEach(doc => {
-          const veri = doc.data();
-          haftalikOyuncuSayisi += veri.oyuncuSayisi || 0;
-        });
-
         snapshot.forEach(doc => {
           const veri = doc.data();
           istatistikler.push({
             tarih: veri.tarih.toDate().toISOString().split('T')[0],
-            oyuncu: veri.oyuncuSayisi || 0,
+            oyuncuSayisi: veri.oyuncuSayisi || 0,
+            kunduzDonTiklama: veri.kunduzDonTiklama || 0,
             toplamOyun: veri.toplamOyun || 0,
             kazanilan: veri.kazanilanOyun || 0,
             ortDeneme: veri.ortalamaDenemeSayisi || 0,
-            basariOrani: veri.basariOrani || 0,
-            aylikOyuncu: aylikOyuncuSayisi,
-            haftalikOyuncu: haftalikOyuncuSayisi
+            basariOrani: veri.basariOrani || 0
           });
         });
         return istatistikler;
@@ -2117,34 +2119,61 @@
       }
     }
 
-    function adminGiris() {
-      const user = document.getElementById('adminUser').value;
-      const pass = document.getElementById('adminPass').value;
-      
-      if (user === "engagement" && pass === "engagement2534") {
+    async function adminGiris() {
+      const email = sanitizeInput(document.getElementById('adminUser').value);
+      const password = sanitizeInput(document.getElementById('adminPass').value);
+
+      try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        console.log('Admin girişi başarılı:', userCredential.user.email);
         localStorage.setItem('adminOturum', 'true');
         document.getElementById('adminLogin').style.display = 'none';
         document.getElementById('adminContent').style.display = 'block';
         document.querySelector('.admin-panel').classList.add('expanded');
-        // Admin girişinde kelime listesini göster
         kelimeListesiniGoster();
         istatistikleriGetir().then(istatistikler => {
           guncelleIstatistikGoruntuleri(istatistikler);
         });
-      } else {
+      } catch (error) {
+        console.error('Admin giriş hatası:', error);
         localStorage.removeItem('adminOturum');
-        alert('Hatalı kullanıcı adı veya şifre!');
+        alert('Hatalı e-posta veya şifre: ' + error.message);
       }
     }
 
-    // Sayfa yüklendiğinde admin oturumunu kontrol et
-    if (localStorage.getItem('adminOturum') === 'true') {
-      document.getElementById('adminLogin').style.display = 'none';
-      document.getElementById('adminContent').style.display = 'block';
-      document.querySelector('.admin-panel').classList.add('expanded');
+    function adminCikis() {
+      auth.signOut().then(() => {
+        console.log('Admin çıkış yaptı');
+        localStorage.removeItem('adminOturum');
+        document.getElementById('adminLogin').style.display = 'block';
+        document.getElementById('adminContent').style.display = 'none';
+        document.querySelector('.admin-panel').classList.remove('expanded');
+        document.getElementById('adminUser').value = '';
+        document.getElementById('adminPass').value = '';
+        toggleAdmin(false);
+        anonimGirisYap(); // Admin çıkışından sonra anonim girişi başlat
+      }).catch(error => {
+        console.error('Çıkış hatası:', error);
+      });
     }
 
-    // Global değişkenler ve fonksiyonlar
+    if (localStorage.getItem('adminOturum') === 'true') {
+      auth.onAuthStateChanged(user => {
+        if (user && user.email === 'admin@example.com') {
+          document.getElementById('adminLogin').style.display = 'none';
+          document.getElementById('adminContent').style.display = 'block';
+          document.querySelector('.admin-panel').classList.add('expanded');
+          kelimeListesiniGoster();
+          istatistikleriGetir().then(istatistikler => {
+            guncelleIstatistikGoruntuleri(istatistikler);
+          });
+        } else {
+          localStorage.removeItem('adminOturum');
+        }
+      });
+    }
+
+    // Global değişkenler
     let defaultKelimeler = [];
     let gizliKelime;
     let kazanmaSayisi = 0;
@@ -2159,7 +2188,7 @@
     let ilkOyun = true;
     let sonSure = 0;
 
-    function sureyiGuncelle() {
+      function sureyiGuncelle() {
       if (baslangicZamani && !oyunBitti) {
         const simdikiZaman = new Date();
         const gecenSure = Math.floor((simdikiZaman - baslangicZamani) / 1000);
@@ -2168,70 +2197,49 @@
       }
     }
 
-    // Global fonksiyonlar
     window.cevabıGoster = function() {
       const mesajKutusu = document.getElementById("uyari-mesaji");
-      mesajKutusu.textContent = `Doğru kelime: ${gizliKelime}`;
+      mesajKutusu.textContent = `Doğru kelime: ${sanitizeInput(gizliKelime)}`;
       mesajKutusu.className = "mesaj-kutusu mesaj-hata";
       mesajKutusu.style.display = "block";
     }
 
     window.yenidenBasla = function() {
-      // Süre sayacını sıfırla
       if (sureSayaci) {
         clearInterval(sureSayaci);
         sureSayaci = null;
       }
-      
-      // Son süreyi sakla
       oncekiSure = sonSure;
-      
-      // Oyun değişkenlerini sıfırla
       mevcutSatir = 0;
       oyunBitti = false;
-      
-      // İlk oyun değilse sayacı hemen başlat
       if (!ilkOyun) {
         baslangicZamani = new Date();
         sureSayaci = setInterval(sureyiGuncelle, 1000);
       } else {
         baslangicZamani = null;
       }
-      
-      // Oyun sonu butonlarını kaldır
       const butonlar = document.querySelector('.oyun-sonu-butonlar');
       if (butonlar) {
         butonlar.remove();
       }
-      
-      // Mesaj kutusunu temizle
       const mesajKutusu = document.getElementById("uyari-mesaji");
       mesajKutusu.style.display = "none";
-      
-      // Yeni kelimeyi al
       gizliKelime = defaultKelimeler[new Date().getDay()];
-      
-      // Tüm harf kutularını temizle
       const kutular = document.querySelectorAll('.harf-kutusu');
       kutular.forEach(kutu => {
         kutu.textContent = '';
         kutu.className = 'harf-kutusu';
       });
-      
       document.getElementById("tahmin-girdisi").value = '';
     }
 
     window.gosterOyunSonuSecenekleri = function() {
-      // Önceki butonları temizle
       const eskiButonlar = document.querySelector('.oyun-sonu-butonlar');
       if (eskiButonlar) {
         eskiButonlar.remove();
       }
-
       const butonContainer = document.createElement('div');
       butonContainer.className = 'oyun-sonu-butonlar';
-      
-      // Eğer kelime bilinemediyse tüm butonları göster
       if (mevcutSatir >= 6) {
         butonContainer.innerHTML = `
           <button class="cevap-goster-btn" onclick="cevabıGoster()">
@@ -2242,28 +2250,30 @@
           </button>
         `;
       }
-      
       document.getElementById('giris-alani').appendChild(butonContainer);
     }
 
-    // Kelime listesi yönetimi için Firebase fonksiyonları
     async function kelimeListesiniGetir() {
       try {
         const doc = await db.collection('kelimeler').doc('haftalik').get();
         if (doc.exists && doc.data().liste) {
           return doc.data().liste;
         }
-        // Eğer Firebase'de kelime listesi yoksa varsayılan listeyi kullan
         return ["kurs", "ders", "eğitim", "okul", "konu", "sınav", "kunduz"];
       } catch (error) {
         console.error('Kelime listesi alınırken hata:', error);
-        // Hata durumunda varsayılan listeyi döndür
         return ["kurs", "ders", "eğitim", "okul", "konu", "sınav", "kunduz"];
       }
     }
 
     document.addEventListener("DOMContentLoaded", async () => {
-      // Önce kelime listesini al, sonra oyunu başlat
+      const girisBasarili = await anonimGirisYap();
+      if (!girisBasarili) {
+        console.error('Anonim giriş başarısız, oyun çalışmayabilir.');
+        mesajGoster('Bağlantı hatası, lütfen tekrar deneyin.', false);
+        return;
+      }
+
       try {
         const kelimeler = await kelimeListesiniGetir();
         defaultKelimeler = kelimeler;
@@ -2276,7 +2286,6 @@
         tabloyuOlustur();
       }
 
-      // Firebase'den istatistikleri al
       istatistikleriGetir().then(istatistikler => {
         if (istatistikler.length > 0) {
           guncelleIstatistikGoruntuleri(istatistikler);
@@ -2289,10 +2298,9 @@
       const yenidenBaslatTusu = document.getElementById("yeniden-baslat-tusu");
       const tahminGirdisi = document.getElementById("tahmin-girdisi");
       const uyariMesaji = document.getElementById("uyari-mesaji");
-      const oyunSayisiEl = document.getElementById("oyun-sayisi");
+      const kazanmaSayisiEl = document.getElementById("kazanma-sayisi");
       const kazanmaOraniEl = document.getElementById("kazanma-orani");
       const toplamTahminEl = document.getElementById("toplam-tahmin");
-      const kazanmaSayisiEl = document.getElementById("kazanma-sayisi");
 
       function mesajGoster(mesaj, basarili = true) {
         uyariMesaji.textContent = mesaj;
@@ -2303,42 +2311,40 @@
         }, 5000);
       }
 
-    // Tablo oluşturma fonksiyonu
-function tabloyuOlustur() {
-  const tablo = document.getElementById("oyun-tablosu");
-  tablo.innerHTML = "";
-      // Güvenlik kontrolü ekleyelim
-      const harfSayisi = gizliKelime ? gizliKelime.length : 5; // Varsayılan 5 harf
+      function tabloyuOlustur() {
+        const tablo = document.getElementById("oyun-tablosu");
+        tablo.innerHTML = "";
+        const harfSayisi = gizliKelime ? gizliKelime.length : 5;
 
-  for (let i = 0; i < 6; i++) { // 6 satır
-    const satir = document.createElement("div");
-    satir.classList.add("satir");
+        for (let i = 0; i < 6; i++) {
+          const satir = document.createElement("div");
+          satir.classList.add("satir");
 
-    for (let j = 0; j < harfSayisi; j++) { // Harf sayısı kadar kutu ekle
-      const kutu = document.createElement("div");
-      kutu.classList.add("harf-kutusu");
-      satir.appendChild(kutu);
-    }
+          for (let j = 0; j < harfSayisi; j++) {
+            const kutu = document.createElement("div");
+            kutu.classList.add("harf-kutusu");
+            satir.appendChild(kutu);
+          }
 
-    tablo.appendChild(satir);
-  }
-}
+          tablo.appendChild(satir);
+        }
+      }
 
       function tahminYap() {
         if (oyunBitti) return;
 
-        const tahmin = tahminGirdisi.value.trim().toLocaleLowerCase("tr-TR");
+        const tahmin = sanitizeInput(tahminGirdisi.value.trim().toLocaleLowerCase("tr-TR"));
         
         if (tahmin.length !== gizliKelime.length) {
           mesajGoster(`Lütfen ${gizliKelime.length} harf girin!`, false);
           return;
         }
 
-        // İlk tahminde süreyi başlat
         if (!baslangicZamani) {
           baslangicZamani = new Date();
           sureSayaci = setInterval(sureyiGuncelle, 1000);
           ilkOyun = false;
+          istatistikKaydet({ oyuncuSayisi: 1 });
         }
 
         toplamTahmin++;
@@ -2346,16 +2352,13 @@ function tabloyuOlustur() {
 
         const mevcutSatirKutular = document.querySelectorAll(".satir")[mevcutSatir].children;
         
-        // Harflerin durumunu kontrol et
         const harfDurumu = new Array(gizliKelime.length).fill('gri');
         const harfSayisi = {};
         
-        // Gizli kelimedeki harf sayılarını hesapla
         for (let i = 0; i < gizliKelime.length; i++) {
           harfSayisi[gizliKelime[i]] = (harfSayisi[gizliKelime[i]] || 0) + 1;
         }
         
-        // Önce doğru yerdeki harfleri işaretle
         for (let i = 0; i < gizliKelime.length; i++) {
           if (tahmin[i] === gizliKelime[i]) {
             harfDurumu[i] = 'yesil';
@@ -2363,18 +2366,15 @@ function tabloyuOlustur() {
           }
         }
         
-        // Sonra kalan harfleri kontrol et
         for (let i = 0; i < gizliKelime.length; i++) {
-          if (harfDurumu[i] !== 'yesil') { // Eğer harf zaten yeşil değilse
-            if (harfSayisi[tahmin[i]] > 0) { // Ve bu harften hala kalan varsa
+          if (harfDurumu[i] !== 'yesil') {
+            if (harfSayisi[tahmin[i]] > 0) {
               harfDurumu[i] = 'sari';
               harfSayisi[tahmin[i]]--;
             }
-            // Eğer harften kalmadıysa veya hiç yoksa gri kalacak
           }
         }
         
-        // Kutuları renklendir
         for (let i = 0; i < gizliKelime.length; i++) {
           const kutu = mevcutSatirKutular[i];
           kutu.textContent = tahmin[i];
@@ -2385,7 +2385,6 @@ function tabloyuOlustur() {
         tahminGirdisi.value = "";
 
         if (tahmin === gizliKelime) {
-          // Süreyi hesapla
           const bitisZamani = new Date();
           const gecenSure = Math.floor((bitisZamani - baslangicZamani) / 1000);
           sonSure = gecenSure + oncekiSure;
@@ -2411,22 +2410,21 @@ function tabloyuOlustur() {
           });
           const denemeSayisi = toplamTahmin === 1 ? 'ilk' : `${toplamTahmin}.`;
           mesajGoster(`Harika! ${denemeSayisi} denemede buldunuz! 🎉 Başarı puanınız: ${basariPuani}%`, true);
-          // Oyun bitti mesajından sonra yeni oyun için bekle
           setTimeout(() => {
             gosterOyunSonuSecenekleri();
           }, 2000);
-          // Süre sayacını durdur
           clearInterval(sureSayaci);
         } else if (mevcutSatir >= 6) {
           const bitisZamani = new Date();
           const gecenSure = Math.floor((bitisZamani - baslangicZamani) / 1000);
-        oyunSayisi++;
-        kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
-        kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
+          sonSure = gecenSure + oncekiSure;
+          oyunSayisi++;
+          kazanmaOrani = Math.round((kazanmaSayisi / oyunSayisi) * 100);
+          kazanmaOraniEl.textContent = `${kazanmaOrani}%`;
+          document.getElementById('oyun-suresi').textContent = `${sonSure} sn`;
           oyunBitti = true;
           mesajGoster("Maalesef bilemediniz!", false);
           gosterOyunSonuSecenekleri();
-          // Süre sayacını durdur
           clearInterval(sureSayaci);
         }
       }
@@ -2443,12 +2441,11 @@ function tabloyuOlustur() {
 
       tabloyuOlustur();
 
-      // kelimeleriKaydet fonksiyonunu window objesine bağlayalım
       window.kelimeleriKaydet = async function() {
         const kelimeListesi = [];
         const gunSirasi = [1, 2, 3, 4, 5, 6, 0];
         for (let i = 0; i < 7; i++) {
-          const kelime = document.getElementById(`kelime${i}`).value.trim().toLowerCase();
+          const kelime = sanitizeInput(document.getElementById(`kelime${i}`).value.trim().toLowerCase());
           if (!kelime) {
             alert('Lütfen tüm günler için kelime girin!');
             return;
@@ -2456,154 +2453,54 @@ function tabloyuOlustur() {
           kelimeListesi[gunSirasi[i]] = kelime;
         }
         
-        const basarili = await kelimeListesiniKaydet(kelimeListesi);
-        if (basarili) {
-        defaultKelimeler = kelimeListesi;
-        alert('Kelime listesi başarıyla kaydedildi!');
-        } else {
-          alert('Kelime listesi kaydedilirken bir hata oluştu!');
+        try {
+          const basarili = await kelimeListesiniKaydet(kelimeListesi);
+          if (basarili) {
+            defaultKelimeler = kelimeListesi;
+            alert('Kelime listesi başarıyla kaydedildi!');
+          } else {
+            throw new Error('Kelime listesi kaydedilemedi.');
+          }
+        } catch (error) {
+          console.error('Kelime listesi kaydetme hatası:', error);
+          alert('Kelime listesi kaydedilirken hata oluştu: ' + error.message);
         }
       }
-      
-      function istatistikleriYukle() {
-        // Örnek veriler - gerçek uygulamada API'den gelecek
-        const sonYediGun = [
-          { tarih: '2024-03-01', oyuncu: 150, toplamOyun: 300, kazanilan: 240, ortDeneme: 3.5, basariOrani: 80 },
-          { tarih: '2024-03-02', oyuncu: 180, toplamOyun: 360, kazanilan: 288, ortDeneme: 3.2, basariOrani: 80 },
-          { tarih: '2024-03-03', oyuncu: 200, toplamOyun: 400, kazanilan: 340, ortDeneme: 3.8, basariOrani: 85 },
-          { tarih: '2024-03-04', oyuncu: 220, toplamOyun: 440, kazanilan: 374, ortDeneme: 3.4, basariOrani: 85 },
-          { tarih: '2024-03-05', oyuncu: 250, toplamOyun: 500, kazanilan: 425, ortDeneme: 3.6, basariOrani: 85 },
-          { tarih: '2024-03-06', oyuncu: 280, toplamOyun: 560, kazanilan: 476, ortDeneme: 3.3, basariOrani: 85 },
-          { tarih: '2024-03-07', oyuncu: 300, toplamOyun: 600, kazanilan: 510, ortDeneme: 3.7, basariOrani: 85 }
-        ];
-        
-        // Özet kartları güncelle
-        document.getElementById('toplamOyuncuSayi').textContent = sonYediGun[6].oyuncu;
-        document.getElementById('toplamOyunSayi').textContent = sonYediGun[6].toplamOyun;
-        document.getElementById('ortalamaBasari').textContent = sonYediGun[6].basariOrani + '%';
-        
-        // Tablo güncelleme
-        const tbody = document.getElementById('istatistik-tbody');
-        tbody.innerHTML = sonYediGun.map(stat => `
-          <tr>
-            <td class="tarih-hucre">${stat.tarih}</td>
-            <td>${stat.oyuncu.toLocaleString()}</td>
-            <td>${stat.toplamOyun.toLocaleString()}</td>
-            <td>${stat.kazanilan.toLocaleString()}</td>
-            <td>${stat.ortDeneme.toFixed(1)}</td>
-            <td class="basari-oran">${stat.basariOrani}%</td>
-          </tr>
-        `).join('');
-        
-        // Günlük grafik
-        const gunlukCtx = document.getElementById('gunlukGrafik').getContext('2d');
-        new Chart(gunlukCtx, {
-          type: 'line',
-          data: {
-            labels: sonYediGun.map(item => item.tarih),
-            datasets: [{
-              label: 'Oyuncu Sayısı',
-              data: sonYediGun.map(item => item.oyuncu),
-              borderColor: '#00A396',
-              backgroundColor: 'rgba(0, 163, 150, 0.1)',
-              fill: true,
-              tension: 0.4
-            }, {
-              label: 'Kazanılan Oyunlar',
-              data: sonYediGun.map(item => item.kazanilan),
-              borderColor: '#FABE00',
-              backgroundColor: 'rgba(250, 190, 0, 0.1)',
-              fill: true,
-              tension: 0.4
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: 'bottom'
-              },
-              tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                padding: 12,
-                titleFont: {
-                  size: 14
-                },
-                bodyFont: {
-                  size: 13
-                }
-              }
-            }
-          }
-        });
-        
-        // Başarı dağılımı grafik
-        const basariCtx = document.getElementById('basariGrafik').getContext('2d');
-        new Chart(basariCtx, {
-          type: 'doughnut',
-          data: {
-            labels: ['1. Denemede', '2. Denemede', '3. Denemede', '4. Denemede', '5. Denemede', '6. Denemede'],
-            datasets: [{
-              data: [15, 25, 30, 15, 10, 5],
-              backgroundColor: [
-                '#00A396',
-                '#01CCBC',
-                '#FABE00',
-                '#FCD34D',
-                '#F59E0B',
-                '#DC2626'
-              ]
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: {
-                position: 'bottom'
-              }
-            }
-          }
-        });
-      }
 
-      // kelimeListesiniGoster fonksiyonunu güncelleyelim
       window.kelimeListesiniGoster = async function() {
-        // Firebase'den kelime listesini al
         let kelimeler = await kelimeListesiniGetir();
         const gunSirasi = [1, 2, 3, 4, 5, 6, 0];
-
         for (let i = 0; i < 7; i++) {
           const input = document.getElementById(`kelime${i}`);
           if (input) {
-            input.value = defaultKelimeler[gunSirasi[i]];
+            input.value = kelimeler[gunSirasi[i]];
           }
         }
       }
-    });
 
-    function gorselOlustur() {
-      const gorsel = document.getElementById('sonucGorsel');
-      document.getElementById('gorselKazanilan').textContent = kazanmaSayisi;
-      document.getElementById('gorselBasariOrani').textContent = kazanmaOrani + '%';
-      document.getElementById('gorselTahminSayisi').textContent = toplamTahmin;
-      
-      // Görseli görünür yap (geçici olarak)
-      gorsel.style.display = 'block';
-      
-      // Görseli canvas'a çevirip base64 formatına dönüştürme
-      return html2canvas(gorsel).then(canvas => {
-        // İşlem bittikten sonra görseli tekrar gizle
-        gorsel.style.display = 'none';
-        return canvas.toDataURL('image/png');
-      });
-    }
+      const tarihAraligiSelect = document.getElementById('tarih-araligi');
+      if (tarihAraligiSelect) {
+        tarihAraligiSelect.addEventListener('change', (e) => {
+          const ozelTarihDiv = document.getElementById('ozel-tarih');
+          const ozelTarihBitisDiv = document.getElementById('ozel-tarih-bitis');
+          if (e.target.value === 'ozel') {
+            ozelTarihDiv.style.display = 'block';
+            ozelTarihBitisDiv.style.display = 'block';
+          } else {
+            ozelTarihDiv.style.display = 'none';
+            ozelTarihBitisDiv.style.display = 'none';
+            istatistikleriFiltrele();
+          }
+        });
+      }
+
+      istatistikleriFiltrele();
+    });
 
     async function istatistikleriKaydet() {
       const gorsel = document.querySelector('.sonuc-gorsel');
       const logoImg = gorsel.querySelector('img');
       
-      // Logo'yu base64'e çevir
       try {
         const response = await fetch(logoImg.src);
         const blob = await response.blob();
@@ -2618,7 +2515,6 @@ function tabloyuOlustur() {
         console.error('Logo yüklenirken hata:', error);
       }
       
-      // Görseli görünür yap ve pozisyonla
       gorsel.style.position = 'fixed';
       gorsel.style.top = '50%';
       gorsel.style.left = '50%';
@@ -2627,7 +2523,6 @@ function tabloyuOlustur() {
       gorsel.style.background = 'white';
       gorsel.style.zIndex = '-1000';
       
-      // Logo'nun yüklenmesini bekle
       await new Promise((resolve) => {
         if (logoImg.complete) {
           resolve();
@@ -2647,25 +2542,20 @@ function tabloyuOlustur() {
             const clonedGorsel = clonedDoc.querySelector('.sonuc-gorsel');
             clonedGorsel.style.transform = 'none';
             clonedGorsel.style.position = 'static';
-            // Klonlanan görseldeki logo için de base64 kullan
             const clonedLogo = clonedGorsel.querySelector('img');
             clonedLogo.src = logoImg.src;
           }
         });
         
-        // Canvas'ı indirilebilir bağlantıya çevir
         const dataUrl = canvas.toDataURL('image/png');
         const link = document.createElement('a');
         link.download = 'kunduz-kelime-kesfi-istatistiklerim.png';
         link.href = dataUrl;
-        
-        // Görseli indir
         link.click();
       } catch (error) {
         console.error('Görsel kaydedilirken hata oluştu:', error);
-        alert('Görsel kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.');
+        alert('Görsel kaydedilirken hata oluştu. Lütfen tekrar deneyin.');
       } finally {
-        // Stilleri temizle
         gorsel.style.position = '';
         gorsel.style.top = '';
         gorsel.style.left = '';
@@ -2673,190 +2563,78 @@ function tabloyuOlustur() {
         gorsel.style.width = '';
         gorsel.style.background = '';
         gorsel.style.zIndex = '';
-        // Logo'yu orijinal haline geri döndür
         logoImg.src = 'https://play-lh.googleusercontent.com/25xCKG_GB7Cbeo7h1znN3Kr0yTQev9KtxEIIl3s2zjZEuyXa8XDQ80tVQhZL0iLKAjfo';
       }
     }
 
     async function guncelleIstatistikGoruntuleri(istatistikler) {
-      if (istatistikler.length > 0) {
-        const sonIstatistik = istatistikler[0];
-        document.getElementById('toplamOyuncuSayi').textContent = sonIstatistik.oyuncu;
-        document.getElementById('aylikOyuncuSayi').textContent = sonIstatistik.aylikOyuncu;
-        document.getElementById('haftalikOyuncuSayi').textContent = sonIstatistik.haftalikOyuncu;
-        document.getElementById('ortalamaBasari').textContent = sonIstatistik.basariOrani + '%';
-      }
+      if (!istatistikler.length) return;
 
-      // Kelime listesini Firebase'den al
-      try {
-        const kelimeListesi = await kelimeListesiniGetir();
-        if (kelimeListesi && kelimeListesi.length > 0) {
-          defaultKelimeler = kelimeListesi;
-        }
-      } catch (error) {
-        console.error('Kelime listesi alınırken hata:', error);
-      }
+      const toplamOyuncu = istatistikler.reduce((sum, stat) => sum + stat.oyuncuSayisi, 0);
+      const toplamKunduzDon = istatistikler.reduce((sum, stat) => sum + stat.kunduzDonTiklama, 0);
 
-      // En kolay ve en zor kelimeleri göster
-      const enKolayDiv = document.getElementById('enKolayKelimeler');
-      const enZorDiv = document.getElementById('enZorKelimeler');
-      
-      if (enKolayDiv && enZorDiv) {
-        // İstatistikleri kelimelerle eşleştir
-        const kelimeIstatistikleri = istatistikler
-          .filter(stat => stat.kelime && defaultKelimeler.includes(stat.kelime))
-          .sort((a, b) => b.basariOrani - a.basariOrani);
-        
-        enKolayDiv.innerHTML = kelimeIstatistikleri.slice(0, 3).map(k => `
-          <div class="kelime-item">
-            <span class="kelime">${k.kelime}</span>
-            <span class="oran">%${k.basariOrani}</span>
-          </div>
-        `).join('');
-        
-        enZorDiv.innerHTML = kelimeIstatistikleri.slice(-3).reverse().map(k => `
-          <div class="kelime-item">
-            <span class="kelime">${k.kelime}</span>
-            <span class="oran">%${k.basariOrani}</span>
-          </div>
-        `).join('');
-      }
+      document.getElementById('toplamOyuncuSayi').textContent = toplamOyuncu.toLocaleString();
+      document.getElementById('kunduzDonTiklama').textContent = toplamKunduzDon.toLocaleString();
 
-      // Grafikleri güncelle
-      guncelleGrafikler(istatistikler);
-    }
-
-    function guncelleGrafikler(istatistikler) {
-      // Grafik elementlerinin varlığını kontrol et
-      const gunlukGrafikElem = document.getElementById('gunlukGrafik');
-      const kelimeBazliGrafikElem = document.getElementById('kelimeBazliGrafik');
-      const tahminSuresiGrafikElem = document.getElementById('tahminSuresiGrafik');
-      const sadakatGrafikElem = document.getElementById('sadakatGrafik');
-      const zorlukGrafikElem = document.getElementById('zorluktGrafik');
-
-      // Önceki grafikleri temizle
       if (window.charts) {
-        Object.values(window.charts).forEach(chart => {
-          if (chart) chart.destroy();
-        });
+        Object.values(window.charts).forEach(chart => chart && chart.destroy());
       }
-      
-      // Grafik nesnelerini saklamak için global obje
       window.charts = {};
 
-      // Günlük grafik
-      if (gunlukGrafikElem) {
-        const gunlukCtx = gunlukGrafikElem.getContext('2d');
-        window.charts.gunluk = new Chart(gunlukCtx, {
-          type: 'line',
-          data: {
-            labels: istatistikler.map(item => item.tarih),
-            datasets: [{
-              label: 'Günlük Oyuncu',
-              data: istatistikler.map(item => item.oyuncu),
-              borderColor: '#00A396',
-              backgroundColor: 'rgba(0, 163, 150, 0.1)',
-              fill: true,
-              tension: 0.4
-            }, {
-              label: 'Haftalık Oyuncu',
-              data: istatistikler.map(item => item.haftalikOyuncu),
-              borderColor: '#FABE00',
-              backgroundColor: 'rgba(250, 190, 0, 0.1)',
-              fill: true,
-              tension: 0.4
-            }, {
-              label: 'Aylık Oyuncu',
-              data: istatistikler.map(item => item.aylikOyuncu),
-              borderColor: '#DC2626',
-              backgroundColor: 'rgba(220, 38, 38, 0.1)',
-              fill: true,
-              tension: 0.4
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-              legend: { position: 'bottom' },
-              tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                padding: 12,
-                titleFont: { size: 14 },
-                bodyFont: { size: 13 }
-              }
+      const gunlukCtx = document.getElementById('gunlukGrafik').getContext('2d');
+      window.charts.gunluk = new Chart(gunlukCtx, {
+        type: 'line',
+        data: {
+          labels: istatistikler.map(stat => stat.tarih),
+          datasets: [{
+            label: 'Oyuncu Sayısı',
+            data: istatistikler.map(stat => stat.oyuncuSayisi),
+            borderColor: '#00A396',
+            backgroundColor: 'rgba(0, 163, 150, 0.1)',
+            fill: true,
+            tension: 0.4
+          }, {
+            label: 'Kunduz\'a Dön Tıklamaları',
+            data: istatistikler.map(stat => stat.kunduzDonTiklama),
+            borderColor: '#FABE00',
+            backgroundColor: 'rgba(250, 190, 0, 0.1)',
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              padding: 12,
+              titleFont: { size: 14 },
+              bodyFont: { size: 13 }
             }
           }
-        });
+        }
+      });
+    }
+
+    async function istatistikleriFiltrele() {
+      const secim = document.getElementById('tarih-araligi').value;
+      let istatistikler;
+
+      if (secim === 'ozel') {
+        const baslangic = document.getElementById('baslangic-tarihi').value;
+        const bitis = document.getElementById('bitis-tarihi').value;
+        if (!baslangic || !bitis) {
+          alert('Lütfen başlangıç ve bitiş tarihlerini seçin!');
+          return;
+        }
+        istatistikler = await istatistikleriGetir(null, baslangic, bitis);
+      } else {
+        istatistikler = await istatistikleriGetir(parseInt(secim));
       }
 
-      // Kelime bazlı başarı oranları
-      if (kelimeBazliGrafikElem) {
-        const kelimeBazliCtx = kelimeBazliGrafikElem.getContext('2d');
-        window.charts.kelimeBazli = new Chart(kelimeBazliCtx, {
-          type: 'bar',
-          data: {
-            labels: istatistikler.map(item => item.kelime),
-            datasets: [{
-              label: 'Başarı Oranı (%)',
-              data: istatistikler.map(item => item.basariOrani),
-              backgroundColor: '#00A396'
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: { position: 'bottom' }
-            }
-          }
-        });
-      }
-
-      // Ortalama tahmin süreleri
-      if (tahminSuresiGrafikElem) {
-        const tahminSuresiCtx = tahminSuresiGrafikElem.getContext('2d');
-        window.charts.tahminSuresi = new Chart(tahminSuresiCtx, {
-          type: 'line',
-          data: {
-            labels: istatistikler.map(item => item.tarih),
-            datasets: [{
-              label: 'Ortalama Tahmin Süresi (sn)',
-              data: istatistikler.map(item => item.ortTahminSuresi || 0),
-              borderColor: '#FABE00'
-            }]
-          }
-        });
-      }
-
-      // Oyuncu sadakati grafiği
-      if (sadakatGrafikElem) {
-        const sadakatCtx = sadakatGrafikElem.getContext('2d');
-        window.charts.sadakat = new Chart(sadakatCtx, {
-          type: 'pie',
-          data: {
-            labels: ['Düzenli Oyuncular', 'Ara Sıra Oynayanlar', 'Tek Seferlik'],
-            datasets: [{
-              data: [60, 30, 10],
-              backgroundColor: ['#00A396', '#FABE00', '#DC2626']
-            }]
-          }
-        });
-      }
-
-      // Zorluk seviyesi dağılımı
-      if (zorlukGrafikElem) {
-        const zorlukCtx = zorlukGrafikElem.getContext('2d');
-        window.charts.zorluk = new Chart(zorlukCtx, {
-          type: 'doughnut',
-          data: {
-            labels: ['Kolay', 'Orta', 'Zor'],
-            datasets: [{
-              data: [30, 50, 20],
-              backgroundColor: ['#00A396', '#FABE00', '#DC2626']
-            }]
-          }
-        });
-      }
+      guncelleIstatistikGoruntuleri(istatistikler);
     }
 
     function hataYonet(error, mesaj) {
@@ -2864,48 +2642,21 @@ function tabloyuOlustur() {
       mesajGoster(mesaj, false);
     }
 
-    // Firebase bağlantı durumunu kontrol et
     db.enableNetwork().catch(error => {
       hataYonet(error, 'Firebase bağlantısı kurulamadı. Lütfen internet bağlantınızı kontrol edin.');
     });
 
     function hesaplaBasariPuani(denemeSayisi, sure) {
-      // Başlangıç puanı
       let puan = 100;
-
-      // Deneme sayısına göre puan düşür
       if (toplamTahmin > 1) {
-        puan -= (toplamTahmin - 1) * 10; // Her fazla deneme için 10 puan düş
+        puan -= (toplamTahmin - 1) * 10;
       }
-
-      // Süreye göre puan düşür
       if (sure > 30) {
-        puan -= Math.floor((sure - 30) / 30) * 5; // Her ek 30 saniye için 5 puan düş
+        puan -= Math.floor((sure - 30) / 30) * 5;
       }
-
-      // Minimum 0, maksimum 100 puan olsun
       return Math.max(0, Math.min(100, puan));
     }
 
-    // Global fonksiyonlar
-    window.adminCikis = function() {
-      // Admin oturumunu sonlandır
-      localStorage.removeItem('adminOturum');
-      
-      // Admin panelini küçült ve giriş ekranına dön
-      document.getElementById('adminLogin').style.display = 'block';
-      document.getElementById('adminContent').style.display = 'none';
-      document.querySelector('.admin-panel').classList.remove('expanded');
-      
-      // Input alanlarını temizle
-      document.getElementById('adminUser').value = '';
-      document.getElementById('adminPass').value = '';
-      
-      // Admin panelini kapat
-      toggleAdmin(false);
-    }
-
-    // Bilgi modalı için
     const bilgiModal = document.getElementById('bilgi-modal');
     const bilgiBtn = document.getElementById('bilgi-butonu');
     const closeModal = document.querySelector('.close-modal');
@@ -2914,69 +2665,34 @@ function tabloyuOlustur() {
       bilgiModal.classList.add('show');
     }
 
-    // Çarpı işaretine tıklama
     document.querySelector('.close-modal').onclick = function() {
       bilgiModal.classList.remove('show');
     }
 
-    // Modal dışına tıklama
     window.onclick = function(event) {
       if (event.target == bilgiModal) {
         bilgiModal.classList.remove('show');
       }
     }
 
-    // ESC tuşu ile kapatma
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape') {
         bilgiModal.classList.remove('show');
       }
     });
 
-    // Modal işlemleri
-    const modal = document.getElementById('bilgi-modal');
-    const openBtn = document.getElementById('bilgi-butonu');
-    const closeBtn = document.querySelector('.close-modal');
-    
-    // Modal açma
-    openBtn.onclick = function() {
-      modal.classList.add('show');
-    }
-    
-    // Modal kapatma
-    closeBtn.onclick = function() {
-      modal.classList.remove('show');
-    }
-    
-    // Dışarı tıklama
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.classList.remove('show');
-      }
-    }
-    
-    // ESC tuşu
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') {
-        modal.classList.remove('show');
-      }
-    });
-
-    // Sayfa yüklendiğinde modalı aç
     window.onload = function() {
-      modal.classList.add('show');
+      bilgiModal.classList.add('show');
     }
 
     function tahminKontrol(tahmin) {
       const sonuc = Array(tahmin.length).fill('gri');
       const gizliHarfSayisi = {};
 
-      // Gizli kelimedeki her harfin sayısını hesapla
       for (let harf of gizliKelime) {
         gizliHarfSayisi[harf] = (gizliHarfSayisi[harf] || 0) + 1;
       }
 
-      // Doğru yerdeki harfleri yeşil yap
       for (let i = 0; i < tahmin.length; i++) {
         if (tahmin[i] === gizliKelime[i]) {
           sonuc[i] = 'yesil';
@@ -2984,7 +2700,6 @@ function tabloyuOlustur() {
         }
       }
 
-      // Yanlış yerdeki harfleri kontrol et
       for (let i = 0; i < tahmin.length; i++) {
         if (sonuc[i] !== 'yesil' && gizliHarfSayisi[tahmin[i]] > 0) {
           sonuc[i] = 'sari';
@@ -2994,6 +2709,28 @@ function tabloyuOlustur() {
 
       return sonuc;
     }
+
+    // Firebase Güvenlik Kuralları Önerisi (Firebase konsolunda uygulanmalı):
+    /*
+    rules_version = '2';
+    service cloud.firestore {
+      match /databases/{database}/documents {
+        match /kelimeler/{document} {
+          allow read: if true;
+          allow write: if request.auth != null && request.auth.token.email == "admin@example.com";
+        }
+        match /istatistikler/{document} {
+          allow read: if true;
+          allow write: if request.auth != null;
+        }
+        match /kunduz_tiklamalari/{userDate} {
+          allow read: if true;
+          allow write: if request.auth != null && resource.id == request.auth.uid + "_" + request.resource.data.date;
+          allow create: if request.auth != null;
+        }
+      }
+    }
+    */
   </script>
 </body>
 </html>
