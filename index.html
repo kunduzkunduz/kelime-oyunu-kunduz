@@ -2027,44 +2027,50 @@ async function kunduzDonTiklamaKaydet(event) {
   event.preventDefault();
   console.log('Kunduz\'a Dön butonuna tıklandı, kayıt başlıyor...');
   const link = event.target.closest('a');
-  
-  // İstatistik kaydını arka planda çalıştır
-  (async () => {
-    try {
-      const userId = auth.currentUser.uid;
-      console.log('Kullanıcı ID:', userId);
-      const bugun = new Date().toISOString().split('T')[0];
-      const docId = `${userId}_${bugun}`;
-      
-      const tiklamaDoc = await db.collection('kunduz_tiklamalari').doc(docId).get();
-      if (!tiklamaDoc.exists) {
-        await db.collection('kunduz_tiklamalari').doc(docId).set({
-          tiklandi: true,
-          date: bugun,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        console.log('Kullanıcı tıklaması kaydedildi (kunduz_tiklamalari)');
 
-        const basarili = await istatistikKaydet({ kunduzDonTiklama: 1 });
-        if (basarili) {
-          console.log('Genel istatistik kaydedildi (istatistikler)');
-          if (document.getElementById('adminContent').style.display === 'block') {
-            const istatistikler = await istatistikleriGetir();
-            guncelleIstatistikGoruntuleri(istatistikler);
-          }
+  try {
+    if (!auth.currentUser) {
+      throw new Error('Kullanıcı kimliği doğrulanmamış, auth.currentUser null.');
+    }
+    const userId = auth.currentUser.uid;
+    console.log('Kullanıcı ID:', userId);
+    const bugun = new Date().toISOString().split('T')[0];
+    const docId = `${userId}_${bugun}`;
+    
+    const tiklamaDoc = await db.collection('kunduz_tiklamalari').doc(docId).get();
+    console.log('Tiklama kontrolü yapıldı, mevcut:', tiklamaDoc.exists);
+    if (!tiklamaDoc.exists) {
+      await db.collection('kunduz_tiklamalari').doc(docId).set({
+        tiklandi: true,
+        date: bugun,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      console.log('Kullanıcı tıklaması kaydedildi (kunduz_tiklamalari)');
+
+      const basarili = await istatistikKaydet({ kunduzDonTiklama: 1 });
+      if (basarili) {
+        console.log('Genel istatistik kaydedildi (istatistikler)');
+        if (document.getElementById('adminContent').style.display === 'block') {
+          const istatistikler = await istatistikleriGetir();
+          guncelleIstatistikGoruntuleri(istatistikler);
         }
       } else {
-        console.log('Kullanıcı bugün zaten tıkladı');
+        throw new Error('İstatistik kaydı başarısız (istatistikler)');
       }
-    } catch (error) {
-      console.error('Kunduz\'a Dön tıklama kaydı başarısız:', error);
-      mesajGoster('İstatistik kaydedilemedi.', false);
+    } else {
+      console.log('Kullanıcı bugün zaten tıkladı');
     }
-  })();
+  } catch (error) {
+    console.error('Kunduz\'a Dön tıklama kaydı başarısız:', error);
+    mesajGoster('İstatistik kaydedilemedi: ' + error.message, false);
+  }
 
-  // Hemen yönlendir (mevcut sekme)
+  // Kayıt tamamlandıktan sonra yönlendir
   if (link && link.href) {
+    console.log('Yönlendirme yapılıyor:', link.href);
     window.location.href = link.href;
+  } else {
+    console.error('Yönlendirme başarısız, link bulunamadı.');
   }
 }
 
