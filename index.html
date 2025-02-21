@@ -1873,7 +1873,7 @@
         <span>Paylaşmak İçin İstatistiklerinizi Kaydedin</span>
       </button>
 
-      <a href="https://t.kndz.link/uF4J" class="kunduz-link" onclick="kunduzDonTiklamaKaydet(event)" ontouchend="kunduzDonTiklamaKaydet(event)">
+     <a href="https://t.kndz.link/uF4J" class="kunduz-link" target="_blank" onclick="kunduzDonTiklamaKaydet(event)" ontouchend="kunduzDonTiklamaKaydet(event)">
     <i class="fas fa-arrow-left"></i>
     <span>Kunduz'a Dön</span>
 </a>
@@ -2024,10 +2024,9 @@
     }
 
 async function kunduzDonTiklamaKaydet(event) {
-  event.preventDefault();
+  // event.preventDefault() kaldırıldı, doğal href çalışsın
   console.log('Kunduz\'a Dön butonuna tıklandı, kayıt başlıyor...');
-  const link = event.target.closest('a');
-
+  
   try {
     if (!auth.currentUser) {
       throw new Error('Kullanıcı kimliği doğrulanmamış, auth.currentUser null.');
@@ -2062,16 +2061,9 @@ async function kunduzDonTiklamaKaydet(event) {
     }
   } catch (error) {
     console.error('Kunduz\'a Dön tıklama kaydı başarısız:', error);
-    mesajGoster('İstatistik kaydedilemedi: ' + error.message, false);
+    // Hata olsa bile yönlendirme doğal href ile devam eder
   }
-
-  // Kayıt tamamlandıktan sonra yönlendir
-  if (link && link.href) {
-    console.log('Yönlendirme yapılıyor:', link.href);
-    window.location.href = link.href;
-  } else {
-    console.error('Yönlendirme başarısız, link bulunamadı.');
-  }
+  // Yönlendirme için hiçbir şey yapmıyoruz, a etiketi zaten href ile yönlendirecek
 }
 
     async function istatistikleriGetir(gunSayisi = 7, baslangicTarihi = null, bitisTarihi = null) {
